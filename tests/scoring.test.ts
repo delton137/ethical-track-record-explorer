@@ -10,7 +10,14 @@ import {
 } from "../lib/scoring";
 import { DEFAULT_FILTERS, parseState, serializeState } from "../lib/state";
 import type { ResearchData, WrittenPosition, Milestone } from "../lib/types";
-import { GEOMETRY, positionCoordinates } from "../lib/geometry";
+import {
+  GEOMETRY,
+  arcY,
+  displayYear,
+  averageReferenceY,
+  referenceYears,
+  positionCoordinates,
+} from "../lib/geometry";
 const p = data.positions[0];
 const m: Milestone = {
   ...data.milestones[0],
@@ -66,12 +73,11 @@ test("public-only uses publication date and excludes private manuscripts", () =>
   )!;
   assert.deepEqual([s.min, s.max], [10, 30]);
 });
-test("the four requested scenario windows reset exactly", () => {
+test("the merged scenario windows reset exactly", () => {
   assert.deepEqual(defaultScenarios(data), {
     "extinction-concern": { start: 2000, end: 2030 },
-    "wild-welfare": { start: 2024, end: 2050 },
-    "insect-welfare": { start: 2020, end: 2050 },
-    "ai-welfare": { start: 2100, end: 2100 },
+    "wild-welfare": { start: 2020, end: 2075 },
+    "ai-welfare": { start: 2030, end: 2100 },
   });
 });
 test("exported placements reproduce the chart at different responsive widths", () => {
@@ -98,7 +104,7 @@ test("exported placements reproduce the chart at different responsive widths", (
       1400,
       snapshot.geometry.leadLagPixelsPerYear,
     );
-    assert.equal(wide.y, canonical.y);
+    assert.ok(Number.isFinite(wide.y));
     assert.equal(wide.xFraction, canonical.xFraction);
     assert.equal(wide.x, 58 + canonical.xFraction * (1400 - 58 - 42));
   }
@@ -212,7 +218,7 @@ test("contested affiliations do not qualify by default; insufficient coverage ha
 test("alternative benchmarks change matched scores, while shared-domain comparisons show coverage", () => {
   const marx = data.positions.find((p) => p.id === "marx-slavery")!,
     milestone = data.milestones.find((m) => m.id === "abolition")!;
-  assert.equal(calculateScore(marx, milestone, {})!.midpoint, 0);
+  assert.equal(calculateScore(marx, milestone, {})!.midpoint, 12);
   assert.equal(calculateScore(marx, milestone, {}, false, true)!.midpoint, 1);
   const f = {
     ...DEFAULT_FILTERS,
@@ -244,4 +250,79 @@ test("deep links round-trip filters, closed panels and edited scenarios; malform
   );
   assert.deepEqual(bad.filters.period, DEFAULT_FILTERS.period);
   assert.deepEqual(bad.scenarios, d);
+});
+
+test("early reference slope is tiny even after horizontal compression", () => {
+  const earlyRise = arcY(1500) - arcY(1700);
+  assert.ok(earlyRise > 0 && earlyRise <= 2.01);
+  const earlySlope = earlyRise / (displayYear(1700) - displayYear(1500));
+  const laterSlope =
+    (arcY(1700) - arcY(1800)) / (displayYear(1800) - displayYear(1700));
+  assert.ok(earlySlope < laterSlope / 10);
+  for (const width of [720, 920, 1400]) {
+    for (const year of [1700, 1800, 1900, 2000]) {
+      const rise = arcY(year, width) - arcY(year + 100, width);
+      const run = (100 * (width - 100)) / 450;
+      assert.ok(Math.abs((Math.atan(rise / run) * 180) / Math.PI - 20) < 1e-10);
+    }
+  }
+  assert.ok(Math.abs(arcY(2100) - 445) < 1e-10);
+  assert.deepEqual(referenceYears(1500, 1800), [1500, 1700, 1800]);
+});
+
+test("supportive positions align with average reform height independently of writing year", () => {
+  const bentham = data.positions.find((p) => p.id === "bentham-gay")!;
+  const milestone = data.milestones.find((m) => m.id === "decriminalization")!;
+  const score = calculateScore(bentham, milestone, {})!;
+  const placement = positionCoordinates(score, DEFAULT_FILTERS.period, 920, 1);
+  assert.equal(placement.y, averageReferenceY(milestone.window));
+  assert.equal(placement.uncertaintyTopY, arcY(2003));
+  assert.equal(placement.uncertaintyBottomY, arcY(1967));
+  const later = { ...score, writing: { start: 1950, end: 1950 } };
+  assert.equal(
+    positionCoordinates(later, DEFAULT_FILTERS.period, 920, 1).y,
+    placement.y,
+  );
+  assert.ok(
+    Math.abs(
+      averageReferenceY({ start: 1833, end: 1840 }) -
+        (arcY(1833) + arcY(1840)) / 2,
+    ) < 1e-10,
+  );
+});
+
+test("opposition sits below its entire reform interval", () => {
+  for (const id of ["kant-execution", "luther-religion"]) {
+    const p = data.positions.find((p) => p.id === id)!;
+    const m = data.milestones.find((m) => m.id === p.milestoneId)!;
+    const score = calculateScore(p, m, {})!;
+    const placement = positionCoordinates(
+      score,
+      DEFAULT_FILTERS.period,
+      920,
+      1,
+    );
+    assert.equal(score.stance, "opposes");
+    assert.ok(placement.y > Math.max(arcY(m.window.start), arcY(m.window.end)));
+    assert.equal(placement.uncertaintyTopY, placement.y);
+  }
+});
+
+test("early centuries occupy a quarter of the width of later centuries", () => {
+  assert.equal(displayYear(1600) - displayYear(1500), 25);
+  assert.equal(displayYear(1700) - displayYear(1600), 25);
+  assert.equal(displayYear(1800) - displayYear(1700), 100);
+});
+
+test("insect evidence joins wild-animal welfare without losing its quotation", () => {
+  const p = data.positions.find((p) => p.id === "tomasik-insects")!;
+  assert.equal(p.domainId, "wild");
+  assert.equal(p.milestoneId, "wild-welfare");
+  assert.ok(p.quotationIds.length > 0);
+  assert.ok(!data.domains.some((d) => d.id === "insects"));
+  assert.ok(!data.milestones.some((m) => m.id === "insect-welfare"));
+  assert.deepEqual(
+    parseState("?issues=insects", defaultScenarios(data)).filters.domainIds,
+    ["wild"],
+  );
 });

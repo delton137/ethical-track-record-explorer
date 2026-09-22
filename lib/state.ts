@@ -4,7 +4,7 @@ export const DEFAULT_FILTERS: Filters = {
   query: "",
   traditionIds: [],
   domainIds: [],
-  period: { start: 1500, end: 2125 },
+  period: { start: 1500, end: 2100 },
   publicOnly: false,
   evidence: "all",
   includeContested: false,
@@ -22,13 +22,20 @@ export function parseState(search: string, defaults: Scenarios) {
       : fallback;
   };
   let start = number("from", DEFAULT_FILTERS.period.start),
-    end = number("to", 2125);
+    end = number("to", 2100);
   if (start > end) [start, end] = [end, start];
   const filters: Filters = {
     ...DEFAULT_FILTERS,
     query: p.get("q") ?? "",
     traditionIds: (p.get("traditions") ?? "").split(",").filter(Boolean),
-    domainIds: (p.get("issues") ?? "").split(",").filter(Boolean),
+    domainIds: [
+      ...new Set(
+        (p.get("issues") ?? "")
+          .split(",")
+          .filter(Boolean)
+          .map((id) => (id === "insects" ? "wild" : id)),
+      ),
+    ],
     period: { start, end },
     publicOnly: p.get("public") === "1",
     evidence:
@@ -45,6 +52,10 @@ export function parseState(search: string, defaults: Scenarios) {
     Object.entries(defaults).map(([id, r]) => {
       const a = number(`${id}-from`, r.start),
         b = number(`${id}-to`, r.end);
+      // Old shared links represented AI welfare as a single date.
+      if (id === "ai-welfare" && a === 2100 && b === 2100) {
+        return [id, { ...r }];
+      }
       return [id, a <= b ? { start: a, end: b } : { ...r }];
     }),
   );
@@ -70,7 +81,7 @@ export function serializeState(
     p.set("issues", [...filters.domainIds].sort().join(","));
   if (filters.period.start !== DEFAULT_FILTERS.period.start)
     p.set("from", String(filters.period.start));
-  if (filters.period.end !== 2125) p.set("to", String(filters.period.end));
+  if (filters.period.end !== 2100) p.set("to", String(filters.period.end));
   if (filters.publicOnly) p.set("public", "1");
   if (filters.evidence !== "all") p.set("evidence", filters.evidence);
   if (filters.includeContested) p.set("contested", "1");

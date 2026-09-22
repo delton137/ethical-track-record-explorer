@@ -834,6 +834,13 @@ h1 {
 .benchmark-register[open] > summary:after {
   content: "−";
 }
+.progress-interval-help {
+  margin: 0;
+  padding: 0 25px 16px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
 .benchmark-list {
   padding: 0 25px 20px;
 }
@@ -2397,4 +2404,30 @@ footer a {
   .scenario-settings {
     margin-top: 24px;
   }
+}
+
+.selection-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.filter-drawer .selection-actions {
+  margin-bottom: 12px;
+}
+.tradition-legend .selection-actions button {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.milestone-anchor text {
+  fill: currentColor;
+}
+.milestone-anchor .milestone-label {
+  font-weight: 600;
+}
+
+.reform-date-label {
+  font-size: 9px;
+  font-weight: 400;
 }

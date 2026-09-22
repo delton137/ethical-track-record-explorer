@@ -126,7 +126,7 @@ export function calibration() {
     qualifications: [
       "This is a retrospective written account of his parliamentary position, not the transcript of the speech.",
       "1873 is the publication proxy; the original parliamentary intervention was in 1868.",
-      "Opposition before the selected adoption window receives zero, not a fabricated negative score.",
+      "This writing falls within the selected 1867–1998 adoption interval, so its opposition score spans negative lag and zero.",
     ],
     counter:
       "The same autobiographical passage records progressive positions on suffrage. Those views are kept separate from capital punishment.",
@@ -669,7 +669,7 @@ export function calibration() {
   e({
     id: "tomasik-insects",
     person: "tomasik",
-    domain: "insects",
+    domain: "wild",
     title: "Taking insect suffering seriously",
     summary:
       "Tomasik argues for ethical consideration of possible insect suffering and research on reducing it.",
@@ -677,7 +677,7 @@ export function calibration() {
     end: 2016,
     publication: 2015,
     publicationEnd: 2016,
-    milestone: "insect-welfare",
+    milestone: "wild-welfare",
     quote:
       "We should encourage concern for wild-insect suffering and research ways in which human environmental policies can reduce it.",
     locator: "Summary, second paragraph",

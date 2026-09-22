@@ -36,7 +36,7 @@ export function expanded() {
     context:
       "Written by Marx on behalf of the association, congratulating Lincoln on re-election and connecting abolition to workers’ emancipation.",
     qualifications: [
-      "Against the default British benchmark this earns zero lead. The US 1865 alternative gives one year.",
+      "The selected 1833–1888 interval gives a lead range spanning zero; the US 1865 alternative gives one year.",
       "The letter was formally presented in January 1865; that is not its composition date.",
     ],
   });
@@ -74,7 +74,7 @@ export function expanded() {
       "She argues that a revolutionary government must protect ordinary prisoners as well as political prisoners.",
     qualifications: [
       "The English witness is an indirect translation.",
-      "Germany is her immediate target; the scored reference is the stated British abolition window.",
+      "Germany is her immediate target; the scored reference is the selected multi-country abolition window.",
     ],
   });
   e({
@@ -261,7 +261,7 @@ export function expanded() {
     context:
       "Immediately after criticizing churches, Paine distinguishes his criticism from a denial of believers’ rights.",
     qualifications: [
-      "Later than the Virginia 1786 benchmark; support therefore earns zero lead years.",
+      "Published within the selected 1689–1919 religious-liberty interval; the score reflects the remaining lead to its later endpoint.",
     ],
   });
   f(
@@ -720,8 +720,8 @@ export function expanded() {
     context:
       "This is the modern commentator’s prose, not a quotation attributed to the ancient author of the Gītā.",
     qualifications: [
-      "The British abolition window was still in progress in 1972, producing a lag range that includes zero.",
-      "A global comparison against a British reference does not describe the law in India.",
+      "The selected abolition interval was still in progress in 1972, producing a lag range that includes zero.",
+      "The selected Western reforms do not describe the law in India.",
     ],
   });
   f(
