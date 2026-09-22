@@ -93,16 +93,6 @@ export default function Explorer() {
     </div>
   );
   const position = data.positions.find((p) => p.id === selected);
-  const scored = positions.filter((p) =>
-    calculateScore(
-      p,
-      data.milestones.find((m) => m.id === p.milestoneId),
-      scenarios,
-      filters.publicOnly,
-      filters.benchmark === "alternative",
-    ),
-  );
-  const activePeople = new Set(positions.map((p) => p.figureId)).size;
   const patch = (next: Partial<Filters>) =>
     setFilters((f) => ({ ...f, ...next }));
   useEffect(() => {
@@ -297,11 +287,12 @@ export default function Explorer() {
           <>
             <section className="intro-bar">
               <div>
-                <p className="eyebrow">WRITTEN IDEAS · 1500–PRESENT</p>
-                <h1>Tracing the moral arc.</h1>
+                <h1>
+                  Tracing the moral arc and mapping the expanding moral circle
+                </h1>
                 <p>
-                  Explore who anticipated an expanding moral circle—and read
-                  what they actually wrote.
+                  Explore who correctly anticipated ethical advances and who got
+                  things wrong.
                 </p>
               </div>
               <div className="intro-actions">
@@ -552,20 +543,11 @@ export default function Explorer() {
             )}
             <div className="explorer-workspace">
               <div className="main-surface">
-                <div className="chart-topline">
-                  <div>
-                    <h2>
-                      {view === "chart"
-                        ? "Ideas ahead of their time"
-                        : "The written record"}
-                    </h2>
-                    <p>
-                      <strong>{activePeople}</strong> thinkers <span>·</span>{" "}
-                      <strong>{positions.length}</strong> positions{" "}
-                      <span>·</span> {scored.length} scored comparisons
-                    </p>
+                {view === "table" && (
+                  <div className="chart-topline">
+                    <h2>The written record</h2>
                   </div>
-                </div>
+                )}
                 <div
                   className="tradition-legend"
                   aria-label="Tradition color legend"
@@ -803,14 +785,18 @@ export default function Explorer() {
                   >
                     <option value="default">Default reference cases</option>
                     <option value="alternative">
-                      Alternative jurisdictions where available
+                      Alternative dates / jurisdictions
                     </option>
                   </select>
                 </label>
                 <p>
                   Ranking requires 3 core figures with scored historical
                   evidence and 3 domains. Filtered results describe this corpus,
-                  not a representative census.
+                  not a representative census. Rankings depend on the chosen
+                  dates and legal scope. The alternative set includes narrower
+                  animal protections from 1822 instead of the 1911
+                  consolidation; Bentham’s lead changes from 122 to 33 years.
+                  Compare both sets before drawing conclusions about traditions.
                 </p>
               </div>
               <div className="ranking-table-wrap">
@@ -1233,11 +1219,16 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
           </div>
           <p>
             Date ranges propagate through the lead/lag calculation. On the
-            chart, supportive positions sit at the time-weighted average height
+            chart, support securely dated at or after the end of a reform
+            interval sits at its endpoint height, with no vertical whisker.
+            Earlier supportive positions sit at the time-weighted average height
             of the reference line across their reform interval; whiskers span
             that interval’s reference heights. Their x-position is the writing
-            date. Opposition sits below the entire reform interval and carries a
-            minus sign. Vertical distances are not a uniform scale of years.
+            date. Opposition aligns with the lowest reference height at the
+            start of its reform interval and carries a minus sign. Opposition to
+            women’s equality uses the 1918 women’s-suffrage starting height; its
+            lead/lag score still uses the matched legal benchmark. Vertical
+            distances are not a uniform scale of years.
           </p>
         </section>
         <section>
@@ -1277,13 +1268,15 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
           <span className="method-number">05</span>
           <h2>The future remains conditional</h2>
           <p>
-            Taking extinction risks seriously (2000–2030), wild-animal welfare
-            including insects (2020–2075) are stipulated interpretive windows.
-            AI welfare (2030–2100) is hypothetical. These concern proposed wider
-            adoption, not the invention of the ideas.
+            Humanity starts to take extinction risks seriously (2000–2030) is a
+            stipulated interpretive window. Wild-animal welfare statutes,
+            including insects (2030–2100), AI welfare statutes (2040–2100), and
+            the factory-farming / veganism transition (2000–2100) are
+            hypothetical. These concern proposed wider adoption, not the
+            invention of the ideas.
           </p>
           <p>
-            All three are provisional and excluded from historical rankings.
+            All four are provisional and excluded from historical rankings.
             Resetting scenarios restores these exact defaults. A dashed line and
             hatched region indicate dates beyond the corpus’s present-day
             boundary.

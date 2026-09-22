@@ -182,7 +182,7 @@ export const domains: Domain[] = [
   [
     "extinction",
     "Human extinction risk",
-    "Taking extinction risks seriously",
+    "Humanity starts to take extinction risks seriously",
     "Explicit concern with the possible end of humanity, distinct from generic duties to future generations.",
   ],
   [
@@ -328,6 +328,7 @@ export const milestones: Milestone[] = [
     name: "Legal prohibition of sex discrimination",
     shortName: "Women’s legal equality",
     window: { start: 1964, end: 1975 },
+    oppositionAnchorYear: 1918,
     jurisdiction: "United States (employment, 1964); Great Britain (1975 Act)",
     measure: "law",
     kind: "historical",
@@ -669,7 +670,7 @@ export const milestones: Milestone[] = [
     id: "execution-abolition",
     domainId: "execution",
     name: "Death penalty abolition in selected Western countries",
-    shortName: "Death penalty abolition",
+    shortName: "Ending capital punishment",
     window: { start: 1867, end: 1998 },
     jurisdiction:
       "Portugal, West Germany, Great Britain / UK, Canada, and France; offense-specific reforms",
@@ -840,13 +841,13 @@ export const milestones: Milestone[] = [
     id: "animal-protection",
     domainId: "animals",
     name: "Statutory animal protection",
-    shortName: "Animal protection laws",
-    window: { start: 1822, end: 1911 },
-    jurisdiction: "United Kingdom; progressively broader covered animals",
+    shortName: "Animal legal protection",
+    window: { start: 1911, end: 1911 },
+    jurisdiction: "England, Wales and Ireland; Scotland excluded",
     measure: "law",
     kind: "historical",
     description:
-      "From Martin’s Act protecting cattle to the Protection of Animals Act. These laws do not prohibit all animal use or establish equal rights.",
+      "The Protection of Animals Act was enacted in 1911 and commenced on 1 January 1912. Section 16 excludes Scotland. This benchmark uses enactment, not commencement. It consolidated earlier protections, including livestock protections dating to 1822; it is not the first recognition of animal welfare. It does not prohibit all animal use or establish equal rights. The alternative benchmark tests sensitivity to the earlier, narrower 1822 reform.",
     sources: [
       {
         title: "Protection of Animals Act 1911",
@@ -855,6 +856,17 @@ export const milestones: Milestone[] = [
       {
         title: "UK Parliament: protecting animals",
         url: "https://publications.parliament.uk/pa/ld200102/ldselect/ldanimal/150/15004.htm",
+      },
+    ],
+    alternatives: [
+      {
+        id: "livestock1822",
+        name: "Earlier livestock protection: 1822 Act (narrower scope)",
+        window: { start: 1822, end: 1822 },
+        jurisdiction:
+          "British livestock protection; specified animals and acts of cruelty",
+        sourceUrl:
+          "https://publications.parliament.uk/pa/ld200102/ldselect/ldanimal/150/15004.htm",
       },
     ],
   },
@@ -877,10 +889,23 @@ export const milestones: Milestone[] = [
     ],
   },
   {
+    id: "factory-farming-transition",
+    domainId: "farmed",
+    name: "Abolishing factory farming / veganism",
+    shortName: "Ending factory farming / veganism",
+    window: { start: 2000, end: 2100 },
+    jurisdiction: "Hypothetical future adoption scenario",
+    measure: "scenario",
+    kind: "projected",
+    description:
+      "This hypothetical 2000–2100 scenario assumes that factory farming is abolished and veganism becomes the social norm by 2100. The dates are an illustrative adoption window, not a prediction or a claim that this transition has happened. Animal legal protection is a separate historical benchmark. Earlier vegetarian arguments can support part of this transition without establishing advocacy of its full vegan endpoint; each evidence record states that distinction. This future scenario is excluded from historical rankings.",
+    sources: [],
+  },
+  {
     id: "extinction-concern",
     domainId: "extinction",
-    name: "Taking extinction risks seriously",
-    shortName: "Taking extinction risks seriously",
+    name: "Humanity starts to take extinction risks seriously",
+    shortName: "Humanity starts to take extinction risks seriously",
     window: { start: 2000, end: 2030 },
     jurisdiction: "Western reference scenario stipulated for this project",
     measure: "interpretation",
@@ -942,27 +967,27 @@ export const milestones: Milestone[] = [
   {
     id: "wild-welfare",
     domainId: "wild",
-    name: "Wider concern for wild-animal welfare, including insects",
-    shortName: "Wild-animal welfare",
-    window: { start: 2020, end: 2075 },
+    name: "Wild-animal welfare statutes",
+    shortName: "Wild-animal welfare statutes",
+    window: { start: 2050, end: 2100 },
     jurisdiction: "Western reference scenario stipulated for this project",
     measure: "scenario",
     kind: "stipulated",
     description:
-      "Merged wild-animal and insect-welfare scenario, spanning 2020–2075. This includes insects and naturally occurring suffering; it does not assert completed adoption or that concern began in 2020.",
+      "User-stipulated hypothetical adoption of wild-animal welfare statutes during 2050–2100, including insects. These dates are a future scenario, not enacted laws or the first appearance of moral concern. Historical concern does not necessarily imply support for a specific statute.",
     sources: [],
   },
   {
     id: "ai-welfare",
     domainId: "ai",
-    name: "Possible adoption of AI welfare",
-    shortName: "AI welfare",
-    window: { start: 2030, end: 2100 },
+    name: "AI welfare statutes",
+    shortName: "AI welfare statutes",
+    window: { start: 2040, end: 2100 },
     jurisdiction: "Hypothetical future scenario",
     measure: "scenario",
     kind: "projected",
     description:
-      "Editable hypothetical 2030–2100 interval. Neither AI sentience nor future social acceptance is presented as established.",
+      "Editable hypothetical adoption of AI welfare statutes during 2040–2100. Neither AI sentience nor future legislation is presented as established. Moral concern does not necessarily imply support for a specific statute.",
     sources: [],
   },
 ];

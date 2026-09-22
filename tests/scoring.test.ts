@@ -75,9 +75,10 @@ test("public-only uses publication date and excludes private manuscripts", () =>
 });
 test("the merged scenario windows reset exactly", () => {
   assert.deepEqual(defaultScenarios(data), {
+    "factory-farming-transition": { start: 2000, end: 2100 },
     "extinction-concern": { start: 2000, end: 2030 },
-    "wild-welfare": { start: 2020, end: 2075 },
-    "ai-welfare": { start: 2030, end: 2100 },
+    "wild-welfare": { start: 2050, end: 2100 },
+    "ai-welfare": { start: 2040, end: 2100 },
   });
 });
 test("exported placements reproduce the chart at different responsive widths", () => {
@@ -270,7 +271,7 @@ test("early reference slope is tiny even after horizontal compression", () => {
   assert.deepEqual(referenceYears(1500, 1800), [1500, 1700, 1800]);
 });
 
-test("supportive positions align with average reform height independently of writing year", () => {
+test("support before or during reform uses average interval height", () => {
   const bentham = data.positions.find((p) => p.id === "bentham-gay")!;
   const milestone = data.milestones.find((m) => m.id === "decriminalization")!;
   const score = calculateScore(bentham, milestone, {})!;
@@ -291,7 +292,7 @@ test("supportive positions align with average reform height independently of wri
   );
 });
 
-test("opposition sits below its entire reform interval", () => {
+test("opposition aligns with the lowest point of its reform interval", () => {
   for (const id of ["kant-execution", "luther-religion"]) {
     const p = data.positions.find((p) => p.id === id)!;
     const m = data.milestones.find((m) => m.id === p.milestoneId)!;
@@ -303,7 +304,10 @@ test("opposition sits below its entire reform interval", () => {
       1,
     );
     assert.equal(score.stance, "opposes");
-    assert.ok(placement.y > Math.max(arcY(m.window.start), arcY(m.window.end)));
+    assert.equal(
+      placement.y,
+      Math.max(arcY(m.window.start), arcY(m.window.end)),
+    );
     assert.equal(placement.uncertaintyTopY, placement.y);
   }
 });
@@ -324,5 +328,25 @@ test("insect evidence joins wild-animal welfare without losing its quotation", (
   assert.deepEqual(
     parseState("?issues=insects", defaultScenarios(data)).filters.domainIds,
     ["wild"],
+  );
+});
+
+test("support after reform uses its endpoint; uncertain dates crossing the end retain the interval", () => {
+  const p = data.positions.find((p) => p.id === "becker-slavery")!;
+  const m = data.milestones.find((m) => m.id === p.milestoneId)!;
+  const score = calculateScore(p, m, {})!;
+  for (const width of [720, 920, 1400]) {
+    const point = positionCoordinates(score, DEFAULT_FILTERS.period, width, 1);
+    assert.equal(point.y, arcY(m.window.end, width, DEFAULT_FILTERS.period));
+    assert.equal(point.uncertaintyTopY, point.y);
+    assert.equal(point.uncertaintyBottomY, point.y);
+  }
+  const crossing = {
+    ...score,
+    writing: { start: m.window.end - 1, end: m.window.end + 1 },
+  };
+  assert.equal(
+    positionCoordinates(crossing, DEFAULT_FILTERS.period, 920, 1).y,
+    averageReferenceY(m.window),
   );
 });

@@ -1,19 +1,26 @@
-# Unadmitted research leads
+# Expansion roster disposition
 
-The included roster is in `calibration.ts` and `expanded.ts`. These additional names are a research queue, not admitted figures or scored evidence. The first release was assembled iteratively: it was **not** a preregistered or representative sample. Its leaderboards cannot establish a tradition's comparative superiority.
+24 additions bring the corpus to 66. Admission means an attributable primary passage is available, sometimes with explicitly unresolved bibliographic details. It does not mean every domain or the complete author corpus has been searched.
 
-Prioritize the thinly represented traditions before adding more utilitarians. For every candidate, establish intellectual importance, substantive affiliation, an attributable written text in the 1400–present window, and the complete issue/counterevidence checklist before admission. Do not infer a position from conduct or from a later follower. Dates and classifications must be verified individually.
+| Family | Added |
+|---|---|
+| Buddhist | Thich Nhat Hanh; B. R. Ambedkar (late Buddhist work only); Bhikkhu Bodhi |
+| Stoic / Neo-Stoic | Justus Lipsius; Guillaume du Vair (unmatched); Lawrence Becker |
+| Jain | Virchand Gandhi; Champat Rai Jain |
+| Confucian | Kang Youwei; Liang Qichao (replacement, early reform phase) |
+| Islamic | Muhammad Iqbal (unmatched inheritance evidence); Rashid Rida |
+| Virtue | Philippa Foot; G. E. M. Anscombe (unmatched moral condemnation); Alasdair MacIntyre |
+| Kantian | J. G. Fichte; Hermann Cohen; John Rawls (mixed liberal/Kantian) |
+| Existential and precursors | Jean-Paul Sartre; Albert Camus (contested); Søren Kierkegaard (signed Christian work); Friedrich Nietzsche (contested) |
+| Hindu | Swami Vivekananda; Sarvepalli Radhakrishnan |
 
-| Tradition to investigate | Candidates                                           | Particular checks                                                                                              |
-| ------------------------ | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Buddhism                 | Thich Nhat Hanh; B. R. Ambedkar; Bhikkhu Bodhi       | Authored writings versus transcribed talks; date Ambedkar's Buddhist commitment rather than back-projecting it |
-| Stoicism / Neo-Stoicism  | Justus Lipsius; Guillaume du Vair; Lawrence Becker   | Christian–Stoic mixtures; toleration and exclusion; modern reconstruction versus ancient continuity            |
-| Jainism                  | Virchand Gandhi; Champat Rai Jain; Acharya Tulsi     | Authorship, translation, and publication history; nonviolence is not automatically an insect-sentience claim   |
-| Confucianism             | Huang Zongxi; Dai Zhen; Kang Youwei                  | Composition versus posthumous publication; changing positions; universal concern versus specific civil rights  |
-| Islamic ethics           | Muhammad Abduh; Muhammad Iqbal; Rashid Rida          | Distinct theological/legal approaches, rather than a single generic Islamic position                           |
-| Virtue ethics            | Philippa Foot; G. E. M. Anscombe; Alasdair MacIntyre | Which claims derive from virtue ethics; changes of framework; direct equivalence to a benchmark                |
-| Kantian ethics           | J. G. Fichte; Hermann Cohen                          | Significant revisions to Kant; rights and exclusions must both be examined                                     |
-| Existentialism           | Jean-Paul Sartre; Albert Camus                       | Disputed labels, authored essays versus reported political conduct, capital punishment and colonialism         |
-| Hindu ethical traditions | Swami Vivekananda; Sarvepalli Radhakrishnan          | Branches, religious universalism versus actual toleration, and authored versus compiled texts                  |
+## Unsuccessful / unfinished candidates retained for research
 
-Researching these candidates may produce exclusion rather than admission. No outcome or direction of score is specified in advance. Ancient founders are relevant context, but writings before 1400 require an explicit extension of the app's historical scope.
+- **Acharya Tulsi:** Anuvrat code and *Vision of a New Society* investigated. Individual authorship, original dates and translation/edition of a suitable passage remain unverified. Do not backdate a revised collective code to 1949.
+- **Huang Zongxi:** *Waiting for Dawn* / 明夷待訪錄, Gutenberg 23855, inspected for political criticism. Anti-monarchical argument is not equivalent to the existing colonial self-determination benchmark. Further slavery/women passages and a defensible translation remain open.
+- **Dai Zhen:** *Mengzi Ziyi Shuzheng*, Chinese Text Project witness, investigated. Criticism of oppressive principles does not by itself establish support for abolition of capital punishment. Passage verification and reform equivalence remain unresolved.
+- **Muhammad Abduh:** *Risalat al-Tawhid* publisher preview, Arabic scan catalog and secondary references investigated. A suitable authored passage was not verified in the underlying work. Access/edition gap, not a finding that he held no relevant views.
+
+## Continuing protocol
+
+Apply the same issue list and contrary-passage search to every author. Keep conceptual support, policy proposals and moral disapproval distinct. Preserve pseudonymous voices, mixed traditions, time-specific commitments, private/public status and translation gaps. Missing evidence earns no weight. The per-person excerpt audit is exported in coverage.json and shown in the app; broader collected-works searches remain unfinished.

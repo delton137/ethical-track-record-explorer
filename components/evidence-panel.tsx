@@ -140,7 +140,7 @@ export default function EvidencePanel({
             <dd>{formatYears(position.composition)}</dd>
           </div>
           <div>
-            <dt>First publication</dt>
+            <dt>Passage publication / dated edition</dt>
             <dd>{formatYears(position.publication)}</dd>
           </div>
         </dl>
@@ -188,6 +188,32 @@ export default function EvidencePanel({
                   <dd>{source.author}</dd>
                   <dt>Edition</dt>
                   <dd>{source.edition}</dd>
+                  {source.workFirstPublication && (
+                    <>
+                      <dt>Work first published</dt>
+                      <dd>{formatYears(source.workFirstPublication)}</dd>
+                    </>
+                  )}
+                  {source.witnessPublication && (
+                    <>
+                      <dt>Inspected edition published</dt>
+                      <dd>{formatYears(source.witnessPublication)}</dd>
+                    </>
+                  )}
+                  {source.datingSourceUrl && (
+                    <>
+                      <dt>Passage dating evidence</dt>
+                      <dd>
+                        <a
+                          href={source.datingSourceUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Contemporary attestation
+                        </a>
+                      </dd>
+                    </>
+                  )}
                   <dt>Original language</dt>
                   <dd>{source.originalLanguage}</dd>
                   <dt>Translation</dt>

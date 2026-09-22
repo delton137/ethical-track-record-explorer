@@ -103,6 +103,11 @@ for (const [work, count] of wordsByWork)
   );
 for (const s of data.sources) {
   new URL(s.url);
+  if (s.datingSourceUrl) new URL(s.datingSourceUrl);
+  if (s.workFirstPublication) assert(validRange(s.workFirstPublication));
+  if (s.witnessPublication) assert(validRange(s.witnessPublication));
+  if (s.workFirstPublication && s.witnessPublication)
+    assert(s.workFirstPublication.start <= s.witnessPublication.start);
   assert(s.edition && s.originalLanguage && s.translation && s.checkedOn);
 }
 const scored = data.positions.filter((p) =>
@@ -116,6 +121,10 @@ console.log(
   JSON.stringify(
     {
       figures: data.figures.filter((f) => f.status === "included").length,
+      plottedFigures: new Set(scored.map((p) => p.figureId)).size,
+      unmatchedOnlyFigures: data.figures
+        .filter((f) => !scored.some((p) => p.figureId === f.id))
+        .map((f) => f.name),
       candidates: data.figures.filter((f) => f.status === "candidate").length,
       traditions: data.traditions.length,
       positions: data.positions.length,

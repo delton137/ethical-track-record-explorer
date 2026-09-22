@@ -1,51 +1,32 @@
-# Research edition 01 — audit status
+# Research edition 03 — 22 September 2026
 
-As of 22 September 2026: **42 included figures, 53 positions, 51 quotation records, 48 source records, 13 ethical families and 17 issue domains**. Five substantively unmatched positions remain in the table without plotted coordinates or scores. Fourteen records carry material interpretive or bibliographic qualifications.
+**66 included figures; 59 with plotted positions; 7 with unmatched evidence only.** The corpus contains 91 positions, 86 quotation records and 77 source records. Ten positions are unscored and 41 carry material qualifications. Exact coverage and the per-person review register are in [coverage.json](coverage.json), regenerated with `npx tsx scripts/research-report.ts`.
 
-## What has been done
+This edition adds 24 people, including Nietzsche. Three additions—du Vair, Anscombe and Iqbal—have only unmatched evidence. Their statements do not establish an equivalent reform: human-centered teleology is not permission for animal cruelty; moral disapproval is not criminalization; inheritance shares are not covered by the existing employment/education discrimination benchmark.
 
-- Located primary-text witnesses, selected brief attributable passages, and recorded locators, work/edition information, language/translation, composition or declared date proxy, and publication separately.
-- Read the relevant passages in context, preserving stated restrictions and identified contrary passages. Exact witnesses and caveats are displayed in each dossier.
-- Included Bentham's private manuscript; Mill and Kant on executions; Rousseau's restriction of toleration; Luther's substantially different earlier and later writings; modern Kantian animal concern; and explicit human-extinction arguments from Parfit, Leslie, Bostrom, Ord, MacAskill/Greaves, Russell and Jonas.
-- Kept framework use distinct from exclusive allegiance. Russell's and Jonas's disputed classifications are excluded from default tradition comparisons. Coauthored quotations use shared source records.
-- Checked structural integrity, scoring rules, excerpt length budgets, source references and revision links with executable tests. Source-link checks found several obsolete profile URLs, which were replaced.
+## New primary evidence
 
-These checks do **not** mean that every edition has been collated, every affiliation has received expert adjudication, or every figure's full corpus has been searched for all 17 domains.
+- Nietzsche: slavery and rejection of women’s equal rights/education, _Beyond Good and Evil_ §§238, 257–259. Existentialist affiliation is contested and excluded from default ranking.
+- Bentham: women’s equal claim to the vote in principle, but political deferral, _Constitutional Code_, Book I, chapter XV. The editor dates these posthumously arranged manuscripts to 1818–1830; publication is recorded separately as 1843. The 1817 _Plan_ was also reviewed and does not provide an unqualified recommendation.
+- Mill: defense of emancipation in his 1850 reply to Carlyle. Rousseau: subordinate female education in _Emile_. Locke: the punishment-based slavery dot has been removed. His rejection of inherited enslavement in _Second Treatise_ §189 is retained as unmatched evidence, without abolition credit. See [the slavery review](LOCKE-SLAVERY.md).
+- New mixed and restrictive positions include Kang’s racial homogenization, Fichte’s married women’s rights, Kierkegaard’s worldly subordination, and Rida’s limited continuation of slavery. Positive views do not cancel these records.
 
-## Coverage
+## Historical review corrections
 
-Counts below are core affiliations, with mixed affiliations counted in each applicable row. They consequently do not sum to the number of people. Historical rank eligibility is computed dynamically from scored evidence, not from this headcount.
+Salt’s animal-rights passage is dated to 1892 using contemporary attestation of its exact wording; the inspected 1922 book edition is recorded separately. Rawls, Becker and MacIntyre likewise distinguish original work publication from inspected editions without backdating uncollated passages. Bodhi’s insect precept remains available as unmatched moral concern, without credit for advocating future statutes.
 
-| Family                         | Core figures | Main limitation                                                        |
-| ------------------------------ | -----------: | ---------------------------------------------------------------------- |
-| Utilitarian / consequentialist |           12 | Many recent authors contribute only provisional future comparisons     |
-| Christian                      |            7 | Selected branches and reform debates; far from a representative sample |
-| Kantian                        |            2 | Below the three-core-figure ranking threshold                          |
-| Buddhist                       |            1 | Current autonomy passage is not assigned a colonial-independence score |
-| Stoic / Neo-Stoic              |            1 | Modern exponent only; early modern revival remains to be researched    |
-| Hindu                          |            2 | Two distinct branches, with limited domain coverage                    |
-| Jain                           |            1 | Broad nonviolence; no inferred insect-sentience position               |
-| Existentialist                 |            1 | Beauvoir is core; Jonas is explicitly contested                        |
-| Aristotelian / virtue          |            1 | Nussbaum's capabilities approach also has a rights affiliation         |
-| Liberal / rights-based         |            8 | Broad umbrella; significant internal differences                       |
-| Marxist / socialist            |            5 | Authorship and mixed affiliations retained; not a census               |
-| Confucian                      |            1 | Wang's moral concern is retained without an equivalent legal benchmark |
-| Islamic                        |            1 | One modern author cannot represent the tradition's range               |
+The 1911 animal-protection benchmark now identifies its exclusion of Scotland and its 1912 commencement. An alternative 1822 livestock benchmark exposes sensitivity to earlier, narrower legislation. Obsolete static score claims were removed from the Marx/Engels and Rousseau notes; the evidence panel calculates values for the selected benchmark.
 
-Only four families currently meet the default threshold of three core figures with historical evidence and three scored historical domains. No conclusion about the remaining nine follows from that absence. The target of roughly four figures per family has **not** been reached; the next roster priorities are recorded in [CANDIDATES.md](CANDIDATES.md).
+## Audit scope and remaining gaps
 
-## Specific unresolved work
+Every person’s recorded excerpts have been checked for whether they establish a slavery or women’s-rights position. The research index and export explicitly identify the works reviewed and unknown domains. **This is not a completed search of all 66 authors’ collected works.** Broader contrary-passage, revision and cross-domain research remains open; absence of a located passage is never treated as support.
 
-1. **Balanced selection and counterevidence:** complete the same domain-by-domain search for every figure. The in-app checklist currently distinguishes located evidence from unknown/open domains; it does not imply an exhaustive search has already happened. The first roster was assembled iteratively, not preregistered before positions were known.
-2. **Edition and composition precision:** replace declared publication proxies with securely dated manuscripts where available. Singer's teaching excerpt has incomplete anthology metadata; Salt uses a checked revised edition; Maududi uses a later English reprint; Wang's first-publication interval is broad. These caveats remain visible rather than silently backdating passages.
-3. **Translations:** some translations are modern copyrighted witnesses, and not every translation's complete editorial history is established. The app uses brief excerpts and links; it does not redistribute complete works or scans.
-4. **Affiliations and importance:** linked scholarly or institutional profiles support many classifications, but some modern or religious affiliations use author/institution accounts. Importance tiers are sourced editorial judgments, not a settled quantitative measure. A specialist review is still needed, especially for broad families and mixed cases.
-5. **Benchmark equivalence:** all historical dates are named legal or institutional reference cases. They are not empirical estimates of society-wide moral consensus. International torture codification is later than some national bans; British factory protection is narrower than a prohibition of all child labor. Do not read a zero score as agreement with an author's position or as a denial of historical influence.
-6. **Extinction denial:** no securely checked authored passage explicitly claiming human extinction impossible is included. Missing denial evidence remains unknown.
-7. **Source durability:** some repositories restrict automated access. An HTTP access error is recorded as an access limitation, not grounds to replace a quotation with an unsourced paraphrase. Archival persistence and a fuller witness-by-witness scan audit remain desirable.
+Four original candidates remain unadmitted: Acharya Tulsi, Huang Zongxi, Dai Zhen and Muhammad Abduh. See [CANDIDATES.md](CANDIDATES.md). Liang Qichao is a same-family replacement; Nietzsche is an additional user-requested figure. Many additions have one qualifying position rather than the desired two or three.
 
-## Reproduction and review
+Bibliographic qualifications remain visible: Kierkegaard’s scanned excerpt lacks title pages; several translated web witnesses do not credit translators; Vivekananda’s letter date is secure but first-publication date is unresolved; Virchand Gandhi uses posthumously collected lecture text rather than an inspected autograph. Revised editions of Rawls, Becker and MacIntyre are not silently backdated to original editions. Primary wording is checked in the specified witness; this does not substitute for critical-edition or manuscript collation.
 
-`npm run audit:data` validates record integrity; `npm test` checks the mathematical rules. `Export evidence` includes the complete corpus and current view's calculations. It records the coordinate constants and normalized horizontal positions, so the exported placements can be reconstructed at any viewport width. The arc itself remains schematic.
+## Placement and reproducibility
 
-Changes to a quotation, date, affiliation, benchmark match or substantive episode should be reviewed as research changes, with a new data version. Formatting and app tests do not substitute for that review. No actual conduct or practical consequences are scored.
+Opposition aligns exactly with the lowest reference height, at the start of its reform interval, even before adoption. Women’s-equality opposition explicitly uses the 1918 women’s-suffrage anchor, while retaining the legal-equality benchmark for numerical scoring. There is no additional pixel offset. Support securely dated at or after an interval’s endpoint appears at that endpoint’s reference height; support before/during the interval uses its mean reference height. If the writing-date range crosses the endpoint, uncertainty is retained. These visual rules do not change lead/lag scores. Exports contain the dates, scenario assumptions, formulas and coordinates.
+
+The source audit checks references, date ranges, unique episodes and short-excerpt budgets. Unit tests cover scoring, uncertain dates, opposition placement, endpoint placement and provenance safeguards. Browser tests exercise every plotted quotation, filters, overlapping points, exports, mobile reading and accessibility. All systematic historical conclusions remain limited by coverage and selection.

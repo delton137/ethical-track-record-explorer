@@ -61,6 +61,9 @@ type EvidenceInput = {
   end?: number;
   publication?: number;
   publicationEnd?: number;
+  workFirstPublication?: number;
+  witnessPublication?: number;
+  datingSourceUrl?: string;
   private?: boolean;
   stance?: WrittenPosition["stance"];
   milestone?: string;
@@ -102,6 +105,15 @@ export function evidence(i: EvidenceInput) {
         i.publication ?? i.year,
         i.publicationEnd ?? i.publication ?? i.year,
       ),
+      workFirstPublication:
+        i.workFirstPublication === undefined
+          ? undefined
+          : yr(i.workFirstPublication),
+      witnessPublication:
+        i.witnessPublication === undefined
+          ? undefined
+          : yr(i.witnessPublication),
+      datingSourceUrl: i.datingSourceUrl,
       reuse:
         "Brief attributed excerpt; follow the source link for the surrounding work. Copyright in modern translations and editions may subsist.",
       checkedOn: "2026-09-22",

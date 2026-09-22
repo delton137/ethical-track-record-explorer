@@ -18,7 +18,7 @@ export const GEOMETRY = {
   earlyYearCutoff: 1700,
   earlyYearScale: 0.25,
   earlyArcRise: 2,
-  oppositionGap: 24,
+  oppositionGap: 0,
 } as const;
 // A tiny early rise remains gentle even on the compressed x-axis.
 // Later progress rises at 20 degrees; the future endpoint anchors the layout.
@@ -119,21 +119,21 @@ export function positionCoordinates(
     (displayYear(year) - displayYear(period.start)) /
     (displayYear(end) - displayYear(period.start));
   const referenceY = (year: number) => arcY(year, width, period);
-  const oppositionY =
-    Math.max(
-      referenceY(score.benchmark.start),
-      referenceY(score.benchmark.end),
-    ) + GEOMETRY.oppositionGap;
+  const oppositionY = referenceY(
+    score.oppositionAnchorYear ?? score.benchmark.start,
+  );
+  const laterSupport =
+    score.stance === "supports" && score.writing.start >= score.benchmark.end;
+  const supportY = laterSupport
+    ? referenceY(score.benchmark.end)
+    : averageReferenceY(score.benchmark, width, period);
   return {
     year,
     xFraction,
     x:
       GEOMETRY.leftMargin +
       xFraction * (width - GEOMETRY.leftMargin - GEOMETRY.rightMargin),
-    y:
-      score.stance === "opposes"
-        ? oppositionY
-        : averageReferenceY(score.benchmark, width, period),
+    y: score.stance === "opposes" ? oppositionY : supportY,
     uncertaintyTopY:
       score.stance === "opposes"
         ? oppositionY
@@ -141,7 +141,9 @@ export function positionCoordinates(
     uncertaintyBottomY:
       score.stance === "opposes"
         ? oppositionY
-        : referenceY(score.benchmark.start),
+        : laterSupport
+          ? supportY
+          : referenceY(score.benchmark.start),
     inPeriod: year >= period.start && year <= end,
   };
 }
