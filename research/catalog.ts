@@ -328,7 +328,6 @@ export const milestones: Milestone[] = [
     name: "Legal prohibition of sex discrimination",
     shortName: "Women’s legal equality",
     window: { start: 1964, end: 1975 },
-    oppositionAnchorYear: 1918,
     jurisdiction: "United States (employment, 1964); Great Britain (1975 Act)",
     measure: "law",
     kind: "historical",
@@ -969,12 +968,12 @@ export const milestones: Milestone[] = [
     domainId: "wild",
     name: "Wild-animal welfare statutes",
     shortName: "Wild-animal welfare statutes",
-    window: { start: 2050, end: 2100 },
+    window: { start: 2060, end: 2100 },
     jurisdiction: "Western reference scenario stipulated for this project",
     measure: "scenario",
     kind: "stipulated",
     description:
-      "User-stipulated hypothetical adoption of wild-animal welfare statutes during 2050–2100, including insects. These dates are a future scenario, not enacted laws or the first appearance of moral concern. Historical concern does not necessarily imply support for a specific statute.",
+      "User-stipulated hypothetical adoption of wild-animal welfare statutes during 2060–2100, including insects. These dates are a future scenario, not enacted laws or the first appearance of moral concern. Historical concern does not necessarily imply support for a specific statute.",
     sources: [],
   },
   {

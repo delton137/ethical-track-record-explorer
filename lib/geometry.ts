@@ -119,9 +119,9 @@ export function positionCoordinates(
     (displayYear(year) - displayYear(period.start)) /
     (displayYear(end) - displayYear(period.start));
   const referenceY = (year: number) => arcY(year, width, period);
-  const oppositionY = referenceY(
-    score.oppositionAnchorYear ?? score.benchmark.start,
-  );
+  // Before reform, opposition sits on the arc; afterward it stays at the
+  // reform-start height. Use the same midpoint date as the horizontal axis.
+  const oppositionY = referenceY(Math.min(year, score.benchmark.start));
   const laterSupport =
     score.stance === "supports" && score.writing.start >= score.benchmark.end;
   const supportY = laterSupport

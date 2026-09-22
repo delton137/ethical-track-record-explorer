@@ -1224,10 +1224,12 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
             Earlier supportive positions sit at the time-weighted average height
             of the reference line across their reform interval; whiskers span
             that interval’s reference heights. Their x-position is the writing
-            date. Opposition aligns with the lowest reference height at the
-            start of its reform interval and carries a minus sign. Opposition to
-            women’s equality uses the 1918 women’s-suffrage starting height; its
-            lead/lag score still uses the matched legal benchmark. Vertical
+            date. Opposition before a reform starts sits on the reference line
+            at its writing date. At or after the start, it stays at the line’s
+            height for the reform-start year, placing later opposition below the
+            line. This uses the writing-date midpoint for uncertain dates and
+            applies to every issue and selected benchmark. Opposition carries a
+            minus sign. Numerical lead/lag scores are unchanged. Vertical
             distances are not a uniform scale of years.
           </p>
         </section>

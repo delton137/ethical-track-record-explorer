@@ -643,13 +643,6 @@ h1 {
   align-items: center;
   gap: 6px;
 }
-.hollow-key {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border: 1.5px solid #7790b0;
-  border-radius: 50%;
-}
 .chart-tooltip {
   position: absolute;
   top: 58px;

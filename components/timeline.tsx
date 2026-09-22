@@ -153,7 +153,7 @@ export default function Timeline({
           style={{ width: W }}
           viewBox={`0 0 ${W} ${H}`}
           role="group"
-          aria-label="Written positions relative to the moral reference arc. Horizontal axis: writing year. Support after the reform interval uses its endpoint height; earlier support uses the average interval height; opposition uses the lowest reform height and has a minus sign. Opposition to women’s equality uses the 1918 suffrage starting height. Use Tab to focus dots, arrow keys to move, Enter to select. An equivalent evidence table is available."
+          aria-label="Written positions relative to the moral reference arc. Horizontal axis: writing year. Support after the reform interval uses its endpoint height; earlier support uses the average interval height; opposition before reform sits on the line at its writing midpoint, while opposition at or after reform starts stays at the reform-start height. Opposition has a minus sign. Use Tab to focus dots, arrow keys to move, Enter to select. An equivalent evidence table is available."
         >
           <defs>
             <pattern
@@ -351,7 +351,7 @@ export default function Timeline({
                     cx={x(t)}
                     cy={arc(t)}
                     r="3.5"
-                    fill="#f7f9fc"
+                    fill="currentColor"
                     stroke="currentColor"
                   />
                   {index >= 0 && (
@@ -518,17 +518,13 @@ export default function Timeline({
                   )}
                   <circle
                     r={active ? 6 : 5.4}
-                    fill={v.score.provisional ? "#fff" : f.color}
+                    fill={f.color}
                     stroke={f.color}
-                    strokeWidth={v.score.provisional ? 2 : 1.3}
+                    strokeWidth={1.3}
                     opacity={dim ? 0.22 : 1}
                   />
                   {v.p.stance === "opposes" && (
-                    <path
-                      d="M-2.5 0h5"
-                      stroke={v.score.provisional ? f.color : "white"}
-                      strokeWidth="1.6"
-                    />
+                    <path d="M-2.5 0h5" stroke="white" strokeWidth="1.6" />
                   )}
                 </g>
               );
@@ -670,7 +666,7 @@ export default function Timeline({
                       cx={x(middle)}
                       cy={arc(middle)}
                       r="3.5"
-                      fill="white"
+                      fill="currentColor"
                       stroke="currentColor"
                     />
                     <rect
@@ -853,13 +849,11 @@ export default function Timeline({
       )}
       <div className="chart-caption">
         <span>1500–1700 uses a compressed time scale</span>
-        <span>Filled: historical comparison</span>
+        <span>All position dots use the author’s color</span>
+        <span>Future scenarios remain provisional</span>
         <span>
-          <i className="hollow-key" /> Open: provisional scenario
-        </span>
-        <span>
-          Support: average height; later support: end height · Opposition: below
-          interval, minus sign
+          Support: average height; later support: end height · Opposition: on
+          line before reform; reform-start height afterward, minus sign
         </span>
       </div>
     </div>

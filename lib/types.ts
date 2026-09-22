@@ -44,7 +44,6 @@ export type Milestone = {
   name: string;
   shortName: string;
   window: YearRange;
-  oppositionAnchorYear?: number;
   jurisdiction: string;
   measure: "law" | "institutions" | "interpretation" | "scenario";
   kind: "historical" | "stipulated" | "projected";
@@ -128,7 +127,6 @@ export type Score = {
   provisional: boolean;
   explanation: string;
   benchmark: YearRange;
-  oppositionAnchorYear?: number;
   writing: YearRange;
 };
 export type Filters = {

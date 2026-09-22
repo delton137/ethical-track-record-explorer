@@ -46,7 +46,7 @@ test("Bentham suffrage preserves posthumous manuscript dates and political defer
   assert.equal(p.evidence, "qualified");
 });
 
-test("opposition dots use the reform start or explicit women’s suffrage anchor", () => {
+test("opposition dots use the earlier of writing date and reform start", () => {
   for (const id of [
     "nietzsche-women",
     "nietzsche-slavery",
@@ -63,7 +63,7 @@ test("opposition dots use the reform start or explicit women’s suffrage anchor
       920,
       1,
     );
-    assert.equal(point.y, arcY(m.oppositionAnchorYear ?? m.window.start));
+    assert.equal(point.y, arcY(Math.min(point.year, m.window.start)));
   }
 });
 
@@ -74,7 +74,7 @@ test("composition is not silently placed after death in new dossiers", () => {
   }
 });
 
-test("every scored opposition uses its assigned start height across widths and benchmark selections", () => {
+test("opposition follows the line before reform and holds its start height afterward across widths and benchmarks", () => {
   let reviewed = 0;
   for (const p of data.positions.filter((p) => p.stance === "opposes")) {
     const m = data.milestones.find((m) => m.id === p.milestoneId);
@@ -88,9 +88,10 @@ test("every scored opposition uses its assigned start height across widths and b
         false,
         alternative,
       )!;
-      const expectedYear: number =
-        p.domainId === "women" ? 1918 : s.benchmark.start;
-      assert.equal(s.oppositionAnchorYear, expectedYear, p.id);
+      const expectedYear = Math.min(
+        (s.writing.start + s.writing.end) / 2,
+        s.benchmark.start,
+      );
       for (const width of [720, 920, 1440]) {
         for (const period of [
           { start: 1500, end: 2100 },

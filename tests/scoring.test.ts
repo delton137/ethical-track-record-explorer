@@ -77,7 +77,7 @@ test("the merged scenario windows reset exactly", () => {
   assert.deepEqual(defaultScenarios(data), {
     "factory-farming-transition": { start: 2000, end: 2100 },
     "extinction-concern": { start: 2000, end: 2030 },
-    "wild-welfare": { start: 2050, end: 2100 },
+    "wild-welfare": { start: 2060, end: 2100 },
     "ai-welfare": { start: 2040, end: 2100 },
   });
 });
@@ -292,7 +292,7 @@ test("support before or during reform uses average interval height", () => {
   );
 });
 
-test("opposition aligns with the lowest point of its reform interval", () => {
+test("opposition before reform sits on the reference line", () => {
   for (const id of ["kant-execution", "luther-religion"]) {
     const p = data.positions.find((p) => p.id === id)!;
     const m = data.milestones.find((m) => m.id === p.milestoneId)!;
@@ -304,10 +304,7 @@ test("opposition aligns with the lowest point of its reform interval", () => {
       1,
     );
     assert.equal(score.stance, "opposes");
-    assert.equal(
-      placement.y,
-      Math.max(arcY(m.window.start), arcY(m.window.end)),
-    );
+    assert.equal(placement.y, arcY(placement.year));
     assert.equal(placement.uncertaintyTopY, placement.y);
   }
 });
@@ -349,4 +346,35 @@ test("support after reform uses its endpoint; uncertain dates crossing the end r
     positionCoordinates(crossing, DEFAULT_FILTERS.period, 920, 1).y,
     averageReferenceY(m.window),
   );
+});
+
+test("opposition placement is continuous at reform onset and uses the displayed midpoint", () => {
+  const p = data.positions.find((p) => p.id === "kant-execution")!;
+  const m = data.milestones.find((m) => m.id === p.milestoneId)!;
+  for (const width of [720, 1440]) {
+    for (const period of [
+      { start: 1500, end: 2100 },
+      { start: 1750, end: 2050 },
+    ]) {
+      for (const [start, end, anchor] of [
+        [1800, 1800, 1800],
+        [1867, 1867, 1867],
+        [1900, 1900, 1867],
+        [2000, 2000, 1867],
+        [1860, 1870, 1865],
+        [1860, 1880, 1867],
+      ]) {
+        const score = calculateScore(
+          { ...p, composition: { start, end } },
+          m,
+          {},
+        )!;
+        const point = positionCoordinates(score, period, width, 1);
+        assert.equal(point.y, arcY(anchor, width, period));
+        if (point.year > m.window.start)
+          assert(point.y > arcY(point.year, width, period));
+        else assert.equal(point.y, arcY(point.year, width, period));
+      }
+    }
+  }
 });
