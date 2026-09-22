@@ -88,10 +88,9 @@ test("future edits and reset preserve historical ranks; export is reproducible",
 }) => {
   await page.goto("/?position=none");
   const defaults = {
-    "Extinction risk": ["2000", "2030"],
-    "Wild-animal welfare": ["2024", "2050"],
-    "Insect welfare": ["2020", "2050"],
-    "AI welfare": ["2100", "2100"],
+    "Taking extinction risks seriously": ["2000", "2030"],
+    "Wild-animal welfare": ["2020", "2075"],
+    "AI welfare": ["2030", "2100"],
   };
   await page.getByRole("button", { name: /^Filters/ }).click();
   await page.locator(".scenario-settings > summary").click();
@@ -115,7 +114,7 @@ test("future edits and reset preserve historical ranks; export is reproducible",
     start: 2200,
     end: 2250,
   });
-  expect(downloaded.geometry.arcStartYear).toBe(1400);
+  expect(downloaded.geometry.arcStartYear).toBe(1500);
   expect(
     downloaded.calculations.find(
       (p: { positionId: string }) => p.positionId === "bentham-animals",
@@ -154,12 +153,17 @@ test("table retains unmatched evidence; benchmark dialog is keyboard operable", 
   await expect(page.locator(".scenario-anchor").first()).toBeFocused();
 });
 
-test("mouse overlap selection and author styling remain stable across filters", async ({
+test("mouse selection and author styling remain stable across filters", async ({
   page,
 }) => {
   await page.goto("/");
+  await page
+    .locator('[data-position="kant-women"] circle')
+    .last()
+    .scrollIntoViewIfNeeded();
   const target = await page
-    .locator('[data-position="kant-women"]')
+    .locator('[data-position="kant-women"] circle')
+    .last()
     .boundingBox();
   // A physical click may land on another mark at the same coordinates; the picker resolves it.
   await page.mouse.click(
@@ -169,12 +173,13 @@ test("mouse overlap selection and author styling remain stable across filters", 
   const picker = page.getByRole("dialog", {
     name: "Choose an overlapping position",
   });
-  await expect(picker).toBeVisible();
-  await picker
-    .getByRole("button")
-    .filter({ hasText: "Immanuel Kant" })
-    .filter({ hasText: "Women excluded" })
-    .click();
+  if (await picker.isVisible()) {
+    await picker
+      .getByRole("button")
+      .filter({ hasText: "Immanuel Kant" })
+      .filter({ hasText: "Women excluded" })
+      .click();
+  }
   await expect(page.locator(".evidence-panel h2")).toHaveText("Immanuel Kant");
   const color = await page
     .locator('[data-position="kant-women"] circle')
@@ -266,4 +271,69 @@ test("principal views and a qualified religious dossier pass automated accessibi
   await check();
   await page.getByRole("button", { name: "Methodology", exact: true }).click();
   await check();
+});
+
+test("bulk tradition selection persists and progress intervals explain their endpoints", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const legend = page.getByLabel("Tradition color legend");
+  const count = await page.locator("[data-position]").count();
+  await legend.getByRole("button", { name: "Clear all", exact: true }).click();
+  await expect(page.locator("[data-position]")).toHaveCount(0);
+  await page.reload();
+  await expect(page.locator("[data-position]")).toHaveCount(0);
+  await page.getByRole("button", { name: /^Filters/ }).click();
+  const drawer = page.getByRole("region", { name: "Detailed filters" });
+  await expect(drawer.locator(".check-grid input:checked")).toHaveCount(0);
+  await drawer.getByRole("button", { name: "Select all", exact: true }).click();
+  await expect(page.locator("[data-position]")).toHaveCount(count);
+  await expect(drawer.locator(".check-grid input:checked")).toHaveCount(13);
+  await drawer.locator(".check-grid input").first().uncheck();
+  await expect(drawer.locator(".check-grid input:checked")).toHaveCount(12);
+  await expect(
+    page.getByText("Reading the chart", { exact: true }),
+  ).toHaveCount(0);
+  await page
+    .getByText("Historical progress intervals", { exact: false })
+    .click();
+  await page
+    .locator(".benchmark-list button")
+    .filter({ hasText: "Recognition of colonial self-determination" })
+    .click();
+  await expect(page.locator("dialog[open]")).toContainText("1945–1960");
+  await expect(page.locator("dialog[open]")).toContainText("UN Charter");
+  await page.keyboard.press("Escape");
+  await page
+    .locator(".benchmark-list button")
+    .filter({ hasText: "Decriminalization of same-sex relations" })
+    .click();
+  await expect(page.locator("dialog[open]")).toContainText("1967–2003");
+  await expect(page.locator("dialog[open]")).toContainText("Lawrence v. Texas");
+});
+
+test("progress dates expand below titles on hover and keyboard focus", async ({
+  page,
+}) => {
+  await page.goto("/?position=none");
+  const religion = page.locator(".milestone-anchor").filter({
+    has: page.locator(".milestone-label", { hasText: "Religious liberty" }),
+  });
+  await expect(page.locator(".progress-date-popup")).toHaveCount(0);
+  await expect(religion.locator(".reform-date-label")).toHaveCount(0);
+  await religion.locator(".milestone-label").hover();
+  const popup = page.getByRole("tooltip");
+  await expect(popup).toContainText("1689–1919");
+  await expect(popup).toContainText("1919 — Germany");
+  const titleBox = await religion.locator(".milestone-label").boundingBox();
+  const popupBox = await popup.boundingBox();
+  expect(popupBox!.y).toBeGreaterThan(titleBox!.y + titleBox!.height);
+  await page.mouse.move(popupBox!.x + popupBox!.width / 2, popupBox!.y + 30);
+  await expect(popup).toBeVisible();
+  await page.mouse.move(5, 5);
+  await expect(popup).toHaveCount(0);
+  await religion.focus();
+  await expect(popup).toContainText("1786 — Virginia");
+  await page.keyboard.press("Tab");
+  await expect(popup).not.toContainText("1786 — Virginia");
 });

@@ -11,13 +11,13 @@ import {
   Table2,
   ChartNoAxesCombined,
   BookOpen,
-  Info,
   Check,
   Link2,
   ArrowRight,
   Users,
   ExternalLink,
 } from "lucide-react";
+import { progressColor } from "@/lib/progress-colors";
 import { data } from "@/research/corpus";
 import type { Filters, Scenarios, YearRange } from "@/lib/types";
 import {
@@ -34,8 +34,8 @@ import EvidencePanel from "./evidence-panel";
 
 const scenarioDefaults = defaultScenarios(data);
 const formatScore = (n: number) => `${n > 0 ? "+" : ""}${Math.round(n)}`;
-const toggle = (items: string[], id: string) =>
-  items.includes(id) ? items.filter((x) => x !== id) : [...items, id];
+// An empty filter means all traditions; this URL-safe value explicitly selects none.
+const NO_TRADITIONS = "none";
 
 export default function Explorer() {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
@@ -49,7 +49,7 @@ export default function Explorer() {
   const [copied, setCopied] = useState(false);
   const [periodDraft, setPeriodDraft] = useState({
     start: String(DEFAULT_FILTERS.period.start),
-    end: "2125",
+    end: "2100",
   });
   const [periodError, setPeriodError] = useState("");
   const lastDot = useRef<string | null>(null);
@@ -60,6 +60,37 @@ export default function Explorer() {
   const ranks = useMemo(
     () => leaderboard(data, positions, filters),
     [positions, filters],
+  );
+  const selectedTraditions = filters.traditionIds.length
+    ? filters.traditionIds.filter((id) => id !== NO_TRADITIONS)
+    : data.traditions.map((t) => t.id);
+  function toggleTradition(id: string) {
+    const next = selectedTraditions.includes(id)
+      ? selectedTraditions.filter((value) => value !== id)
+      : [...selectedTraditions, id];
+    patch({ traditionIds: next.length ? next : [NO_TRADITIONS] });
+  }
+  const selectionActions = (
+    <div
+      className="selection-actions"
+      role="group"
+      aria-label="Tradition selection"
+    >
+      <button
+        type="button"
+        className="text-button"
+        onClick={() => patch({ traditionIds: [] })}
+      >
+        Select all
+      </button>
+      <button
+        type="button"
+        className="text-button"
+        onClick={() => patch({ traditionIds: [NO_TRADITIONS] })}
+      >
+        Clear all
+      </button>
+    </div>
   );
   const position = data.positions.find((p) => p.id === selected);
   const scored = positions.filter((p) =>
@@ -77,8 +108,9 @@ export default function Explorer() {
   useEffect(() => {
     const restore = () => {
       const state = parseState(window.location.search, scenarioDefaults);
-      state.filters.traditionIds = state.filters.traditionIds.filter((id) =>
-        data.traditions.some((t) => t.id === id),
+      state.filters.traditionIds = state.filters.traditionIds.filter(
+        (id) =>
+          id === NO_TRADITIONS || data.traditions.some((t) => t.id === id),
       );
       state.filters.domainIds = state.filters.domainIds.filter((id) =>
         data.domains.some((d) => d.id === id),
@@ -155,7 +187,7 @@ export default function Explorer() {
     setFilters({ ...DEFAULT_FILTERS });
     setPeriodDraft({
       start: String(DEFAULT_FILTERS.period.start),
-      end: "2125",
+      end: "2100",
     });
     setPeriodError("");
   };
@@ -209,7 +241,7 @@ export default function Explorer() {
     Number(filters.includeContested) +
     Number(
       filters.period.start !== DEFAULT_FILTERS.period.start ||
-        filters.period.end !== 2125,
+        filters.period.end !== 2100,
     );
   return (
     <>
@@ -290,6 +322,7 @@ export default function Explorer() {
                 <Search size={17} />
                 <input
                   aria-label="Search people and positions"
+                  disabled={!hydrated}
                   placeholder="Search a thinker or idea…"
                   value={filters.query}
                   onChange={(e) => patch({ query: e.target.value })}
@@ -322,6 +355,7 @@ export default function Explorer() {
                       ? `${filters.traditionIds.length} traditions`
                       : "All traditions"}
                   </option>
+                  <option value={NO_TRADITIONS}>No traditions selected</option>
                   {data.traditions.map((t) => (
                     <option key={t.id} value={t.id}>
                       {t.shortName}
@@ -399,17 +433,14 @@ export default function Explorer() {
               >
                 <div>
                   <h3>Traditions</h3>
+                  {selectionActions}
                   <div className="check-grid">
                     {data.traditions.map((t) => (
                       <label key={t.id}>
                         <input
                           type="checkbox"
-                          checked={filters.traditionIds.includes(t.id)}
-                          onChange={() =>
-                            patch({
-                              traditionIds: toggle(filters.traditionIds, t.id),
-                            })
-                          }
+                          checked={selectedTraditions.includes(t.id)}
+                          onChange={() => toggleTradition(t.id)}
                         />
                         <span
                           className="legend-dot"
@@ -534,17 +565,12 @@ export default function Explorer() {
                       <span>·</span> {scored.length} scored comparisons
                     </p>
                   </div>
-                  <button
-                    className="text-button"
-                    onClick={() => setTab("method")}
-                  >
-                    <Info size={15} /> Reading the chart
-                  </button>
                 </div>
                 <div
                   className="tradition-legend"
                   aria-label="Tradition color legend"
                 >
+                  {selectionActions}
                   {data.traditions.map((t) => {
                     const count = new Set(
                       positions
@@ -558,7 +584,7 @@ export default function Explorer() {
                     return (
                       <button
                         key={t.id}
-                        aria-pressed={filters.traditionIds.includes(t.id)}
+                        aria-pressed={selectedTraditions.includes(t.id)}
                         className={
                           filters.traditionIds.length &&
                           !filters.traditionIds.includes(t.id)
@@ -695,7 +721,7 @@ export default function Explorer() {
                 )}
                 <details className="benchmark-register">
                   <summary>
-                    <BookOpen size={16} /> Historical benchmark register{" "}
+                    <BookOpen size={16} /> Historical progress intervals{" "}
                     <span>
                       {
                         data.milestones.filter((m) => m.kind === "historical")
@@ -704,13 +730,23 @@ export default function Explorer() {
                       reforms
                     </span>
                   </summary>
+                  <p className="progress-interval-help">
+                    Each range spans selected legal or institutional milestones.
+                    Single years mark individual reforms. Dates apply to the
+                    places named below, not worldwide acceptance. Select a
+                    reform for its endpoints and sources.
+                  </p>
                   <div className="benchmark-list">
                     {data.milestones
                       .filter((m) => m.kind === "historical")
                       .map((m) => (
                         <button key={m.id} onClick={() => setBenchmark(m.id)}>
-                          <strong>{m.shortName}</strong>
-                          <span>{formatYears(m.window)}</span>
+                          <strong style={{ color: progressColor(m.id) }}>
+                            {m.name}
+                          </strong>
+                          <span style={{ color: progressColor(m.id) }}>
+                            {formatYears(m.window)}
+                          </span>
                           <small>{m.jurisdiction}</small>
                           <ArrowUpRight size={14} />
                         </button>
@@ -954,7 +990,9 @@ export default function Explorer() {
             <div className="row-between">
               <p className="eyebrow">
                 {benchmarkData.kind === "historical"
-                  ? "HISTORICAL REFERENCE"
+                  ? benchmarkData.window.start === benchmarkData.window.end
+                    ? "HISTORICAL PROGRESS MILESTONE"
+                    : "HISTORICAL PROGRESS INTERVAL"
                   : "PROVISIONAL SCENARIO"}
               </p>
               <button
@@ -965,8 +1003,13 @@ export default function Explorer() {
                 <X size={20} />
               </button>
             </div>
-            <h2>{benchmarkData.name}</h2>
-            <div className="benchmark-big-date">
+            <h2 style={{ color: progressColor(benchmarkData.id) }}>
+              {benchmarkData.name}
+            </h2>
+            <div
+              className="benchmark-big-date"
+              style={{ color: progressColor(benchmarkData.id) }}
+            >
               {formatYears(scenarios[benchmarkData.id] ?? benchmarkData.window)}
             </div>
             <p>{benchmarkData.jurisdiction}</p>
@@ -977,6 +1020,18 @@ export default function Explorer() {
                 ? "Excluded from historical ranking."
                 : "This benchmark measures the stated legal or institutional transition, not universal public acceptance."}
             </p>
+            {benchmarkData.reforms && (
+              <ul>
+                {benchmarkData.reforms.map((r) => (
+                  <li key={`${r.year}-${r.jurisdiction}`}>
+                    <a href={r.sourceUrl} target="_blank" rel="noreferrer">
+                      {r.year} — {r.jurisdiction}
+                    </a>
+                    : {r.change}
+                  </li>
+                ))}
+              </ul>
+            )}
             {benchmarkData.sources.map((s) => (
               <a
                 key={s.url}
@@ -1135,8 +1190,12 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
         <p>
           This project assumes that moral progress is real and asks which
           written ideas anticipated particular expansions of concern. The rising
-          line is a schematic reference. It is not a measured quantity of
-          goodness, and its connections are not causal claims.
+          line rises only slightly from 1500 to 1700, then at a constant rate
+          per calendar year. The years before 1700 occupy one quarter as much
+          horizontal space per year; their rise stays gentle even on this
+          compressed scale. This is an illustrative model, not a measured
+          quantity of goodness. Future intervals follow the same upward slope;
+          lead and lag scores still use each issue’s stated comparison interval.
         </p>
         <button className="primary-button" onClick={onExplore}>
           Explore the evidence <ArrowRight size={16} />
@@ -1173,9 +1232,12 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
             Opposition: min(adoption − writing, 0)
           </div>
           <p>
-            Date ranges propagate through the calculation. Dots use interval
-            midpoints; whiskers show the range. This measures timing relative to
-            the selected reference case.
+            Date ranges propagate through the lead/lag calculation. On the
+            chart, supportive positions sit at the time-weighted average height
+            of the reference line across their reform interval; whiskers span
+            that interval’s reference heights. Their x-position is the writing
+            date. Opposition sits below the entire reform interval and carries a
+            minus sign. Vertical distances are not a uniform scale of years.
           </p>
         </section>
         <section>
@@ -1215,13 +1277,13 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
           <span className="method-number">05</span>
           <h2>The future remains conditional</h2>
           <p>
-            Extinction risk (2000–2030), wild-animal welfare (2024–2050), and
-            insect welfare (2020–2050) are stipulated interpretive windows. AI
-            welfare (2100) is illustrative. These concern proposed wider
+            Taking extinction risks seriously (2000–2030), wild-animal welfare
+            including insects (2020–2075) are stipulated interpretive windows.
+            AI welfare (2030–2100) is hypothetical. These concern proposed wider
             adoption, not the invention of the ideas.
           </p>
           <p>
-            All four are provisional and excluded from historical rankings.
+            All three are provisional and excluded from historical rankings.
             Resetting scenarios restores these exact defaults. A dashed line and
             hatched region indicate dates beyond the corpus’s present-day
             boundary.

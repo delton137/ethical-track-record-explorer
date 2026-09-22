@@ -49,6 +49,13 @@ export type Milestone = {
   kind: "historical" | "stipulated" | "projected";
   description: string;
   sources: { title: string; url: string }[];
+  reforms?: {
+    year: number;
+    jurisdiction: string;
+    change: string;
+    chartLabel: string;
+    sourceUrl: string;
+  }[];
   alternatives?: {
     id: string;
     name: string;
@@ -110,6 +117,7 @@ export type ResearchData = {
   positions: WrittenPosition[];
 };
 export type Score = {
+  stance: "supports" | "opposes";
   min: number;
   max: number;
   midpoint: number;

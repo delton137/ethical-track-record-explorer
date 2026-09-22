@@ -8,9 +8,14 @@ import type {
   WrittenPosition,
   YearRange,
 } from "./types";
-import { GEOMETRY, leadLagFactor, positionCoordinates } from "./geometry";
+import {
+  GEOMETRY,
+  PROGRESS_PHASES,
+  leadLagFactor,
+  positionCoordinates,
+} from "./geometry";
 
-export const ALGORITHM_VERSION = "1.0.0";
+export const ALGORITHM_VERSION = "1.1.0";
 export const IMPORTANCE_WIDTH = {
   foundational: 3,
   central: 2.25,
@@ -62,13 +67,14 @@ export function calculateScore(
   const min = clamp(difference.min),
     max = clamp(difference.max);
   return {
+    stance: p.stance,
     min,
     max,
     midpoint: (min + max) / 2,
     provisional: milestone.kind !== "historical",
     benchmark,
     writing,
-    explanation: `${p.stance === "supports" ? "Support: max" : "Opposition: min"}(benchmark − writing year, 0). Writing ${formatYears(writing)}; benchmark ${formatYears(benchmark)}. Range ${min} to ${max} years. The dot uses the interval midpoint.`,
+    explanation: `${p.stance === "supports" ? "Support: max" : "Opposition: min"}(benchmark − writing year, 0). Writing ${formatYears(writing)}; benchmark ${formatYears(benchmark)}. Range ${min} to ${max} years. Lead/lag uses the interval midpoint; supportive dots use the average reference height across the reform interval; opposition appears below the whole interval.`,
   };
 }
 export function figureQualifies(f: Figure, filters: Filters) {
@@ -284,8 +290,12 @@ export function exportSnapshot(
     exportedAt: new Date().toISOString(),
     dataVersion: data.version,
     coordinateRule:
-      "x=leftMargin+xFraction×(canvasWidth−leftMargin−rightMargin); y=arcBaseY−arcRise×((writingYear−arcStartYear)/arcYearSpan)−leadLagPixelsPerYear×scoreMidpoint. Coordinates below use canonicalWidth; xFraction reproduces other canvas widths. Unscored evidence is table-only. Out-of-period midpoints are not plotted.",
-    geometry: { ...GEOMETRY, leadLagPixelsPerYear: factor },
+      "x=leftMargin+xFraction×(canvasWidth−leftMargin−rightMargin); xFraction=(displayYear(writingYear)−displayYear(from))/(displayYear(to)−displayYear(from)); displayYear(y)=earlyYearCutoff+(y−earlyYearCutoff)×earlyYearScale before earlyYearCutoff, otherwise y; referenceY anchors year 2100 at arcEndY. After 1700 it rises by tan(laterSlopeDegrees) times the horizontal pixel distance, using the current canvas width and displayed year range; before 1700 it rises only earlyArcRise over 1500–1700. Support y is the time-weighted mean referenceY across the benchmark interval. Opposition y=max(referenceY(benchmark.start),referenceY(benchmark.end))+oppositionGap; its whiskers collapse to that position. The canonical progressPhases are included in geometry. Coordinates below use canonicalWidth; recalculate referenceY for other canvas widths. Unscored evidence is table-only. Out-of-period midpoints are not plotted.",
+    geometry: {
+      ...GEOMETRY,
+      progressPhases: PROGRESS_PHASES,
+      leadLagPixelsPerYear: factor,
+    },
     filters,
     scenarios,
     data,
