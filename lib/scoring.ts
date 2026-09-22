@@ -73,8 +73,12 @@ export function calculateScore(
     midpoint: (min + max) / 2,
     provisional: milestone.kind !== "historical",
     benchmark,
+    oppositionAnchorYear:
+      p.stance === "opposes"
+        ? (milestone.oppositionAnchorYear ?? benchmark.start)
+        : undefined,
     writing,
-    explanation: `${p.stance === "supports" ? "Support: max" : "Opposition: min"}(benchmark − writing year, 0). Writing ${formatYears(writing)}; benchmark ${formatYears(benchmark)}. Range ${min} to ${max} years. Lead/lag uses the interval midpoint; supportive dots use the average reference height across the reform interval; opposition appears below the whole interval.`,
+    explanation: `${p.stance === "supports" ? "Support: max" : "Opposition: min"}(benchmark − writing year, 0). Writing ${formatYears(writing)}; benchmark ${formatYears(benchmark)}. Range ${min} to ${max} years. Lead/lag uses the interval midpoint; supportive dots written after the full reform interval use its endpoint height; earlier support uses the average reference height; opposition uses the lowest reference height (start of its reform interval).${p.stance === "opposes" ? ` Opposition anchor: ${milestone.oppositionAnchorYear ?? benchmark.start}${milestone.oppositionAnchorYear !== undefined ? " (women’s suffrage starting height; score still uses the matched legal benchmark)" : ""}.` : ""}`,
   };
 }
 export function figureQualifies(f: Figure, filters: Filters) {
@@ -290,7 +294,7 @@ export function exportSnapshot(
     exportedAt: new Date().toISOString(),
     dataVersion: data.version,
     coordinateRule:
-      "x=leftMargin+xFraction×(canvasWidth−leftMargin−rightMargin); xFraction=(displayYear(writingYear)−displayYear(from))/(displayYear(to)−displayYear(from)); displayYear(y)=earlyYearCutoff+(y−earlyYearCutoff)×earlyYearScale before earlyYearCutoff, otherwise y; referenceY anchors year 2100 at arcEndY. After 1700 it rises by tan(laterSlopeDegrees) times the horizontal pixel distance, using the current canvas width and displayed year range; before 1700 it rises only earlyArcRise over 1500–1700. Support y is the time-weighted mean referenceY across the benchmark interval. Opposition y=max(referenceY(benchmark.start),referenceY(benchmark.end))+oppositionGap; its whiskers collapse to that position. The canonical progressPhases are included in geometry. Coordinates below use canonicalWidth; recalculate referenceY for other canvas widths. Unscored evidence is table-only. Out-of-period midpoints are not plotted.",
+      "x=leftMargin+xFraction×(canvasWidth−leftMargin−rightMargin); xFraction=(displayYear(writingYear)−displayYear(from))/(displayYear(to)−displayYear(from)); displayYear(y)=earlyYearCutoff+(y−earlyYearCutoff)×earlyYearScale before earlyYearCutoff, otherwise y; referenceY anchors year 2100 at arcEndY. After 1700 it rises by tan(laterSlopeDegrees) times the horizontal pixel distance, using the current canvas width and displayed year range; before 1700 it rises only earlyArcRise over 1500–1700. If support writing.start >= benchmark.end, support y=referenceY(benchmark.end) and its whiskers collapse; otherwise support y is the time-weighted mean referenceY across the benchmark interval. Opposition y=referenceY(score.oppositionAnchorYear ?? benchmark.start), with no pixel offset; its whiskers collapse to that position. Women’s-equality opposition uses the explicitly configured 1918 suffrage starting height, without changing its scoring benchmark. The canonical progressPhases are included in geometry. Coordinates below use canonicalWidth; recalculate referenceY for other canvas widths. Unscored evidence is table-only. Out-of-period midpoints are not plotted.",
     geometry: {
       ...GEOMETRY,
       progressPhases: PROGRESS_PHASES,

@@ -12,6 +12,7 @@ const PROGRESS_COLORS: Record<string, string> = {
   "execution-abolition": "#783eaa",
   "child-protection": "#8b4e37",
   "animal-protection": "#266b86",
+  "factory-farming-transition": "#b43d68",
   "farm-welfare": "#97517d",
   "extinction-concern": "#a04b24",
   "wild-welfare": "#38713c",

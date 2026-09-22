@@ -58,7 +58,7 @@ test("search, public/private filtering, deep links, evidence table and focus res
   await page
     .getByRole("textbox", { name: "Search people and positions" })
     .fill("Bentham");
-  await expect(page.locator("[data-position]")).toHaveCount(2);
+  await expect(page.locator("[data-position]")).toHaveCount(3);
   await page.locator('[data-position="bentham-gay"]').focus();
   await page.keyboard.press("ArrowRight");
   await expect(page.locator('[data-position="bentham-animals"]')).toBeFocused();
@@ -88,9 +88,10 @@ test("future edits and reset preserve historical ranks; export is reproducible",
 }) => {
   await page.goto("/?position=none");
   const defaults = {
-    "Taking extinction risks seriously": ["2000", "2030"],
-    "Wild-animal welfare": ["2020", "2075"],
-    "AI welfare": ["2030", "2100"],
+    "Ending factory farming / veganism": ["2000", "2100"],
+    "Humanity starts to take extinction risks seriously": ["2000", "2030"],
+    "Wild-animal welfare statutes": ["2050", "2100"],
+    "AI welfare statutes": ["2040", "2100"],
   };
   await page.getByRole("button", { name: /^Filters/ }).click();
   await page.locator(".scenario-settings > summary").click();
@@ -100,8 +101,8 @@ test("future edits and reset preserve historical ranks; export is reproducible",
   }
   await page.locator(".leaderboard>summary").click();
   const rankText = await page.locator(".ranking-table").innerText();
-  await page.getByLabel("AI welfare start year").fill("2200");
-  await page.getByLabel("AI welfare end year").fill("2250");
+  await page.getByLabel("AI welfare statutes start year").fill("2200");
+  await page.getByLabel("AI welfare statutes end year").fill("2250");
   await page.getByRole("button", { name: "Apply scenarios" }).click();
   await expect(page).toHaveURL(/ai-welfare-from=2200&ai-welfare-to=2250/);
   expect(await page.locator(".ranking-table").innerText()).toBe(rankText);
@@ -145,12 +146,15 @@ test("table retains unmatched evidence; benchmark dialog is keyboard operable", 
   );
   await page.getByRole("button", { name: "Close evidence panel" }).click();
   await page.getByRole("button", { name: "Show timeline" }).click();
-  await page.locator(".scenario-anchor").first().focus();
+  const extinctionAnchor = page.locator(
+    '.scenario-anchor[aria-label^="Humanity starts to take extinction risks seriously:"]',
+  );
+  await extinctionAnchor.focus();
   await page.keyboard.press("Enter");
   await expect(page.locator("dialog[open]")).toContainText("2000–2030");
   await page.keyboard.press("Escape");
   await expect(page.locator("dialog[open]")).toHaveCount(0);
-  await expect(page.locator(".scenario-anchor").first()).toBeFocused();
+  await expect(extinctionAnchor).toBeFocused();
 });
 
 test("mouse selection and author styling remain stable across filters", async ({
@@ -323,7 +327,8 @@ test("progress dates expand below titles on hover and keyboard focus", async ({
   await expect(religion.locator(".reform-date-label")).toHaveCount(0);
   await religion.locator(".milestone-label").hover();
   const popup = page.getByRole("tooltip");
-  await expect(popup).toContainText("1689–1919");
+  await expect(religion.locator(".progress-date-span")).toHaveText("1689–1919");
+  await expect(popup).not.toContainText("1689–1919");
   await expect(popup).toContainText("1919 — Germany");
   const titleBox = await religion.locator(".milestone-label").boundingBox();
   const popupBox = await popup.boundingBox();
@@ -336,4 +341,76 @@ test("progress dates expand below titles on hover and keyboard focus", async ({
   await expect(popup).toContainText("1786 — Virginia");
   await page.keyboard.press("Tab");
   await expect(popup).not.toContainText("1786 — Virginia");
+});
+
+test("every rendered point matches its placement rule at desktop and mobile widths", async ({
+  page,
+  request,
+}) => {
+  const { calculateScore, defaultScenarios } =
+    await import("../../lib/scoring");
+  const { arcY, averageReferenceY } = await import("../../lib/geometry");
+  const data: ResearchData = await (await request.get("/api/research")).json();
+  const period = { start: 1500, end: 2100 };
+  for (const viewport of [
+    { width: 1440, height: 1000 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/?position=none");
+    await expect(
+      page.locator('[data-position="nietzsche-women"]'),
+    ).toBeAttached();
+    await expect
+      .poll(async () => {
+        const rendered = await page.locator("svg.timeline").evaluate((svg) => ({
+          width: (svg as SVGSVGElement).viewBox.baseVal.width,
+          points: Array.from(svg.querySelectorAll("[data-position]")).map(
+            (el) => ({
+              id: el.getAttribute("data-position"),
+              transform: el.getAttribute("transform"),
+            }),
+          ),
+        }));
+        const errors: string[] = [];
+        for (const dot of rendered.points) {
+          const p = data.positions.find((p) => p.id === dot.id)!;
+          const m = data.milestones.find((m) => m.id === p.milestoneId)!;
+          const s = calculateScore(p, m, defaultScenarios(data))!;
+          const actual = Number(
+            dot.transform!.match(/translate\([^,]+,([^\)]+)\)/)![1],
+          );
+          const expected =
+            p.stance === "opposes"
+              ? arcY(
+                  p.domainId === "women" ? 1918 : s.benchmark.start,
+                  rendered.width,
+                  period,
+                )
+              : s.writing.start >= s.benchmark.end
+                ? arcY(s.benchmark.end, rendered.width, period)
+                : averageReferenceY(s.benchmark, rendered.width, period);
+          if (Math.abs(actual - expected) > 0.001) errors.push(p.id);
+        }
+        return errors;
+      })
+      .toEqual([]);
+  }
+});
+
+test("publication witnesses and animal benchmark sensitivity remain visible", async ({
+  page,
+}) => {
+  await page.goto("/?position=rawls-religion");
+  const panel = page.locator(".evidence-panel");
+  await expect(panel).toContainText("Passage publication / dated edition");
+  await panel.getByText("Edition, language & verification").click();
+  await expect(panel.locator(".quotation-card .source-details")).toContainText("1971");
+  await expect(panel.locator(".quotation-card .source-details")).toContainText("1999");
+  await page.goto("/?position=bentham-animals&benchmark=alternative");
+  await expect(page.locator(".comparison-block")).toContainText("1822");
+  await expect(page.locator(".comparison-block .score-pill")).toContainText(
+    "33",
+  );
+  await expect(page.locator('[data-position="bodhi-insects"]')).toHaveCount(0);
 });

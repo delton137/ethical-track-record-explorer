@@ -194,7 +194,7 @@ export function expanded() {
       "“Them” refers to dogmas of civil faith designated by the sovereign as necessary social sentiments.",
     qualifications: [
       "He also endorses toleration of religions that tolerate others. The exclusion concerns the required civil creed.",
-      "Opposition before the Virginia benchmark receives zero, not positive credit.",
+      "The selected multi-country interval begins before this writing; the calculation below uses the currently selected benchmark.",
     ],
   });
   f(
@@ -333,7 +333,11 @@ export function expanded() {
     title: "Extending rights to animals",
     summary:
       "Salt argues that animal interests cannot consistently be excluded from a system of rights.",
-    year: 1922,
+    year: 1892,
+    workFirstPublication: 1892,
+    witnessPublication: 1922,
+    datingSourceUrl:
+      "https://henrysalt.com/library/review/animals-rights-considered-review/",
     milestone: "animal-protection",
     quote: "they cannot be consistently awarded to men and denied to animals",
     locator: "Chapter I, “The Principle of Animals’ Rights”, p. 19",
@@ -343,9 +347,9 @@ export function expanded() {
     context:
       "“They” refers to rights; Salt appeals to the same justice and compassion in human and animal cases.",
     dateBasis:
-      "Conservative date of the checked revised edition. The book first appeared in 1892; the exact earlier wording has not been collated.",
+      "The exact quoted wording is attested in The Vegetarian Messenger, 1 November 1892, pp. 332–334, reproduced by the Henry Salt Foundation. The linked 1922 revised edition is the inspected book witness; it is not the date of first expression.",
     qualifications: [
-      "This is a documented 1922 reaffirmation, not a claim that Salt first held the view in 1922.",
+      "The 1892 date is supported by a contemporary quotation of this passage, not inferred solely from the book’s original publication date.",
       "A stronger animal-rights programme is matched only to the minimal animal-protection component.",
     ],
   });
@@ -364,28 +368,28 @@ export function expanded() {
   e({
     id: "singer-animals",
     person: "singer",
-    domain: "animals",
-    title: "Suffering warrants consideration",
+    domain: "farmed",
+    title: "Ending animal farming for food",
     summary:
-      "Singer argues that a being’s suffering must count regardless of species.",
-    year: 1976,
-    milestone: "animal-protection",
+      "Singer argues that people must stop supporting the rearing and killing of animals for food; this point is matched to the future dietary-transition scenario rather than basic animal-protection legislation.",
+    year: 1989,
+    milestone: "factory-farming-transition",
     quote:
-      "If a being suffers, there can be no moral justification for refusing to take that suffering into consideration.",
+      "To avoid speciesism we must stop this practice, and each of us has a moral obligation to cease supporting the practice.",
     locator:
-      "“All Animals Are Equal”, PDF p. 4, paragraph discussing a stone and a mouse",
+      "All Animals Are Equal, PDF p. 5, paragraph beginning ‘Since, as I have said’",
     work: "All Animals Are Equal — anthology version",
     url: "https://cafepublicintellectual.wordpress.com/wp-content/uploads/2018/03/singer.pdf",
     edition:
-      "Excerpt associated with Animal Rights and Human Obligations, edited by Tom Regan and Peter Singer, 1976; the witness cites Animal Liberation (1975).",
+      "The linked witness identifies Animal Rights and Human Obligations, edited by Tom Regan and Peter Singer, Prentice-Hall, 1989, pp. 148–162.",
     context:
-      "Equal consideration of comparable interests does not mean identical treatment of beings with different interests.",
+      "The practice is rearing and killing animals to eat them. The passage condemns intensive meat production and calls for changing dietary habits, not merely improving welfare laws.",
     dateBasis:
-      "1976 anthology-version proxy. An article with this title appeared in Philosophic Exchange in 1974; this later witness is not backdated to that article.",
+      "1989 is the edition date printed on the inspected witness. This is a conservative dated reaffirmation, not the first appearance of Singer’s animal-liberation argument; earlier versions require direct textual collation.",
     qualified: true,
     qualifications: [
-      "The linked teaching excerpt omits its title page; version metadata should be checked against a complete anthology before a critical edition.",
-      "No lead credit depends on the difference between 1974 and 1976 for the selected benchmark.",
+      "The quoted passage directly concerns meat production and consumption. The full future assumption that veganism becomes the norm goes beyond what this particular passage establishes about dairy and eggs.",
+      "Singer later explicitly advocated vegan eating in Why Vegan? (2020); the future endpoint is a scenario assumption, not his dated prediction.",
     ],
   });
   f(
@@ -560,7 +564,7 @@ export function expanded() {
     summary:
       "Tolstoy argues that a sincere moral life should begin by abstaining from animal food.",
     year: 1892,
-    milestone: "farm-welfare",
+    milestone: "factory-farming-transition",
     quote:
       "its use is directly immoral, since it demands an act which is contrary to our moral sense, — murder",
     locator: "Section X, PDF p. 24",
@@ -572,7 +576,7 @@ export function expanded() {
       "“Its” refers to animal food. The essay describes slaughter and frames abstinence as Christian moral discipline.",
     qualified: true,
     qualifications: [
-      "The position is more demanding than welfare regulation: the score matches its opposition to suffering in food production, not the entire demand for abstention.",
+      "The argument for abstaining from animal food is matched to the hypothetical dietary-transition scenario. Vegetarianism supports part of the assumed vegan future, without establishing rejection of dairy and eggs.",
       "The 1892 date follows the witness; an earlier composition date has not been established here.",
     ],
   });
@@ -744,7 +748,7 @@ export function expanded() {
     summary:
       "Pigliucci argues that modern Stoic reasoning favors vegetarianism to reduce suffering.",
     year: 2018,
-    milestone: "farm-welfare",
+    milestone: "factory-farming-transition",
     quote: "we, as Stoics, ought to be vegetarians.",
     locator: "Conclusion, posted 14 July 2018",
     work: "Should a Modern Stoic Be Vegetarian?",
@@ -754,7 +758,7 @@ export function expanded() {
     qualified: true,
     qualifications: [
       "The argument is a modern revision, not evidence that ancient Stoics endorsed this conclusion.",
-      "Only the common concern for suffering in food production is matched to the welfare benchmark.",
+      "The explicit vegetarian conclusion supports part of the hypothetical transition, without establishing its full vegan endpoint. It is excluded from historical rankings.",
     ],
   });
   f(
@@ -951,7 +955,7 @@ export function expanded() {
       context:
         "The same programme combines education with industrial production, so this is not a prohibition of every kind of work by minors.",
       qualifications: [
-        "The existing British Factory Acts benchmark precedes this writing; the default lead is zero.",
+        "The selected interval includes both earlier British factory restrictions and later reforms elsewhere. Lead depends on the selected reference case; the calculation below supplies the current values.",
         "Both authors share one quotation and source; this is joint authorship, not two independent discoveries.",
       ],
     });

@@ -103,6 +103,7 @@ export default function Timeline({
     (p) => p.id === selected,
   )?.figureId;
   const focused = hovered ?? selectedPerson;
+  const traditionSelected = filters.traditionIds.some((id) => id !== "none");
   const byFigure = useMemo(
     () => new Map(data.figures.map((f) => [f.id, f])),
     [data.figures],
@@ -152,7 +153,7 @@ export default function Timeline({
           style={{ width: W }}
           viewBox={`0 0 ${W} ${H}`}
           role="group"
-          aria-label="Written positions relative to the moral reference arc. Horizontal axis: writing year. Support uses the average reference height of its reform interval; opposition sits below the interval and has a minus sign. Use Tab to focus dots, arrow keys to move, Enter to select. An equivalent evidence table is available."
+          aria-label="Written positions relative to the moral reference arc. Horizontal axis: writing year. Support after the reform interval uses its endpoint height; earlier support uses the average interval height; opposition uses the lowest reform height and has a minus sign. Opposition to women’s equality uses the 1918 suffrage starting height. Use Tab to focus dots, arrow keys to move, Enter to select. An equivalent evidence table is available."
         >
           <defs>
             <pattern
@@ -181,6 +182,28 @@ export default function Timeline({
               fill="url(#future-pattern)"
             />
           )}
+          {benchmarkTip &&
+            (() => {
+              const milestone = data.milestones.find(
+                (m) => m.id === benchmarkTip.id,
+              )!;
+              const range = scenarios[milestone.id] ?? milestone.window;
+              const start = clippedYear(range.start);
+              const end = clippedYear(range.end);
+              return (
+                <path
+                  className="progress-hover-highlight"
+                  data-milestone={milestone.id}
+                  d={`${referencePath(start, end)} L${x(end)},65 L${x(start)},65 Z`}
+                  fill={progressColor(milestone.id)}
+                  fillOpacity=".12"
+                  stroke={progressColor(milestone.id)}
+                  strokeOpacity=".25"
+                  strokeWidth="1"
+                  pointerEvents="none"
+                />
+              );
+            })()}
           {ticks
             .filter((t) => t >= from && t <= to)
             .map((t) => (
@@ -215,6 +238,11 @@ export default function Timeline({
           </text>
           {data.milestones
             .filter((m) => m.kind === "historical")
+            .sort(
+              (a, b) =>
+                Number(a.id === "execution-abolition") -
+                Number(b.id === "execution-abolition"),
+            )
             .map((m) => {
               const t = midpoint(m.window);
               if (t < from || t > to) return null;
@@ -225,6 +253,7 @@ export default function Timeline({
                 "religious-freedom",
                 "execution-abolition",
                 "child-protection",
+                "animal-protection",
               ].indexOf(m.id);
               const labelAbove = [
                 "religious-freedom",
@@ -233,25 +262,25 @@ export default function Timeline({
                 "child-protection",
               ].includes(m.id);
               const labelX =
-                m.id === "child-protection"
-                  ? left + (right - left) * 0.37
-                  : m.id === "religious-freedom"
-                    ? left + (right - left) * 0.25 + 40
-                    : m.id === "decriminalization"
-                      ? left + (right - left) * 0.75
-                      : x(t);
+                m.id === "religious-freedom"
+                  ? left + (right - left) * 0.25 + 40
+                  : m.id === "decriminalization"
+                    ? left + (right - left) * 0.75
+                    : x(t);
               const labelY =
-                m.id === "child-protection"
-                  ? 350
-                  : m.id === "religious-freedom"
-                    ? 190
-                    : m.id === "execution-abolition"
-                      ? 112
-                      : m.id === "decriminalization"
-                        ? 235
-                        : m.id === "votes-for-women"
-                          ? 750
-                          : arc(t) + 58 + index * 65;
+                m.id === "animal-protection"
+                  ? 860
+                  : m.id === "child-protection"
+                    ? 350
+                    : m.id === "religious-freedom"
+                      ? 190
+                      : m.id === "execution-abolition"
+                        ? 112
+                        : m.id === "decriminalization"
+                          ? 235
+                          : m.id === "votes-for-women"
+                            ? 750
+                            : arc(t) + 58 + index * 65;
               return (
                 <g
                   key={m.id}
@@ -287,11 +316,27 @@ export default function Timeline({
                         .reverse()
                         .map(
                           (year) =>
-                            `L${x(year)},${arc(year) + (labelAbove ? -(42 + Math.max(0, index) * 7) : 24 + Math.max(0, index) * 6)}`,
+                            `L${x(year)},${arc(year) + (labelAbove ? -(42 + Math.max(0, index) * 7) : 24 + Math.max(0, index) * 6) * 0.25}`,
                         )
                         .join(" ")} Z`}
                       fill="currentColor"
                       opacity=".19"
+                    />
+                  )}
+                  {m.id === "execution-abolition" && (
+                    <path
+                      className="capital-punishment-interval-outline"
+                      d={`M${x(clippedYear(m.window.start))},${arc(clippedYear(m.window.start))} ${referenceYears(
+                        clippedYear(m.window.start),
+                        clippedYear(m.window.end),
+                      )
+                        .map((year) => `L${x(year)},${arc(year) - 17.5}`)
+                        .join(
+                          " ",
+                        )} L${x(clippedYear(m.window.end))},${arc(clippedYear(m.window.end))}`}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
                     />
                   )}
                   <path
@@ -314,7 +359,7 @@ export default function Timeline({
                       <line
                         x1={labelX}
                         x2={x(t)}
-                        y1={labelAbove ? labelY + 12 : arc(t) + 8}
+                        y1={labelAbove ? labelY + 29 : arc(t) + 8}
                         y2={labelAbove ? arc(t) - 8 : labelY - 16}
                         stroke="currentColor"
                       />
@@ -326,7 +371,7 @@ export default function Timeline({
                         height={
                           benchmarkTip?.id === m.id
                             ? 56 + (m.reforms?.length ?? 1) * 14
-                            : 22
+                            : 40
                         }
                         fill="transparent"
                       />
@@ -337,6 +382,14 @@ export default function Timeline({
                         className="milestone-label"
                       >
                         {m.shortName}
+                      </text>
+                      <text
+                        x={labelX}
+                        y={labelY + 17}
+                        textAnchor="middle"
+                        className="chart-small progress-date-span"
+                      >
+                        {formatYears(m.window)}
                       </text>
                     </>
                   )}
@@ -367,14 +420,20 @@ export default function Timeline({
                 stroke={figure.color}
                 fill="none"
                 strokeWidth={IMPORTANCE_WIDTH[figure.importance.level]}
-                opacity={focused && focused !== figure.id ? 0.12 : 0.7}
+                opacity={
+                  traditionSelected
+                    ? 1
+                    : focused && focused !== figure.id
+                      ? 0.12
+                      : 0.7
+                }
                 className="author-line"
               />
             ))}
             {points.map((v, index) => {
               const f = byFigure.get(v.p.figureId)!;
               const active = v.p.id === selected;
-              const dim = focused && focused !== f.id;
+              const dim = !traditionSelected && focused && focused !== f.id;
               const label = `${f.name}: ${v.p.stance === "opposes" ? "Opposes reform. " : "Supports reform. "}${v.p.title}. ${formatYears(v.score.writing)}. ${v.score.min} to ${v.score.max} years ${v.score.provisional ? "(provisional)" : ""}.`;
               return (
                 <g
@@ -454,7 +513,7 @@ export default function Timeline({
                       y2={v.uncertaintyBottomY - v.y}
                       stroke={f.color}
                       strokeWidth="1"
-                      opacity={dim ? 0.12 : 0.5}
+                      opacity={traditionSelected ? 1 : dim ? 0.12 : 0.5}
                     />
                   )}
                   <circle
@@ -537,14 +596,22 @@ export default function Timeline({
               const r = scenarios[m.id] ?? m.window;
               {
                 if (r.end < from || r.start > to) return null;
-                const below = m.id === "ai-welfare";
+                const foodTransition = m.id === "factory-farming-transition";
+                const below = m.id === "ai-welfare" || foodTransition;
                 const middle = clippedYear(midpoint(r));
                 const labelX = Math.max(
                   left + 100,
-                  Math.min(right - 100, x(middle)),
+                  Math.min(right - (foodTransition ? 145 : 100), x(middle)),
                 );
                 const labelY =
-                  arc(middle) + (below ? 130 : m.reforms?.length ? -110 : -145);
+                  arc(middle) +
+                  (foodTransition
+                    ? 220
+                    : below
+                      ? 130
+                      : m.reforms?.length
+                        ? -110
+                        : -145);
                 return (
                   <g
                     key={m.id}
@@ -579,7 +646,7 @@ export default function Timeline({
                         .reverse()
                         .map(
                           (year) =>
-                            `L${x(year)},${arc(year) + (below ? 32 : -56)}`,
+                            `L${x(year)},${arc(year) + (foodTransition ? 56 : below ? 32 : -56) * 0.25}`,
                         )
                         .join(" ")} Z`}
                       fill="currentColor"
@@ -595,7 +662,7 @@ export default function Timeline({
                     <line
                       x1={labelX}
                       x2={x(middle)}
-                      y1={below ? labelY - 14 : labelY + 12}
+                      y1={below ? labelY - 14 : labelY + 29}
                       y2={arc(middle) + (below ? 8 : -8)}
                       stroke="currentColor"
                     />
@@ -608,12 +675,24 @@ export default function Timeline({
                     />
                     <rect
                       x={labelX - 125}
-                      y={labelY - 14}
+                      y={
+                        labelY -
+                        (m.id === "extinction-concern"
+                          ? 44
+                          : m.id === "wild-welfare"
+                            ? 29
+                            : 14)
+                      }
                       width={250}
                       height={
-                        benchmarkTip?.id === m.id
+                        (benchmarkTip?.id === m.id
                           ? 56 + (m.reforms?.length ?? 1) * 14
-                          : 22
+                          : 40) +
+                        (m.id === "extinction-concern"
+                          ? 30
+                          : m.id === "wild-welfare"
+                            ? 15
+                            : 0)
                       }
                       fill="transparent"
                     />
@@ -623,7 +702,38 @@ export default function Timeline({
                       textAnchor="middle"
                       className="milestone-label"
                     >
-                      {m.shortName}
+                      {m.id === "extinction-concern" ? (
+                        <>
+                          <tspan x={labelX} y={labelY - 30}>
+                            Humanity starts to
+                          </tspan>
+                          <tspan x={labelX} dy={15}>
+                            take extinction
+                          </tspan>
+                          <tspan x={labelX} dy={15}>
+                            risks seriously
+                          </tspan>
+                        </>
+                      ) : m.id === "wild-welfare" ? (
+                        <>
+                          <tspan x={labelX} y={labelY - 15}>
+                            Wild-animal welfare
+                          </tspan>
+                          <tspan x={labelX} dy={15}>
+                            statutes
+                          </tspan>
+                        </>
+                      ) : (
+                        m.shortName
+                      )}
+                    </text>
+                    <text
+                      x={labelX}
+                      y={labelY + 17}
+                      textAnchor="middle"
+                      className="chart-small progress-date-span"
+                    >
+                      {formatYears(r)}
                     </text>
                   </g>
                 );
@@ -634,16 +744,23 @@ export default function Timeline({
               const m = data.milestones.find(
                 (item) => item.id === benchmarkTip.id,
               )!;
-              const range = scenarios[m.id] ?? m.window;
               const lines =
                 m.reforms?.map(
                   (event) => `${event.year} — ${event.chartLabel}`,
                 ) ??
-                (m.id === "ai-welfare"
-                  ? ["Hypothetical future interval"]
-                  : m.id === "wild-welfare"
-                    ? ["Including insect welfare · provisional"]
-                    : []);
+                (m.id === "animal-protection"
+                  ? ["1911 — UK: Protection of Animals Act"]
+                  : m.id === "factory-farming-transition"
+                    ? [
+                        "Assumes factory farming is abolished",
+                        "and veganism becomes the norm by 2100",
+                      ]
+                    : m.id === "ai-welfare"
+                      ? ["Hypothetical future interval"]
+                      : m.id === "wild-welfare"
+                        ? ["Including insect welfare · provisional"]
+                        : []);
+              if (!lines.length) return null;
               const center = Math.max(130, Math.min(W - 130, benchmarkTip.x));
               return (
                 <g
@@ -654,23 +771,14 @@ export default function Timeline({
                 >
                   <rect
                     x={center - 125}
-                    y={benchmarkTip.y + 7}
+                    y={benchmarkTip.y + 25}
                     width={250}
-                    height={34 + lines.length * 14}
+                    height={12 + lines.length * 14}
                     rx={5}
                     fill="#fff"
                     stroke="currentColor"
                     strokeOpacity=".3"
                   />
-                  <text
-                    x={center}
-                    y={benchmarkTip.y + 26}
-                    textAnchor="middle"
-                    className="chart-small"
-                    style={{ fill: "currentColor" }}
-                  >
-                    {formatYears(range)}
-                  </text>
                   {lines.map((line, i) => (
                     <text
                       key={line}
@@ -750,8 +858,8 @@ export default function Timeline({
           <i className="hollow-key" /> Open: provisional scenario
         </span>
         <span>
-          Support: average reform height · Opposition: below interval, minus
-          sign
+          Support: average height; later support: end height · Opposition: below
+          interval, minus sign
         </span>
       </div>
     </div>

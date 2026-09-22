@@ -15,16 +15,16 @@ Open http://localhost:3000. For a production preview, run `npm run build` then `
 
 ## What is included
 
-The default graph spans 1500–2125; resetting filters restores this period.
+The default graph spans 1500–2100; resetting filters restores this period.
 
-- 42 figures, 53 written positions, 51 quotation records and 48 primary-source records across 13 ethical families.
-- 48 scored dots and five unmatched positions retained in the evidence table.
-- Separate extinction (2000–2030), wild-animal (2024–2050), insect (2020–2050), and illustrative AI-welfare (2100) windows. All are provisional and excluded from historical rankings.
+- 66 figures (59 plotted), 91 written positions, 86 quotation records and 77 primary-source records across 13 ethical families.
+- 81 scored dots and ten unmatched positions retained in the evidence table.
+- Separate extinction (2000–2030), wild-animal welfare including insects (2050–2100), AI-welfare (2040–2100), and factory-farming / veganism (2000–2100) scenario windows. All are provisional and excluded from historical rankings.
 - Persistent quotation panel; desktop chart resizing; mobile bottom-sheet/full-screen reading; keyboard and overlap selection; equivalent table view.
-- Search and filters; public/private sensitivity; date intervals; alternative jurisdictions; shared-domain comparisons; coverage thresholds; URL-based views.
+- Search and filters; public/private sensitivity; date intervals; alternative dates and jurisdictions, including narrower 1822 livestock protections; shared-domain comparisons; coverage thresholds; URL-based views.
 - Export of source data, filters, scenario dates, score intervals, placements and historical rankings. `/api/research` serves the full source corpus.
 
-The initial corpus is an inspectable research edition, **not a completed scholarly audit**. Coverage is uneven and most traditions do not meet the historical ranking threshold. Some edition, composition and affiliation judgments are explicitly qualified. See [research status](research/STATUS.md), [protocol](research/PROTOCOL.md), and [candidate queue](research/CANDIDATES.md). Missing evidence does not become a score.
+The initial corpus is an inspectable research edition, **not a completed scholarly audit**. Coverage is uneven and several traditions do not meet the historical ranking threshold. Some edition, composition and affiliation judgments are explicitly qualified. See [research status](research/STATUS.md), [protocol](research/PROTOCOL.md), and [candidate queue](research/CANDIDATES.md). Missing evidence does not become a score.
 
 ## Checks
 
