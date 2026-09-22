@@ -287,11 +287,11 @@ export default function Timeline({
                         .reverse()
                         .map(
                           (year) =>
-                            `L${x(year)},${arc(year) + (labelAbove ? -18 : 18)}`,
+                            `L${x(year)},${arc(year) + (labelAbove ? -(42 + Math.max(0, index) * 7) : 24 + Math.max(0, index) * 6)}`,
                         )
                         .join(" ")} Z`}
                       fill="currentColor"
-                      opacity=".12"
+                      opacity=".19"
                     />
                   )}
                   <path
@@ -579,7 +579,7 @@ export default function Timeline({
                         .reverse()
                         .map(
                           (year) =>
-                            `L${x(year)},${arc(year) + (below ? 18 : -18)}`,
+                            `L${x(year)},${arc(year) + (below ? 32 : -56)}`,
                         )
                         .join(" ")} Z`}
                       fill="currentColor"
