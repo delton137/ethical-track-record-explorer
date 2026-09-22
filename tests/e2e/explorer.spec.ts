@@ -90,7 +90,7 @@ test("future edits and reset preserve historical ranks; export is reproducible",
   const defaults = {
     "Ending factory farming / veganism": ["2000", "2100"],
     "Humanity starts to take extinction risks seriously": ["2000", "2030"],
-    "Wild-animal welfare statutes": ["2050", "2100"],
+    "Wild-animal welfare statutes": ["2060", "2100"],
     "AI welfare statutes": ["2040", "2100"],
   };
   await page.getByRole("button", { name: /^Filters/ }).click();
@@ -383,7 +383,10 @@ test("every rendered point matches its placement rule at desktop and mobile widt
           const expected =
             p.stance === "opposes"
               ? arcY(
-                  p.domainId === "women" ? 1918 : s.benchmark.start,
+                  Math.min(
+                    (s.writing.start + s.writing.end) / 2,
+                    s.benchmark.start,
+                  ),
                   rendered.width,
                   period,
                 )
@@ -405,8 +408,12 @@ test("publication witnesses and animal benchmark sensitivity remain visible", as
   const panel = page.locator(".evidence-panel");
   await expect(panel).toContainText("Passage publication / dated edition");
   await panel.getByText("Edition, language & verification").click();
-  await expect(panel.locator(".quotation-card .source-details")).toContainText("1971");
-  await expect(panel.locator(".quotation-card .source-details")).toContainText("1999");
+  await expect(panel.locator(".quotation-card .source-details")).toContainText(
+    "1971",
+  );
+  await expect(panel.locator(".quotation-card .source-details")).toContainText(
+    "1999",
+  );
   await page.goto("/?position=bentham-animals&benchmark=alternative");
   await expect(page.locator(".comparison-block")).toContainText("1822");
   await expect(page.locator(".comparison-block .score-pill")).toContainText(

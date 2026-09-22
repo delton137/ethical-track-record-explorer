@@ -19,7 +19,7 @@ The default graph spans 1500–2100; resetting filters restores this period.
 
 - 66 figures (59 plotted), 91 written positions, 86 quotation records and 77 primary-source records across 13 ethical families.
 - 81 scored dots and ten unmatched positions retained in the evidence table.
-- Separate extinction (2000–2030), wild-animal welfare including insects (2050–2100), AI-welfare (2040–2100), and factory-farming / veganism (2000–2100) scenario windows. All are provisional and excluded from historical rankings.
+- Separate extinction (2000–2030), wild-animal welfare including insects (2060–2100), AI-welfare (2040–2100), and factory-farming / veganism (2000–2100) scenario windows. All are provisional and excluded from historical rankings.
 - Persistent quotation panel; desktop chart resizing; mobile bottom-sheet/full-screen reading; keyboard and overlap selection; equivalent table view.
 - Search and filters; public/private sensitivity; date intervals; alternative dates and jurisdictions, including narrower 1822 livestock protections; shared-domain comparisons; coverage thresholds; URL-based views.
 - Export of source data, filters, scenario dates, score intervals, placements and historical rankings. `/api/research` serves the full source corpus.
