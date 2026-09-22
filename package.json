@@ -1,0 +1,36 @@
+{
+  "name": "ethical-track-record-explorer",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "next build",
+    "start": "next start --hostname 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "audit:data": "tsx scripts/audit-data.ts",
+    "test:e2e": "playwright test",
+    "format": "prettier --write app components lib research scripts tests *.ts *.json *.md"
+  },
+  "dependencies": {
+    "d3-scale": "^4.0.2",
+    "lucide-react": "^0.577.0",
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.58.0",
+    "@types/d3-scale": "^4.0.9",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "prettier": "^3.9.8",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.0"
+  }
+}
