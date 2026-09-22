@@ -366,12 +366,12 @@ export default function Timeline({
 
                       <rect
                         x={labelX - 125}
-                        y={labelY - 14}
+                        y={labelY - (m.id === "decriminalization" ? 29 : 14)}
                         width={250}
                         height={
-                          benchmarkTip?.id === m.id
+                          (benchmarkTip?.id === m.id
                             ? 56 + (m.reforms?.length ?? 1) * 14
-                            : 40
+                            : 40) + (m.id === "decriminalization" ? 15 : 0)
                         }
                         fill="transparent"
                       />
@@ -381,7 +381,18 @@ export default function Timeline({
                         textAnchor="middle"
                         className="milestone-label"
                       >
-                        {m.shortName}
+                        {m.id === "decriminalization" ? (
+                          <>
+                            <tspan x={labelX} y={labelY - 15}>
+                              Homosexuality
+                            </tspan>
+                            <tspan x={labelX} dy={15}>
+                              decriminalization
+                            </tspan>
+                          </>
+                        ) : (
+                          m.shortName
+                        )}
                       </text>
                       <text
                         x={labelX}

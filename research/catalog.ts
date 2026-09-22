@@ -139,8 +139,8 @@ export const domains: Domain[] = [
   ],
   [
     "gay",
-    "Same-sex decriminalization",
-    "Same-sex decriminalization",
+    "Homosexuality decriminalization",
+    "Homosexuality decriminalization",
     "Removing criminal penalties for consensual adult same-sex relations.",
   ],
   [
@@ -549,7 +549,7 @@ export const milestones: Milestone[] = [
     id: "decriminalization",
     domainId: "gay",
     name: "Decriminalization of same-sex relations in selected jurisdictions",
-    shortName: "Same-sex decriminalization",
+    shortName: "Homosexuality decriminalization",
     window: { start: 1967, end: 2003 },
     jurisdiction: "England and Wales (1967) to United States (2003)",
     measure: "law",
