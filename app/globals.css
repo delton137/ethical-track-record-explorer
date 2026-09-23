@@ -625,6 +625,17 @@ h1 {
 .milestone-anchor {
   cursor: pointer;
 }
+/* SVG group outlines span the interval, connector, and label after focus returns. */
+.milestone-anchor:focus {
+  outline: none;
+}
+.milestone-anchor:focus-visible .progress-interval-line {
+  stroke-width: 5;
+}
+.milestone-anchor:focus-visible .milestone-label,
+.milestone-anchor:focus-visible .scenario-label {
+  text-decoration: underline;
+}
 .milestone-label {
   font-size: 11px;
   fill: #69788b;
@@ -2317,9 +2328,6 @@ footer a {
 }
 .chart-instructions {
   gap: 15px;
-}
-.scenario-anchor:focus-visible {
-  outline: 2px solid #2466c5;
 }
 .evidence-panel {
   width: 420px;
