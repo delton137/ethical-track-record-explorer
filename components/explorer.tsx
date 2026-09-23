@@ -1163,11 +1163,7 @@ function ScenarioEditor({
 function Methodology({ onExplore }: { onExplore: () => void }) {
   return (
     <section className="methodology">
-      <h1>
-        A history of positions.
-        <br />
-        An explicit set of assumptions.
-      </h1>
+      <h1>Assumptions</h1>
       <div className="method-intro">
         <p>
           This project assumes that moral progress is real and asks which
