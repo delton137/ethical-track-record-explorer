@@ -263,7 +263,7 @@ export default function Timeline({
             className="axis-title"
             style={{ fill: "black" }}
           >
-            ethical progress
+            ethical progress →
           </text>
           <text x={W / 2} y={H - 36} textAnchor="middle" className="axis-title">
             Year
