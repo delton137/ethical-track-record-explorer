@@ -265,7 +265,13 @@ export default function Timeline({
           >
             ethical progress →
           </text>
-          <text x={W / 2} y={H - 36} textAnchor="middle" className="axis-title">
+          <text
+            x={W / 2}
+            y={H - 36}
+            textAnchor="middle"
+            className="axis-title"
+            style={{ fill: "black" }}
+          >
             Year
           </text>
           {data.milestones
