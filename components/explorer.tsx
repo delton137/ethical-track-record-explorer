@@ -278,9 +278,6 @@ export default function Explorer() {
             Methodology
           </button>
         </nav>
-        <span className="edition-label">
-          RESEARCH EDITION <span>01</span>
-        </span>
       </header>
       <main id="explorer-main">
         {tab === "explore" && (
