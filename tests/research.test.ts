@@ -112,9 +112,9 @@ test("earlier Salt attestation and narrower animal benchmark change anticipation
   const salt = data.positions.find((p) => p.id === "salt-animals")!;
   const bentham = data.positions.find((p) => p.id === "bentham-animals")!;
   const m = data.milestones.find((m) => m.id === "animal-protection")!;
-  assert.equal(calculateScore(salt, m, {})!.midpoint, 19);
+  assert.equal(calculateScore(salt, m, {})!.midpoint, 46.5);
   assert.equal(calculateScore(salt, m, {}, false, true)!.midpoint, 0);
-  assert.equal(calculateScore(bentham, m, {})!.midpoint, 122);
+  assert.equal(calculateScore(bentham, m, {})!.midpoint, 149.5);
   assert.equal(calculateScore(bentham, m, {}, false, true)!.midpoint, 33);
   const q = data.quotations.find((q) => q.id === salt.quotationIds[0])!;
   const source = data.sources.find((s) => s.id === q.sourceId)!;

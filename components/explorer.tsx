@@ -785,8 +785,8 @@ export default function Explorer() {
                   evidence and 3 domains. Filtered results describe this corpus,
                   not a representative census. Rankings depend on the chosen
                   dates and legal scope. The alternative set includes narrower
-                  animal protections from 1822 instead of the 1911
-                  consolidation; Bentham’s lead changes from 122 to 33 years.
+                  animal protections from 1822 instead of the 1911–1966
+                  interval; Bentham’s lead changes from 122–177 to 33 years.
                   Compare both sets before drawing conclusions about traditions.
                   Future scenario changes cannot alter this ranking.
                 </p>
