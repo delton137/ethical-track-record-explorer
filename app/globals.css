@@ -1428,11 +1428,19 @@ details summary {
   justify-content: space-between;
   margin: 25px 0 40px;
 }
-.method-intro p {
+.method-intro p,
+.method-intro ol {
   font-size: 17px;
   color: var(--muted);
   line-height: 1.8;
   max-width: 760px;
+}
+.method-assumptions ol {
+  padding-left: 1.5em;
+  margin: 1em 0;
+}
+.method-assumptions li + li {
+  margin-top: 0.5em;
 }
 .method-intro button {
   flex-shrink: 0;
@@ -1754,7 +1762,8 @@ footer a {
   .method-intro {
     gap: 25px;
   }
-  .method-intro p {
+  .method-intro p,
+  .method-intro ol {
     font-size: 15px;
   }
   .methodology > h1 {
@@ -2128,7 +2137,8 @@ footer a {
     display: block;
     margin: 20px 0 30px;
   }
-  .method-intro p {
+  .method-intro p,
+  .method-intro ol {
     font-size: 14px;
   }
   .method-intro button {

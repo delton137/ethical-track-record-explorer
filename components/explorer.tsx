@@ -1165,16 +1165,43 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
     <section className="methodology">
       <h1>Assumptions</h1>
       <div className="method-intro">
-        <p>
-          This project assumes that moral progress is real and asks which
-          written ideas anticipated particular expansions of concern. The rising
-          line rises only slightly from 1500 to 1700, then at a constant rate
-          per calendar year. The years before 1700 occupy one quarter as much
-          horizontal space per year; their rise stays gentle even on this
-          compressed scale. This is an illustrative model, not a measured
-          quantity of goodness. Future intervals follow the same upward slope;
-          lead and lag scores still use each issue’s stated comparison interval.
-        </p>
+        <div className="method-assumptions">
+          <p>
+            There are many assumptions! You may disagree with some. But I (Dan
+            Elton) think the following hold:
+          </p>
+          <ol>
+            <li>Ethical progress is real (see Steven Pinker's books).</li>
+            <li>
+              Ethical progress is intertwined with scientific, technological,
+              and economic progress (see "The Moral Arc" by Michael Shermer).
+            </li>
+            <li>
+              We can measure the "state of ethical progress" in terms of what
+              the majority thinks is ethically correct in a set of the largest
+              and most advanced countries.
+            </li>
+            <li>
+              Some philosophical systems yield insights well ahead of that
+              curve, others lag behind.
+            </li>
+            <li>
+              We can measure this by focusing on individuals working within a
+              given ethical framework who may be ahead of the curve or behind
+              the curve in what they find.
+            </li>
+          </ol>
+          <p>
+            <strong>
+              Note that we don't look at the ethical impact of the individuals,
+              only whether the ideas they obtained from working within an
+              ethical system ended up being right or wrong.
+            </strong>{" "}
+            Some individuals have achieved great good, others massive harm.
+            Quantifying the good/harm caused per unit individual working within
+            a system is a totally separate project not attempted here.
+          </p>
+        </div>
         <button className="primary-button" onClick={onExplore}>
           Explore the evidence <ArrowRight size={16} />
         </button>
