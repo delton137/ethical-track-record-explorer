@@ -1163,7 +1163,6 @@ function ScenarioEditor({
 function Methodology({ onExplore }: { onExplore: () => void }) {
   return (
     <section className="methodology">
-      <p className="eyebrow">HOW TO READ THIS EXPLORER</p>
       <h1>
         A history of positions.
         <br />
