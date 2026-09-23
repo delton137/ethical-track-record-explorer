@@ -343,6 +343,45 @@ test("progress dates expand below titles on hover and keyboard focus", async ({
   await expect(popup).not.toContainText("1786 — Virginia");
 });
 
+test("interval hover bands extend to the chart edge on their side of the arc", async ({
+  page,
+}) => {
+  await page.goto("/?position=none");
+  const band = page.locator(".progress-hover-highlight");
+  await expect(band).toHaveCount(0);
+  for (const [label, below] of [
+    ["Religious liberty", false],
+    ["Women’s suffrage", true],
+  ] as const) {
+    await page.locator(".milestone-label").filter({ hasText: label }).hover();
+    await expect(band).toBeVisible();
+    const bounds = await band.evaluate((element) => {
+      const path = element as SVGPathElement;
+      const box = path.getBBox();
+      const svg = path.ownerSVGElement!;
+      const interval = svg.querySelector<SVGPathElement>(
+        `.progress-interval-line[data-milestone="${path.dataset.milestone}"]`,
+      )!;
+      const line = interval.getBBox();
+      return {
+        top: box.y,
+        bottom: box.y + box.height,
+        x: box.x,
+        width: box.width,
+        lineX: line.x,
+        lineWidth: line.width,
+        height: svg.viewBox.baseVal.height,
+      };
+    });
+    expect(bounds.x).toBeCloseTo(bounds.lineX);
+    expect(bounds.width).toBeCloseTo(bounds.lineWidth);
+    if (below) expect(bounds.bottom).toBeCloseTo(bounds.height - 100);
+    else expect(bounds.top).toBeCloseTo(65);
+  }
+  await page.mouse.move(5, 5);
+  await expect(band).toHaveCount(0);
+});
+
 test("every rendered point matches its placement rule at desktop and mobile widths", async ({
   page,
   request,
