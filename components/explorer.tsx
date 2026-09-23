@@ -1308,9 +1308,6 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
             full corpus, current settings, calculations and algorithm version so
             the comparisons can be reproduced.
           </p>
-          <a className="source-link" href="/api/research">
-            Download the source corpus <ArrowDownToLine size={14} />
-          </a>
         </section>
       </div>
     </section>
