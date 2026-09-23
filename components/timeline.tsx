@@ -23,6 +23,28 @@ import {
   positionCoordinates,
 } from "@/lib/geometry";
 
+// Three-pixel strokes touch adjacent lanes and the two-pixel central arc.
+const INTERVAL_OFFSETS: Record<string, number> = {
+  abolition: 2.5,
+  "racial-equality": -11.5,
+  "self-determination": -11.5,
+  "women-equality": 2.5,
+  "votes-for-women": 2.5,
+  "religious-freedom": -2.5,
+  decriminalization: -11.5,
+  "marriage-equality": 2.5,
+  "torture-ban": -2.5,
+  "execution-abolition": -8.5,
+  "child-protection": -5.5,
+  "animal-protection": 2.5,
+  "farm-welfare": 5.5,
+  "factory-farming-transition": 5.5,
+  "extinction-concern": -2.5,
+  "wild-welfare": -2.5,
+  "ai-welfare": 2.5,
+};
+const intervalOffset = (id: string) => INTERVAL_OFFSETS[id] ?? 2.5;
+
 type Props = {
   data: ResearchData;
   positions: WrittenPosition[];
@@ -119,9 +141,9 @@ export default function Timeline({
     .domain([from, to])
     .ticks(to - from > 400 ? Math.min(12, Math.ceil((to - from) / 100)) : 7);
   const clippedYear = (year: number) => Math.min(to, Math.max(from, year));
-  const referencePath = (start: number, end: number) =>
+  const referencePath = (start: number, end: number, offset = 0) =>
     referenceYears(clippedYear(start), clippedYear(end))
-      .map((year, i) => `${i ? "L" : "M"}${x(year)},${arc(year)}`)
+      .map((year, i) => `${i ? "L" : "M"}${x(year)},${arc(year) + offset}`)
       .join(" ");
   const choose = (p: WrittenPosition) => {
     const a = points.find((v) => v.p.id === p.id)!;
@@ -153,7 +175,7 @@ export default function Timeline({
           style={{ width: W }}
           viewBox={`0 0 ${W} ${H}`}
           role="group"
-          aria-label="Written positions relative to the moral reference arc. Horizontal axis: writing year. Support after the reform interval uses its endpoint height; earlier support uses the average interval height; opposition before reform sits on the line at its writing midpoint, while opposition at or after reform starts stays at the reform-start height. Opposition has a minus sign. Use Tab to focus dots, arrow keys to move, Enter to select. An equivalent evidence table is available."
+          aria-label="Written positions relative to the moral reference arc. Horizontal axis: writing year. Colored parallel lines above and below the central arc show reform intervals; dashed interval lines are provisional scenarios. Support after the reform interval uses its endpoint height; earlier support uses the average interval height; opposition before reform sits on the line at its writing midpoint, while opposition at or after reform starts stays at the reform-start height. Opposition has a minus sign. Use Tab to focus dots, arrow keys to move, Enter to select. An equivalent evidence table is available."
         >
           <defs>
             <pattern
@@ -182,28 +204,6 @@ export default function Timeline({
               fill="url(#future-pattern)"
             />
           )}
-          {benchmarkTip &&
-            (() => {
-              const milestone = data.milestones.find(
-                (m) => m.id === benchmarkTip.id,
-              )!;
-              const range = scenarios[milestone.id] ?? milestone.window;
-              const start = clippedYear(range.start);
-              const end = clippedYear(range.end);
-              return (
-                <path
-                  className="progress-hover-highlight"
-                  data-milestone={milestone.id}
-                  d={`${referencePath(start, end)} L${x(end)},65 L${x(start)},65 Z`}
-                  fill={progressColor(milestone.id)}
-                  fillOpacity=".12"
-                  stroke={progressColor(milestone.id)}
-                  strokeOpacity=".25"
-                  strokeWidth="1"
-                  pointerEvents="none"
-                />
-              );
-            })()}
           {ticks
             .filter((t) => t >= from && t <= to)
             .map((t) => (
@@ -244,8 +244,10 @@ export default function Timeline({
                 Number(b.id === "execution-abolition"),
             )
             .map((m) => {
-              const t = midpoint(m.window);
-              if (t < from || t > to) return null;
+              if (m.window.end < from || m.window.start > to) return null;
+              const t = clippedYear(midpoint(m.window));
+              const offset = intervalOffset(m.id);
+              const intervalY = arc(t) + offset;
               const index = [
                 "abolition",
                 "votes-for-women",
@@ -306,50 +308,29 @@ export default function Timeline({
                   style={{ color: progressColor(m.id) }}
                 >
                   <title>{`${m.name} · ${formatYears(m.window)} · ${m.jurisdiction}`}</title>
-                  {m.reforms && (
-                    <path
-                      className="progress-shaded-region"
-                      d={`${referencePath(m.window.start, m.window.end)} ${referenceYears(
-                        clippedYear(m.window.start),
-                        clippedYear(m.window.end),
-                      )
-                        .reverse()
-                        .map(
-                          (year) =>
-                            `L${x(year)},${arc(year) + (labelAbove ? -(42 + Math.max(0, index) * 7) : 24 + Math.max(0, index) * 6) * 0.25}`,
-                        )
-                        .join(" ")} Z`}
-                      fill="currentColor"
-                      opacity=".19"
-                    />
-                  )}
-                  {m.id === "execution-abolition" && (
-                    <path
-                      className="capital-punishment-interval-outline"
-                      d={`M${x(clippedYear(m.window.start))},${arc(clippedYear(m.window.start))} ${referenceYears(
-                        clippedYear(m.window.start),
-                        clippedYear(m.window.end),
-                      )
-                        .map((year) => `L${x(year)},${arc(year) - 17.5}`)
-                        .join(
-                          " ",
-                        )} L${x(clippedYear(m.window.end))},${arc(clippedYear(m.window.end))}`}
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    />
-                  )}
                   <path
-                    d={referencePath(m.window.start, m.window.end)}
+                    className="progress-interval-hit"
+                    d={referencePath(m.window.start, m.window.end, offset)}
+                    fill="none"
+                    stroke="transparent"
+                    strokeWidth="3"
+                    pointerEvents="stroke"
+                  />
+                  <path
+                    className="progress-interval-line"
+                    data-milestone={m.id}
+                    data-offset={offset}
+                    d={referencePath(m.window.start, m.window.end, offset)}
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="5"
-                    opacity=".85"
+                    strokeWidth={benchmarkTip?.id === m.id ? 5 : 3}
+                    strokeLinecap="round"
+                    pointerEvents="none"
                   />
-                  <circle cx={x(t)} cy={arc(t)} r="9" fill="transparent" />
+
                   <circle
                     cx={x(t)}
-                    cy={arc(t)}
+                    cy={intervalY}
                     r="3.5"
                     fill="currentColor"
                     stroke="currentColor"
@@ -359,8 +340,8 @@ export default function Timeline({
                       <line
                         x1={labelX}
                         x2={x(t)}
-                        y1={labelAbove ? labelY + 29 : arc(t) + 8}
-                        y2={labelAbove ? arc(t) - 8 : labelY - 16}
+                        y1={labelAbove ? labelY + 29 : intervalY + 8}
+                        y2={labelAbove ? intervalY - 8 : labelY - 16}
                         stroke="currentColor"
                       />
 
@@ -581,16 +562,16 @@ export default function Timeline({
                   <line
                     x1={x(r.year)}
                     x2={x(r.year)}
-                    y1={arc(r.year) - 7}
-                    y2={arc(r.year) + 7}
+                    y1={arc(r.year) + intervalOffset(m.id) - 5}
+                    y2={arc(r.year) + intervalOffset(m.id) + 5}
                     stroke="currentColor"
                     strokeWidth="2"
                   />
                   <circle
                     cx={x(r.year)}
-                    cy={arc(r.year)}
+                    cy={arc(r.year) + intervalOffset(m.id)}
                     r="3"
-                    fill="white"
+                    fill="currentColor"
                     stroke="currentColor"
                     strokeWidth="1.5"
                   />
@@ -606,6 +587,8 @@ export default function Timeline({
                 const foodTransition = m.id === "factory-farming-transition";
                 const below = m.id === "ai-welfare" || foodTransition;
                 const middle = clippedYear(midpoint(r));
+                const offset = intervalOffset(m.id);
+                const intervalY = arc(middle) + offset;
                 const labelX = Math.max(
                   left + 100,
                   Math.min(right - (foodTransition ? 145 : 100), x(middle)),
@@ -645,37 +628,35 @@ export default function Timeline({
                   >
                     <title>{`${m.name}: ${formatYears(r)} — illustrative scenario`}</title>
                     <path
-                      className="progress-shaded-region"
-                      d={`${referencePath(r.start, r.end)} ${referenceYears(
-                        clippedYear(r.start),
-                        clippedYear(r.end),
-                      )
-                        .reverse()
-                        .map(
-                          (year) =>
-                            `L${x(year)},${arc(year) + (foodTransition ? 56 : below ? 32 : -56) * 0.25}`,
-                        )
-                        .join(" ")} Z`}
-                      fill="currentColor"
-                      opacity=".24"
+                      className="progress-interval-hit"
+                      d={referencePath(r.start, r.end, offset)}
+                      fill="none"
+                      stroke="transparent"
+                      strokeWidth="3"
+                      pointerEvents="stroke"
                     />
                     <path
-                      d={referencePath(r.start, r.end)}
+                      className="progress-interval-line"
+                      data-milestone={m.id}
+                      data-offset={offset}
+                      d={referencePath(r.start, r.end, offset)}
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="4"
-                      strokeDasharray="4 3"
+                      strokeWidth={benchmarkTip?.id === m.id ? 5 : 3}
+                      strokeLinecap="round"
+                      strokeDasharray="5 4"
+                      pointerEvents="none"
                     />
                     <line
                       x1={labelX}
                       x2={x(middle)}
                       y1={below ? labelY - 14 : labelY + 29}
-                      y2={arc(middle) + (below ? 8 : -8)}
+                      y2={intervalY + (below ? 8 : -8)}
                       stroke="currentColor"
                     />
                     <circle
                       cx={x(middle)}
-                      cy={arc(middle)}
+                      cy={intervalY}
                       r="3.5"
                       fill="currentColor"
                       stroke="currentColor"
@@ -861,7 +842,9 @@ export default function Timeline({
       <div className="chart-caption">
         <span>1500–1700 uses a compressed time scale</span>
         <span>All position dots use the author’s color</span>
-        <span>Future scenarios remain provisional</span>
+        <span>
+          Colored lines: reform intervals · Dashed: provisional scenarios
+        </span>
         <span>
           Support: average height; later support: end height · Opposition: on
           line before reform; reform-start height afterward, minus sign
