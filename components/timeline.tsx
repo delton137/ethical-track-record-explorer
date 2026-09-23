@@ -839,17 +839,6 @@ export default function Timeline({
           </p>
         </div>
       )}
-      <div className="chart-caption">
-        <span>1500–1700 uses a compressed time scale</span>
-        <span>All position dots use the author’s color</span>
-        <span>
-          Colored lines: reform intervals · Dashed: provisional scenarios
-        </span>
-        <span>
-          Support: average height; later support: end height · Opposition: on
-          line before reform; reform-start height afterward, minus sign
-        </span>
-      </div>
     </div>
   );
 }

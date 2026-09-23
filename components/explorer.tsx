@@ -746,18 +746,12 @@ export default function Explorer() {
                 />
               )}
             </div>
-            <details className="leaderboard">
+            <details className="leaderboard" open>
               <summary>
                 <div>
-                  <span className="eyebrow">COMPARE TRADITIONS</span>
-                  <h2>Historical foresight</h2>
-                  <p>
-                    Coverage-aware comparisons of the writings in this corpus.
-                  </p>
+                  <h2>Comparisons (read with a heavy dose of salt!)</h2>
                 </div>
                 <span className="leaderboard-summary">
-                  {ranks.filter((r) => r.eligible).length} traditions meet the
-                  threshold
                   <ChevronDown size={20} />
                 </span>
               </summary>
@@ -794,6 +788,7 @@ export default function Explorer() {
                   animal protections from 1822 instead of the 1911
                   consolidation; Bentham’s lead changes from 122 to 33 years.
                   Compare both sets before drawing conclusions about traditions.
+                  Future scenario changes cannot alter this ranking.
                 </p>
               </div>
               <div className="ranking-table-wrap">
@@ -851,12 +846,6 @@ export default function Explorer() {
                   </tbody>
                 </table>
               </div>
-              <p className="ranking-footnote">
-                Episodes → person/domain means → fractional membership-weighted
-                tradition/domain means → equal domain weights. Line thickness
-                never affects scores. Future scenario changes cannot alter this
-                ranking.
-              </p>
             </details>
           </>
         )}
@@ -1033,7 +1022,7 @@ export default function Explorer() {
                 <a href={a.sourceUrl} target="_blank" rel="noreferrer">
                   {a.name}, {formatYears(a.window)}
                 </a>
-                . Select alternative benchmarks in Historical foresight.
+                . Select alternative benchmarks in Comparisons.
               </p>
             ))}
           </>
