@@ -249,7 +249,7 @@ export default function Timeline({
             ))}
           <path
             className="chart-axes"
-            d={`M${left},65 V${H - 100} H${right} M${left - 5},73 L${left},65 L${left + 5},73`}
+            d={`M${left},65 V${H - 100} H${right} M${left - 5},73 L${left},65 L${left + 5},73 M${right - 8},${H - 105} L${right},${H - 100} L${right - 8},${H - 95}`}
             fill="none"
             stroke="black"
             strokeWidth="1.5"
