@@ -204,6 +204,28 @@ export default function Timeline({
               fill="url(#future-pattern)"
             />
           )}
+          {benchmarkTip &&
+            (() => {
+              const milestone = data.milestones.find(
+                (m) => m.id === benchmarkTip.id,
+              );
+              if (!milestone) return null;
+              const range = scenarios[milestone.id] ?? milestone.window;
+              const start = clippedYear(range.start);
+              const end = clippedYear(range.end);
+              const offset = intervalOffset(milestone.id);
+              const edge = offset > 0 ? H - 100 : 65;
+              return (
+                <path
+                  className="progress-hover-highlight"
+                  data-milestone={milestone.id}
+                  d={`${referencePath(start, end, offset)} L${x(end)},${edge} L${x(start)},${edge} Z`}
+                  fill={progressColor(milestone.id)}
+                  fillOpacity=".12"
+                  pointerEvents="none"
+                />
+              );
+            })()}
           {ticks
             .filter((t) => t >= from && t <= to)
             .map((t) => (
@@ -225,13 +247,23 @@ export default function Timeline({
                 </text>
               </g>
             ))}
+          <path
+            className="chart-axes"
+            d={`M${left},65 V${H - 100} H${right} M${left - 5},73 L${left},65 L${left + 5},73`}
+            fill="none"
+            stroke="black"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
           <text
             x="27"
-            y="324"
-            transform="rotate(-90 27 324)"
+            y={(65 + H - 100) / 2}
+            transform={`rotate(-90 27 ${(65 + H - 100) / 2})`}
+            textAnchor="middle"
             className="axis-title"
+            style={{ fill: "black" }}
           >
-            ILLUSTRATIVE REFORM LEVEL
+            ethical progress
           </text>
           <text x={W / 2} y={H - 36} textAnchor="middle" className="axis-title">
             Year
