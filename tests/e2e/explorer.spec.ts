@@ -343,6 +343,27 @@ test("progress dates expand below titles on hover and keyboard focus", async ({
   await expect(popup).not.toContainText("1786 — Virginia");
 });
 
+test("closing reform details restores focus without a box around the graph", async ({
+  page,
+}) => {
+  await page.goto("/?position=none");
+  const interval = page.getByRole("button", {
+    name: /Progress interval \/ date: Legal reforms toward ending child labor/,
+  });
+  await interval.locator(".milestone-label").click();
+  await expect(page.locator(".benchmark-dialog")).toBeVisible();
+  await page
+    .getByRole("button", { name: "Close benchmark", exact: true })
+    .click();
+  await expect(page.locator(".benchmark-dialog")).not.toBeVisible();
+  await expect(interval).toBeFocused();
+  await expect(interval).toHaveCSS("outline-style", "none");
+  await expect(interval.locator(".progress-interval-line")).toHaveCSS(
+    "stroke-width",
+    "5px",
+  );
+});
+
 test("interval hover bands extend to the chart edge on their side of the arc", async ({
   page,
 }) => {
