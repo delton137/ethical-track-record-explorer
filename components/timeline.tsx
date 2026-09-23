@@ -36,7 +36,7 @@ const INTERVAL_OFFSETS: Record<string, number> = {
   "torture-ban": -2.5,
   "execution-abolition": -8.5,
   "child-protection": -5.5,
-  "animal-protection": 2.5,
+  "animal-protection": 5.5,
   "farm-welfare": 5.5,
   "factory-farming-transition": 5.5,
   "extinction-concern": -2.5,
@@ -359,14 +359,6 @@ export default function Timeline({
                     strokeLinecap="round"
                     pointerEvents="none"
                   />
-
-                  <circle
-                    cx={x(t)}
-                    cy={intervalY}
-                    r="3.5"
-                    fill="currentColor"
-                    stroke="currentColor"
-                  />
                   {index >= 0 && (
                     <>
                       <line
@@ -379,12 +371,24 @@ export default function Timeline({
 
                       <rect
                         x={labelX - 125}
-                        y={labelY - (m.id === "decriminalization" ? 29 : 14)}
+                        y={
+                          labelY -
+                          (["decriminalization", "animal-protection"].includes(
+                            m.id,
+                          )
+                            ? 29
+                            : 14)
+                        }
                         width={250}
                         height={
                           (benchmarkTip?.id === m.id
                             ? 56 + (m.reforms?.length ?? 1) * 14
-                            : 40) + (m.id === "decriminalization" ? 15 : 0)
+                            : 40) +
+                          (["decriminalization", "animal-protection"].includes(
+                            m.id,
+                          )
+                            ? 15
+                            : 0)
                         }
                         fill="transparent"
                       />
@@ -401,6 +405,15 @@ export default function Timeline({
                             </tspan>
                             <tspan x={labelX} dy={15}>
                               decriminalization
+                            </tspan>
+                          </>
+                        ) : m.id === "animal-protection" ? (
+                          <>
+                            <tspan x={labelX} y={labelY - 15}>
+                              Animal legal
+                            </tspan>
+                            <tspan x={labelX} dy={15}>
+                              protection
                             </tspan>
                           </>
                         ) : (
@@ -599,14 +612,6 @@ export default function Timeline({
                     stroke="currentColor"
                     strokeWidth="2"
                   />
-                  <circle
-                    cx={x(r.year)}
-                    cy={arc(r.year) + intervalOffset(m.id)}
-                    r="3"
-                    fill="currentColor"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
                 </g>
               )),
           )}
@@ -684,13 +689,6 @@ export default function Timeline({
                       x2={x(middle)}
                       y1={below ? labelY - 14 : labelY + 29}
                       y2={intervalY + (below ? 8 : -8)}
-                      stroke="currentColor"
-                    />
-                    <circle
-                      cx={x(middle)}
-                      cy={intervalY}
-                      r="3.5"
-                      fill="currentColor"
                       stroke="currentColor"
                     />
                     <rect

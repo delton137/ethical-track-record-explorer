@@ -816,12 +816,13 @@ export const milestones: Milestone[] = [
     domainId: "animals",
     name: "Statutory animal protection",
     shortName: "Animal legal protection",
-    window: { start: 1911, end: 1911 },
-    jurisdiction: "England, Wales and Ireland; Scotland excluded",
+    window: { start: 1911, end: 1966 },
+    jurisdiction:
+      "England, Wales and Ireland (1911; Scotland excluded); United States federal law (1966)",
     measure: "law",
     kind: "historical",
     description:
-      "The Protection of Animals Act was enacted in 1911 and commenced on 1 January 1912. Section 16 excludes Scotland. This benchmark uses enactment, not commencement. It consolidated earlier protections, including livestock protections dating to 1822; it is not the first recognition of animal welfare. It does not prohibit all animal use or establish equal rights. The alternative benchmark tests sensitivity to the earlier, narrower 1822 reform.",
+      "The Protection of Animals Act was enacted in 1911 and commenced on 1 January 1912. Section 16 excludes Scotland. This benchmark uses enactment, not commencement. It consolidated earlier protections, including livestock protections dating to 1822; it is not the first recognition of animal welfare. It does not prohibit all animal use or establish equal rights. The US Laboratory Animal Welfare Act of 1966 added federal protections for specified animals supplied to or held by research facilities, initially covering dogs, cats, nonhuman primates, guinea pigs, hamsters, and rabbits. This is a selected federal milestone, not the first US animal-protection law or universal protection for animals. The alternative benchmark tests sensitivity to the earlier, narrower British 1822 reform.",
     sources: [
       {
         title: "Protection of Animals Act 1911",
@@ -830,6 +831,29 @@ export const milestones: Milestone[] = [
       {
         title: "UK Parliament: protecting animals",
         url: "https://publications.parliament.uk/pa/ld200102/ldselect/ldanimal/150/15004.htm",
+      },
+      {
+        title: "USDA: Animal Welfare Act timeline (1966 enactment)",
+        url: "https://www.nal.usda.gov/collections/exhibits/awahistory/list",
+      },
+    ],
+    reforms: [
+      {
+        year: 1911,
+        jurisdiction: "England, Wales and Ireland",
+        chartLabel: "Protection of Animals Act",
+        change:
+          "The Protection of Animals Act consolidated anti-cruelty protections; enacted in 1911 and effective January 1912. Scotland was excluded. Earlier protections already existed.",
+        sourceUrl: "https://www.legislation.gov.uk/ukpga/Geo5/1-2/27/enacted",
+      },
+      {
+        year: 1966,
+        jurisdiction: "United States",
+        chartLabel: "Federal Laboratory Animal Welfare Act",
+        change:
+          "The Laboratory Animal Welfare Act established federal licensing and humane-care requirements for specified animals in the research supply chain and at research facilities. Its initial coverage was limited to dogs, cats, nonhuman primates, guinea pigs, hamsters, and rabbits; it was not universal animal protection.",
+        sourceUrl:
+          "https://www.nal.usda.gov/collections/exhibits/awahistory/list",
       },
     ],
     alternatives: [
