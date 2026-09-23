@@ -762,9 +762,8 @@ export const milestones: Milestone[] = [
     domainId: "children",
     name: "Legal reforms toward ending child labor",
     shortName: "Ending child labor",
-    window: { start: 1833, end: 2016 },
-    jurisdiction:
-      "Selected reforms in the UK, France, United States, China, and India",
+    window: { start: 1833, end: 1938 },
+    jurisdiction: "Selected reforms in the UK, France, and United States",
     measure: "law",
     kind: "historical",
     description:
@@ -781,14 +780,6 @@ export const milestones: Milestone[] = [
       {
         title: "US Department of Labor: child labor rules under the FLSA",
         url: "https://webapps.dol.gov/elaws/whd/flsa/cl/background.htm",
-      },
-      {
-        title: "ILO: China's minimum-age legislation",
-        url: "https://webapps.ilo.org/clodashboard/country/1A/CHN",
-      },
-      {
-        title: "ILO: India's child labor legislation and exceptions",
-        url: "https://webapps.ilo.org/clodashboard/country/1A/IND",
       },
     ],
     reforms: [
@@ -817,22 +808,6 @@ export const milestones: Milestone[] = [
         change:
           "The Fair Labor Standards Act established federal child-labor protections for covered work. Agricultural and other exemptions meant it did not prohibit every form of children's employment.",
         sourceUrl: "https://webapps.dol.gov/elaws/whd/flsa/cl/background.htm",
-      },
-      {
-        year: 1994,
-        jurisdiction: "China",
-        chartLabel: "China: general minimum age 16",
-        change:
-          "The Labour Law adopted in 1994, effective January 1995, prohibited employment below 16, with regulated exceptions including artistic and sporting work.",
-        sourceUrl: "https://webapps.ilo.org/clodashboard/country/1A/CHN",
-      },
-      {
-        year: 2016,
-        jurisdiction: "India",
-        chartLabel: "India: under-14 ban, with exceptions",
-        change:
-          "The 2016 amendment prohibited employment below 14 with exceptions for family enterprises and artistic performances, and prohibited hazardous work for adolescents aged 14–17.",
-        sourceUrl: "https://webapps.ilo.org/clodashboard/country/1A/IND",
       },
     ],
   },
