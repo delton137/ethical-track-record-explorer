@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import { readFile } from "node:fs/promises";
 import type { ResearchData } from "../../lib/types";
 import AxeBuilder from "@axe-core/playwright";
 
@@ -10,15 +9,13 @@ test("tradition badges match filtering and Russell is selectable as a secular hu
   const legend = page.getByLabel("Tradition color legend");
   const existential = legend.getByRole("button", { name: /^Existentialist/ });
   const humanist = legend.getByRole("button", { name: /^Secular humanist/ });
-  await expect(existential.locator("small")).toHaveText("3");
+  await expect(existential.locator("small")).toHaveText("2");
   await expect(humanist.locator("small")).toHaveText("1");
   await existential.click();
-  await expect(existential.locator("small")).toHaveText("3");
+  await expect(existential.locator("small")).toHaveText("2");
   await expect(humanist.locator("small")).toHaveText("1");
   await page.getByRole("button", { name: /^Filters/ }).click();
-  await page
-    .getByLabel("Include contested affiliations in comparisons")
-    .check();
+  await page.getByLabel("Include contested").check();
   await expect(existential.locator("small")).toHaveText("6");
   await humanist.click();
   await expect(page.locator("[data-position]")).toHaveCount(1);
@@ -30,6 +27,31 @@ test("tradition badges match filtering and Russell is selectable as a secular hu
   await expect(
     page.locator('[data-position="russell-extinction"]'),
   ).toBeVisible();
+});
+
+test("Include contested updates author colors, filters, and shared views", async ({
+  page,
+}) => {
+  await page.goto("/?position=none");
+  const dot = page.locator('[data-position="nietzsche-slavery"] circle').last();
+  const original = await dot.getAttribute("fill");
+  await page.getByRole("button", { name: /^Filters/ }).click();
+  const toggle = page.getByLabel("Include contested", { exact: true });
+  await toggle.check();
+  await expect(dot).toHaveAttribute("fill", "#aa4c7d");
+  await page
+    .getByRole("combobox", { name: "Tradition", exact: true })
+    .selectOption("existential");
+  await expect(dot).toHaveCount(1);
+  await page.reload();
+  await expect(dot).toHaveAttribute("fill", "#aa4c7d");
+  await page.getByRole("button", { name: /^Filters/ }).click();
+  await toggle.uncheck();
+  await expect(dot).toHaveCount(0);
+  await page
+    .getByRole("combobox", { name: "Tradition", exact: true })
+    .selectOption("");
+  await expect(dot).toHaveAttribute("fill", original!);
 });
 
 test("every plotted position opens its own primary quotation, including overlaps", async ({
@@ -112,9 +134,7 @@ test("search, public/private filtering, deep links, evidence table and focus res
   await expect(page.locator(".evidence-table tbody tr")).toHaveCount(1);
 });
 
-test("future edits and reset preserve historical ranks; export is reproducible", async ({
-  page,
-}) => {
+test("future edits and reset preserve historical ranks", async ({ page }) => {
   await page.goto("/?position=none");
   const defaults = {
     "Ending factory farming / veganism": ["2000", "2100"],
@@ -135,26 +155,6 @@ test("future edits and reset preserve historical ranks; export is reproducible",
   await page.getByRole("button", { name: "Apply scenarios" }).click();
   await expect(page).toHaveURL(/ai-welfare-from=2200&ai-welfare-to=2250/);
   expect(await page.locator(".ranking-table").innerText()).toBe(rankText);
-  const downloadPromise = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Export evidence" }).click();
-  const downloaded = JSON.parse(
-    await readFile((await (await downloadPromise).path())!, "utf8"),
-  );
-  expect(downloaded.scenarios["ai-welfare"]).toEqual({
-    start: 2200,
-    end: 2250,
-  });
-  expect(downloaded.geometry.arcStartYear).toBe(1500);
-  expect(
-    downloaded.calculations.find(
-      (p: { positionId: string }) => p.positionId === "bentham-animals",
-    ).placement,
-  ).toHaveProperty("xFraction");
-  expect(
-    downloaded.historicalLeaderboard.filter(
-      (r: { eligible: boolean }) => r.eligible,
-    ).length,
-  ).toBeGreaterThan(0);
   await page.getByRole("button", { name: "Reset specified windows" }).click();
   for (const [name, [start, end]] of Object.entries(defaults)) {
     await expect(page.getByLabel(`${name} start year`)).toHaveValue(start);

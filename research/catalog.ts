@@ -62,7 +62,7 @@ export const traditions: Tradition[] = [
     "Existentialist ethics",
     "Existentialist",
     "#aa4c7d",
-    "A younger tradition included explicitly in the comparison.",
+    "Twentieth-century existentialist ethics, with precursors and disputed affiliations available through Include contested. Retrospective classification is not a claim of self-identification.",
   ],
   [
     "virtue",
