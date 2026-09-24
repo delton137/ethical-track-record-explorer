@@ -17,6 +17,7 @@ import {
   Users,
   ExternalLink,
 } from "lucide-react";
+import { affiliationColor } from "@/lib/affiliations";
 import { progressColor } from "@/lib/progress-colors";
 import { data } from "@/research/corpus";
 import type { Filters, Scenarios, YearRange } from "@/lib/types";
@@ -57,6 +58,16 @@ export default function Explorer() {
   const modalRef = useRef<HTMLDialogElement>(null);
   const modalOpener = useRef<HTMLElement | null>(null);
   const positions = useMemo(() => filterPositions(data, filters), [filters]);
+  const displayData = useMemo(
+    () => ({
+      ...data,
+      figures: data.figures.map((figure) => ({
+        ...figure,
+        color: affiliationColor(figure, data.traditions, filters),
+      })),
+    }),
+    [filters.includeContested, filters.traditionIds],
+  );
   const counts = useMemo(() => traditionCounts(data, filters), [filters]);
   const ranks = useMemo(
     () => leaderboard(data, positions, filters),
@@ -234,7 +245,8 @@ export default function Explorer() {
           aria-label="Ethical Track Record Explorer home"
         >
           <Image
-            src="/moral_circle.png"
+            src="/moral_circle-logo.webp"
+            unoptimized
             alt=""
             width={40}
             height={40}
@@ -441,8 +453,14 @@ export default function Explorer() {
                         patch({ includeContested: e.target.checked })
                       }
                     />{" "}
-                    Include contested affiliations in comparisons
+                    Include contested
                   </label>
+                  <p className="help-text">
+                    Applies to tradition filters, counts, colors, and
+                    comparisons. Authors with only contested affiliations stay
+                    visible in All traditions, but remain neutral-colored when
+                    this is off.
+                  </p>
                   <label className="field-label">
                     Passage status
                     <select
@@ -566,7 +584,7 @@ export default function Explorer() {
                 </div>
                 {view === "chart" ? (
                   <Timeline
-                    data={data}
+                    data={displayData}
                     positions={positions}
                     filters={filters}
                     scenarios={scenarios}
@@ -612,7 +630,13 @@ export default function Explorer() {
                                 <button onClick={() => select(p.id)}>
                                   <span
                                     className="legend-dot"
-                                    style={{ background: f.color }}
+                                    style={{
+                                      background: affiliationColor(
+                                        f,
+                                        data.traditions,
+                                        filters,
+                                      ),
+                                    }}
                                   />
                                   <span>
                                     <strong>{f.name}</strong>
@@ -708,7 +732,7 @@ export default function Explorer() {
               </div>
               {position && (
                 <EvidencePanel
-                  data={data}
+                  data={displayData}
                   position={position}
                   filters={filters}
                   scenarios={scenarios}
@@ -864,6 +888,12 @@ export default function Explorer() {
                             </span>
                           </div>
                           <p>{f.context}</p>
+                          <p className="subtle">
+                            {f.affiliations.find((a) => a.traditionId === t.id)
+                              ?.status === "contested"
+                              ? "Contested affiliation"
+                              : "Core affiliation"}
+                          </p>
                           <details>
                             <summary>Evidence & issue checklist</summary>
                             <p>{f.researchNote}</p>
@@ -1131,9 +1161,9 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
               We can measure the "state of ethical progress" in terms of what
               the majority thinks is ethically correct in a set of the largest
               and most advanced countries. However, since getting historical
-              survey data on ethical issues is hard, in this explorer we identify
-              "periods of progress" in terms of legal changes in major leading
-              countries.
+              survey data on ethical issues is hard, in this explorer we
+              identify "periods of progress" in terms of legal changes in major
+              leading countries.
             </li>
             <li>
               Some philosophical systems yield insights well ahead of that
@@ -1212,8 +1242,15 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
           <p>
             Affiliation requires substantive philosophical commitment or
             framework use. Religious membership alone is insufficient. Mixed and
-            contested classifications remain visible. Neutral-colored authors
-            have no defensible single primary tradition in this release.
+            contested classifications remain visible. “Include contested”
+            applies to tradition filters, counts, colors, and comparisons. With
+            it off, authors with only contested affiliations remain
+            neutral-colored in All traditions. With it on, their affiliation
+            supplies their color. A selected tradition takes priority over an
+            author's primary color when it matches an eligible affiliation.
+            Retrospective existentialist affiliations for Nietzsche and
+            Kierkegaard are both treated as contested; Kierkegaard retains his
+            core Christian affiliation.
           </p>
           <p>
             Foundational, central and established figures use 3, 2.25 and 1.5 px

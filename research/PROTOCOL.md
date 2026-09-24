@@ -27,3 +27,12 @@ For a writing interval [w0,w1] and adoption interval [a0,a1], support scores [ma
 ## Audit and limitations
 
 Every position has an explicit counterevidence note. A note that research remains open is not a completed scholarly audit. The first release is an inspectable research corpus, not a census or causal demonstration of a philosophy's effects. Coverage differences, survivorship, translation availability, selection of Western benchmarks, and the chosen starting period limit comparisons. Candidate records, when present, must be visibly separated and never plotted or scored. Unadmitted research leads are listed separately in CANDIDATES.md. Export includes the exact filters, benchmarks, scenario settings, source data, calculations and algorithm version needed to reproduce the view.
+
+
+## Affiliation review — 24 September 2026
+
+Reviewed the corpus affiliation records for primary/core consistency, mixed membership, and retrospective classifications. Core membership means documented framework use, not exclusive allegiance or nominal religious identity. Broad families such as consequentialism, rights-based ethics, and Aristotelian/capabilities approaches retain their explicit qualifications.
+
+Kierkegaard's existentialist affiliation is now contested, matching the treatment of Nietzsche as a precursor to the later movement. His Christian affiliation remains core. This is an editorial consistency rule, not a denial of their foundational influence. See the [SEP history of existentialism](https://plato.stanford.edu/archives/spr2021/entries/existentialism/). Camus remains contested given his rejection of the label; Jonas's distinct ethics of responsibility remains a qualified, contested existentialist connection. Russell remains a core secular humanist with contested consequentialist affiliation.
+
+The Include contested control governs tradition filtering, legend counts, display colors, and comparison contributions. It does not promote contested affiliations to core status for ranking eligibility. All-traditions mode retains contested-only authors as neutral-colored records when disabled. When enabled, a selected eligible affiliation supplies the color; otherwise the core primary affiliation takes precedence, followed by another core affiliation, then a contested affiliation. Research-index cards explicitly distinguish core and contested memberships.

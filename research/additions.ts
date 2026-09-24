@@ -913,10 +913,11 @@ export function additions() {
     [
       {
         traditionId: "existential",
-        status: "core",
+        status: "contested",
         basis:
-          "A foundational precursor of existential thought; retrospective family classification, with the Christian framework of this signed work preserved.",
-        sourceUrl: "https://plato.stanford.edu/entries/kierkegaard/",
+          "A foundational precursor of existential thought. As with Nietzsche, retrospective placement in the later movement is treated as contested; the Christian framework of this signed work remains core.",
+        sourceUrl:
+          "https://plato.stanford.edu/archives/spr2021/entries/existentialism/",
       },
     ],
   );

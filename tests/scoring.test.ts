@@ -22,7 +22,7 @@ import {
 const p = data.positions[0];
 test("tradition counts respect contested affiliations and remain useful across selections", () => {
   const counts = traditionCounts(data, DEFAULT_FILTERS);
-  assert.equal(counts.existential, 3);
+  assert.equal(counts.existential, 2);
   assert.equal(counts["secular-humanist"], 1);
   assert.equal(
     traditionCounts(data, { ...DEFAULT_FILTERS, includeContested: true })
