@@ -2,6 +2,13 @@ import type { Domain, Milestone, Tradition } from "@/lib/types";
 
 export const traditions: Tradition[] = [
   [
+    "secular-humanist",
+    "Secular humanist ethics",
+    "Secular humanist",
+    "#647587",
+    "Documented humanist ethics grounded in reason, compassion and human welfare without religious authority.",
+  ],
+  [
     "utilitarian",
     "Utilitarian & consequentialist ethics",
     "Utilitarian",

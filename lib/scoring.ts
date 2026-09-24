@@ -109,6 +109,18 @@ export function filterPositions(
     );
   });
 }
+export function traditionCounts(data: ResearchData, filters: Filters) {
+  return Object.fromEntries(
+    data.traditions.map((t) => [
+      t.id,
+      new Set(
+        filterPositions(data, { ...filters, traditionIds: [t.id] }).map(
+          (p) => p.figureId,
+        ),
+      ).size,
+    ]),
+  );
+}
 export type Ranking = {
   traditionId: string;
   min: number;

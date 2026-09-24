@@ -7,6 +7,7 @@ import {
   filterPositions,
   leaderboard,
   exportSnapshot,
+  traditionCounts,
 } from "../lib/scoring";
 import { DEFAULT_FILTERS, parseState, serializeState } from "../lib/state";
 import type { ResearchData, WrittenPosition, Milestone } from "../lib/types";
@@ -19,6 +20,38 @@ import {
   positionCoordinates,
 } from "../lib/geometry";
 const p = data.positions[0];
+test("tradition counts respect contested affiliations and remain useful across selections", () => {
+  const counts = traditionCounts(data, DEFAULT_FILTERS);
+  assert.equal(counts.existential, 3);
+  assert.equal(counts["secular-humanist"], 1);
+  assert.equal(
+    traditionCounts(data, { ...DEFAULT_FILTERS, includeContested: true })
+      .existential,
+    6,
+  );
+  assert.deepEqual(
+    traditionCounts(data, { ...DEFAULT_FILTERS, traditionIds: ["christian"] }),
+    counts,
+  );
+  const searched = traditionCounts(data, {
+    ...DEFAULT_FILTERS,
+    query: "Russell",
+  });
+  assert.equal(searched["secular-humanist"], 1);
+  assert.equal(searched.utilitarian, 0);
+  assert.equal(searched.existential, 0);
+  assert.deepEqual(
+    [
+      ...new Set(
+        filterPositions(data, {
+          ...DEFAULT_FILTERS,
+          traditionIds: ["secular-humanist"],
+        }).map((p) => p.figureId),
+      ),
+    ],
+    ["russell"],
+  );
+});
 const m: Milestone = {
   ...data.milestones[0],
   window: { start: 1900, end: 1920 },
