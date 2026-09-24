@@ -142,6 +142,10 @@ button svg {
 .brand:hover {
   text-decoration: none;
 }
+.brand-logo {
+  flex-shrink: 0;
+  object-fit: contain;
+}
 .brand > span > span {
   display: block;
   font-size: 10px;
@@ -579,7 +583,7 @@ h1 {
 }
 .axis-label {
   font-size: 13px;
-  fill: #728094;
+  fill: #000;
   font-family: var(--font);
 }
 .axis-title {

@@ -339,11 +339,11 @@ export function calibration() {
     "Bertrand Russell",
     1872,
     1970,
-    undefined,
+    "secular-humanist",
     "#647587",
     "Britain; analytic philosophy and secular humanism",
-    "https://plato.stanford.edu/entries/russell/",
-    "",
+    "https://heritage.humanists.uk/bertrand-russell/",
+    "His ethics of love and knowledge and documented work with the British Humanist Association and Cardiff Humanists establish a substantive humanist affiliation.",
     "central",
     [
       {

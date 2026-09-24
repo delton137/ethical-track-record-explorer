@@ -23,6 +23,18 @@ const validRange = (r: { start: number; end: number }) =>
   Number.isInteger(r.start) && Number.isInteger(r.end) && r.start <= r.end;
 for (const f of data.figures) {
   assert(f.affiliations.length, `${f.id}: affiliation`);
+  assert.equal(
+    new Set(f.affiliations.map((a) => a.traditionId)).size,
+    f.affiliations.length,
+    `${f.id}: duplicate affiliations`,
+  );
+  if (f.primaryTraditionId)
+    assert(
+      f.affiliations.some(
+        (a) => a.traditionId === f.primaryTraditionId && a.status === "core",
+      ),
+      `${f.id}: primary tradition must be a core affiliation`,
+    );
   assert(IMPORTANCE_WIDTH[f.importance.level]);
   for (const a of f.affiliations) {
     assert(traditions.has(a.traditionId));

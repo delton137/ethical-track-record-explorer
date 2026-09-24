@@ -3,6 +3,35 @@ import { readFile } from "node:fs/promises";
 import type { ResearchData } from "../../lib/types";
 import AxeBuilder from "@axe-core/playwright";
 
+test("tradition badges match filtering and Russell is selectable as a secular humanist", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const legend = page.getByLabel("Tradition color legend");
+  const existential = legend.getByRole("button", { name: /^Existentialist/ });
+  const humanist = legend.getByRole("button", { name: /^Secular humanist/ });
+  await expect(existential.locator("small")).toHaveText("3");
+  await expect(humanist.locator("small")).toHaveText("1");
+  await existential.click();
+  await expect(existential.locator("small")).toHaveText("3");
+  await expect(humanist.locator("small")).toHaveText("1");
+  await page.getByRole("button", { name: /^Filters/ }).click();
+  await page
+    .getByLabel("Include contested affiliations in comparisons")
+    .check();
+  await expect(existential.locator("small")).toHaveText("6");
+  await humanist.click();
+  await expect(page.locator("[data-position]")).toHaveCount(1);
+  await expect(
+    page.locator('[data-position="russell-extinction"]'),
+  ).toBeVisible();
+  await page.reload();
+  await expect(humanist).toHaveAttribute("aria-pressed", "true");
+  await expect(
+    page.locator('[data-position="russell-extinction"]'),
+  ).toBeVisible();
+});
+
 test("every plotted position opens its own primary quotation, including overlaps", async ({
   page,
   request,
@@ -292,9 +321,14 @@ test("bulk tradition selection persists and progress intervals explain their end
   await expect(drawer.locator(".check-grid input:checked")).toHaveCount(0);
   await drawer.getByRole("button", { name: "Select all", exact: true }).click();
   await expect(page.locator("[data-position]")).toHaveCount(count);
-  await expect(drawer.locator(".check-grid input:checked")).toHaveCount(13);
+  const traditionCount = await drawer.locator(".check-grid input").count();
+  await expect(drawer.locator(".check-grid input:checked")).toHaveCount(
+    traditionCount,
+  );
   await drawer.locator(".check-grid input").first().uncheck();
-  await expect(drawer.locator(".check-grid input:checked")).toHaveCount(12);
+  await expect(drawer.locator(".check-grid input:checked")).toHaveCount(
+    traditionCount - 1,
+  );
   await expect(
     page.getByText("Reading the chart", { exact: true }),
   ).toHaveCount(0);

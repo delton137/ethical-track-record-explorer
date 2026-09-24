@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import {
   Search,
   SlidersHorizontal,
-  ArrowDownToLine,
   RotateCcw,
   ArrowUpRight,
   ChevronDown,
@@ -23,10 +23,10 @@ import type { Filters, Scenarios, YearRange } from "@/lib/types";
 import {
   calculateScore,
   defaultScenarios,
-  exportSnapshot,
   filterPositions,
   formatYears,
   leaderboard,
+  traditionCounts,
 } from "@/lib/scoring";
 import { DEFAULT_FILTERS, parseState, serializeState } from "@/lib/state";
 import Timeline from "./timeline";
@@ -57,6 +57,7 @@ export default function Explorer() {
   const modalRef = useRef<HTMLDialogElement>(null);
   const modalOpener = useRef<HTMLElement | null>(null);
   const positions = useMemo(() => filterPositions(data, filters), [filters]);
+  const counts = useMemo(() => traditionCounts(data, filters), [filters]);
   const ranks = useMemo(
     () => leaderboard(data, positions, filters),
     [positions, filters],
@@ -181,18 +182,6 @@ export default function Explorer() {
     });
     setPeriodError("");
   };
-  const exportData = () => {
-    const blob = new Blob(
-      [JSON.stringify(exportSnapshot(data, filters, scenarios), null, 2)],
-      { type: "application/json" },
-    );
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "ethical-track-record-explorer.json";
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  };
   const share = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -244,16 +233,14 @@ export default function Explorer() {
           href="/"
           aria-label="Ethical Track Record Explorer home"
         >
-          <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
-            <rect width="30" height="30" rx="7" fill="#2466c5" />
-            <path
-              d="M7 22V8M7 22h16M10 19l5-5 4 1 5-8"
-              stroke="white"
-              strokeWidth="1.5"
-              fill="none"
-            />
-            <circle cx="15" cy="14" r="2" fill="white" />
-          </svg>
+          <Image
+            src="/moral_circle.png"
+            alt=""
+            width={40}
+            height={40}
+            className="brand-logo"
+            loading="eager"
+          />
           <span>
             Ethical Track Record<span>EXPLORER</span>
           </span>
@@ -296,12 +283,6 @@ export default function Explorer() {
                 <button className="quiet-button" onClick={share}>
                   {copied ? <Check size={16} /> : <Link2 size={16} />}{" "}
                   {copied ? "Link copied" : "Copy view link"}
-                </button>
-                <button
-                  className="quiet-button export-button"
-                  onClick={exportData}
-                >
-                  <ArrowDownToLine size={16} /> Export evidence
                 </button>
               </div>
             </section>
@@ -551,15 +532,7 @@ export default function Explorer() {
                 >
                   {selectionActions}
                   {data.traditions.map((t) => {
-                    const count = new Set(
-                      positions
-                        .filter((p) =>
-                          data.figures
-                            .find((f) => f.id === p.figureId)
-                            ?.affiliations.some((a) => a.traditionId === t.id),
-                        )
-                        .map((p) => p.figureId),
-                    ).size;
+                    const count = counts[t.id];
                     return (
                       <button
                         key={t.id}
@@ -579,7 +552,7 @@ export default function Explorer() {
                                 : [t.id],
                           })
                         }
-                        title={`${t.name}: ${count} thinkers in this view`}
+                        title={`${t.name}: ${count} thinkers matching this tradition and the current filters`}
                       >
                         <span
                           className="legend-dot"
@@ -854,7 +827,6 @@ export default function Explorer() {
         )}
         {tab === "roster" && (
           <section className="research-index">
-            <p className="eyebrow">AN INSPECTABLE CORPUS</p>
             <h1>Research index</h1>
             <p>
               {data.figures.filter((f) => f.status === "included").length}{" "}
@@ -939,16 +911,6 @@ export default function Explorer() {
           </section>
         )}
       </main>
-      <footer>
-        <span>Ethical Track Record Explorer</span>
-        <p>
-          Written ideas, not lives or deeds. Sources checked {data.asOf}.
-          Version {data.version}.
-        </p>
-        <a href="/api/research" download>
-          Download full corpus <ArrowDownToLine size={13} />
-        </a>
-      </footer>
       <dialog
         ref={modalRef}
         className="benchmark-dialog"
@@ -1168,7 +1130,10 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
             <li>
               We can measure the "state of ethical progress" in terms of what
               the majority thinks is ethically correct in a set of the largest
-              and most advanced countries.
+              and most advanced countries. However, since getting historical
+              survey data on ethical issues is hard, in this explorer we identify
+              "periods of progress" in terms of legal changes in major leading
+              countries.
             </li>
             <li>
               Some philosophical systems yield insights well ahead of that
