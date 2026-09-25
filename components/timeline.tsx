@@ -309,7 +309,7 @@ export default function Timeline({
                     : x(t);
               const labelY =
                 m.id === "animal-protection"
-                  ? 860
+                  ? H - 345
                   : m.id === "child-protection"
                     ? 350
                     : m.id === "religious-freedom"
@@ -317,9 +317,9 @@ export default function Timeline({
                       : m.id === "execution-abolition"
                         ? 112
                         : m.id === "decriminalization"
-                          ? 235
+                          ? 380
                           : m.id === "votes-for-women"
-                            ? 750
+                            ? H - 435
                             : arc(t) + 58 + index * 65;
               return (
                 <g
