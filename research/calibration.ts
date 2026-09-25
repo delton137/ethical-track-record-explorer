@@ -1,4 +1,10 @@
-import { evidence as e, figure as f } from "./evidence";
+import {
+  evidence as e,
+  figure as f,
+  positions,
+  quotations,
+  sources,
+} from "./evidence";
 
 export function calibration() {
   f(
@@ -75,17 +81,8 @@ export function calibration() {
     "#3e82d2",
     "Britain; utilitarian liberal reform",
     "https://plato.stanford.edu/entries/mill/",
-    "Major systematic utilitarian and liberal philosopher.",
+    "Utilitarian moral philosopher. His defense of liberal rights is grounded in utility, not an independent rights-based ethical foundation.",
     "foundational",
-    [
-      {
-        traditionId: "liberal",
-        status: "core",
-        basis:
-          "Substantial liberal argument in On Liberty and writings on representation.",
-        sourceUrl: "https://plato.stanford.edu/entries/mill/",
-      },
-    ],
   );
   e({
     id: "mill-women",
@@ -110,9 +107,9 @@ export function calibration() {
     id: "mill-execution",
     person: "mill",
     domain: "execution",
-    title: "Retaining capital punishment",
+    title: "Against complete abolition: retain execution for aggravated murder",
     summary:
-      "Mill identifies his opposition to a motion to abolish capital punishment in his own written autobiography.",
+      "Mill opposed complete abolition of the death penalty, defending its retention for aggravated murder proved by conclusive evidence and without mitigating circumstances. He welcomed earlier reforms removing execution for lesser offences. His argument was that execution could deter grave murder while causing less suffering than lifelong imprisonment with hard labour.",
     year: 1873,
     stance: "opposes",
     milestone: "execution-abolition",
@@ -121,16 +118,55 @@ export function calibration() {
     work: "Autobiography",
     url: "https://www.gutenberg.org/files/10378/10378-h/10378-h.htm",
     context:
-      "He describes this position as differing from advanced liberal opinion and then discusses his support for women’s suffrage.",
+      "Mill explicitly recalls opposing abolition, despite disagreeing with advanced liberal opinion. His speech of 21 April 1868 supplies the scope: retaining execution for especially grave murders, while praising earlier restrictions on capital punishment.",
+    checkedOn: "2026-09-25",
+    dateBasis:
+      "1873 is the publication-year proxy for this retrospective autobiographical passage. The corroborating Hansard speech was delivered on 21 April 1868; its separate quotation is not dated 1873 or counted as another episode.",
+    match:
+      "Retaining execution for aggravated murder directly opposes complete abolition of capital punishment. This does not imply opposition to narrowing the offences eligible for execution.",
     qualified: true,
     qualifications: [
-      "This is a retrospective written account of his parliamentary position, not the transcript of the speech.",
-      "1873 is the publication proxy; the original parliamentary intervention was in 1868.",
-      "This writing falls within the selected 1867–1998 adoption interval, so its opposition score spans negative lag and zero.",
+      "The plotted writing is the 1873 Autobiography. The additional quote comes from Hansard’s report of his speech on 21 April 1868, during debate on the Capital Punishment within Prisons Bill.",
+      "He defended execution only for especially grave murders with conclusive evidence and no mitigating circumstances; he praised abolition for lesser offences.",
+      "His claims about deterrence and comparative suffering are his stated rationale, not findings established by this record.",
     ],
     counter:
-      "The same autobiographical passage records progressive positions on suffrage. Those views are kept separate from capital punishment.",
+      "In the same 1868 speech Mill praised reformers for ending the use of execution for lesser offences. His support for these restrictions qualifies the scope of his position but does not reverse his explicit opposition to complete abolition.",
   });
+  const speechSourceId = "mill-capital-punishment-hansard-1868";
+  const speechQuoteId = `${speechSourceId}-quote`;
+  if (!sources.some((source) => source.id === speechSourceId)) {
+    sources.push({
+      id: speechSourceId,
+      title: "Speech on capital punishment — 21 April 1868",
+      author: "John Stuart Mill; parliamentary report in Hansard",
+      url: "https://api.parliament.uk/historic-hansard/commons/1868/apr/21/committee",
+      edition:
+        "HC Deb 21 April 1868, vol. 191, cols. 1047–1055; Capital Punishment within Prisons Bill, committee debate.",
+      originalLanguage: "English",
+      translation: "Original English; parliamentary report.",
+      publication: { start: 1868, end: 1868 },
+      reuse:
+        "Brief attributed excerpt from the historical parliamentary record.",
+      checkedOn: "2026-09-25",
+      verification: "primary-transcription",
+      verificationNote:
+        "Wording and speaker checked against the UK Parliament’s historic Hansard transcription; a parliamentary report, not an autograph manuscript.",
+    });
+    quotations.push({
+      id: speechQuoteId,
+      sourceId: speechSourceId,
+      text: "I defend this penalty, when confined to atrocious cases",
+      locator: "21 April 1868, col. 1048; speech headed MR. J. STUART MILL",
+      context:
+        "Mill opposes complete abolition after praising restrictions that had left aggravated murder as practically the only capital offence. He argues that execution is less cruel than lifelong hard labour and can deter grave murder. The preceding sentence requires conclusive evidence and no mitigating circumstances.",
+    });
+  }
+  const execution = positions.find(
+    (position) => position.id === "mill-execution",
+  )!;
+  if (!execution.quotationIds.includes(speechQuoteId))
+    execution.quotationIds.push(speechQuoteId);
   f(
     "woolman",
     "John Woolman",
@@ -233,7 +269,7 @@ export function calibration() {
     sourceId: "kant-right",
     qualifications: [
       "The mirror labels the text 1790 incorrectly. The work was published in 1797 (Cambridge edition bibliographic confirmation).",
-      "The selected British benchmark is later than this writing: opposition scores zero under the agreed rule.",
+      "The selected British benchmark is later than this writing: opposition receives a negative foresight score at half weight.",
     ],
     counter:
       "The same discussion disallows degrading maltreatment and considers difficult exceptional cases; retention of execution does not imply support for every cruel punishment.",
@@ -348,10 +384,11 @@ export function calibration() {
     [
       {
         traditionId: "utilitarian",
-        status: "contested",
+        status: "core",
         basis:
-          "Consequentialist elements in his ethics are substantial but do not by themselves establish an exclusive utilitarian identity.",
-        sourceUrl: "https://plato.stanford.edu/entries/russell-moral/",
+          "Substantive consequentialism qualifies for this non-exclusive family: The Elements of Ethics (1910), III §§16–18, evaluates objective rightness by the best probable consequences. His theory of value and metaethics changed; this is not a claim that he consistently accepted classical hedonistic utilitarianism. Secular humanism remains a separate core affiliation.",
+        sourceUrl:
+          "https://fair-use.org/bertrand-russell/the-elements-of-ethics/section-iii",
       },
     ],
   );

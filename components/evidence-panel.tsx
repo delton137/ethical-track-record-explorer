@@ -5,7 +5,6 @@ import {
   Maximize2,
   Minimize2,
   ArrowUpRight,
-  FileText,
 } from "lucide-react";
 import type {
   Filters,
@@ -14,6 +13,8 @@ import type {
   WrittenPosition,
 } from "@/lib/types";
 import { calculateScore, formatYears, IMPORTANCE_WIDTH } from "@/lib/scoring";
+import { DATE_CONVENTION, formatLifeDates } from "@/lib/dates";
+import { buildTimelineAxis } from "@/lib/geometry";
 import { useEffect, useRef, useState } from "react";
 
 export default function EvidencePanel({
@@ -48,6 +49,7 @@ export default function EvidencePanel({
       document.body.style.overflow = previous;
     };
   }, [expanded]);
+  const axis = buildTimelineAxis(data, filters.period);
   const figure = data.figures.find((f) => f.id === position.figureId)!;
   const milestone = data.milestones.find((m) => m.id === position.milestoneId);
   const alternative =
@@ -72,9 +74,6 @@ export default function EvidencePanel({
       key={position.id}
     >
       <div className="panel-top">
-        <span>
-          <FileText size={15} /> THE PRIMARY RECORD
-        </span>
         <div>
           <button
             className="icon-button mobile-expand"
@@ -108,10 +107,25 @@ export default function EvidencePanel({
           </p>
           <h2>{figure.name}</h2>
           <p className="life-dates">
-            {figure.born}–{figure.died ?? "present"} <span>·</span>{" "}
-            {figure.context}
+            {formatLifeDates(figure)} <span>·</span> {figure.context}
           </p>
         </div>
+        {figure.lifeDateNote && (
+          <p className="date-note">
+            {figure.lifeDateNote}{" "}
+            {figure.lifeDateSourceUrl && (
+              <a
+                href={figure.lifeDateSourceUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {figure.kind === "scripture"
+                  ? "Composition-date source"
+                  : "Life-date source"}
+              </a>
+            )}
+          </p>
+        )}
         <div className="affiliation-badges">
           {figure.affiliations.map((a) => (
             <a
@@ -136,22 +150,66 @@ export default function EvidencePanel({
         <p className="position-summary">{position.summary}</p>
         <dl className="dates-grid">
           <div>
-            <dt>Writing / date proxy</dt>
+            <dt>
+              {position.attribution === "reported-teaching"
+                ? "Attributed teaching period"
+                : position.attribution === "scriptural-text"
+                  ? "Passage composition / redaction"
+                  : "Writing / date proxy"}
+            </dt>
             <dd>{formatYears(position.composition)}</dd>
           </div>
           <div>
-            <dt>Passage publication / dated edition</dt>
+            <dt>
+              {position.attribution === "reported-teaching"
+                ? "Textual attestation / public-date proxy"
+                : position.attribution === "scriptural-text"
+                  ? "Circulation / codification proxy"
+                  : "Passage publication / dated edition"}
+            </dt>
             <dd>{formatYears(position.publication)}</dd>
           </div>
         </dl>
         <p className="date-note">{position.dateBasis}</p>
+        <p className="date-note">
+          <strong>
+            {position.attribution === "reported-teaching"
+              ? "Reported teaching."
+              : position.attribution === "scriptural-text"
+                ? "Scriptural text."
+                : "Authored work."}
+          </strong>{" "}
+          {position.attributionNote}
+        </p>
+        <details className="source-details date-conventions">
+          <summary>Date conventions & compressed axis</summary>
+          <p>{DATE_CONVENTION}</p>
+          <p>
+            Scores and rankings use actual dates. The Ancient section compresses
+            the display before 1500. Full-corpus life/floruit and
+            composition/attestation ranges, padded by 25 years, protect occupied
+            intervals; empty gaps of at least 200 years become breaks. The
+            reference line rises gently from 800 BCE through 1700.
+          </p>
+          {axis.breaks.length ? (
+            <ul>
+              {axis.breaks.map((b) => (
+                <li key={b.start}>Compressed gap: {formatYears(b)}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>No axis breaks in the selected period.</p>
+          )}
+        </details>
         <div className="status-row">
           <span
             className={`status-label ${position.visibility === "private" ? "private" : ""}`}
           >
             {position.visibility === "private"
               ? "Private at composition"
-              : "Public writing"}
+              : position.attribution === "reported-teaching"
+                ? "Publicly transmitted teaching"
+                : "Public writing"}
           </span>
           <span className="status-label">
             {position.evidence === "checked"
@@ -209,7 +267,7 @@ export default function EvidencePanel({
                           target="_blank"
                           rel="noreferrer"
                         >
-                          Contemporary attestation
+                          Dating source
                         </a>
                       </dd>
                     </>
@@ -224,6 +282,17 @@ export default function EvidencePanel({
                   </dd>
                   <dt>Reuse</dt>
                   <dd>{source.reuse}</dd>
+                  {source.publicDomainUrl && (
+                    <dd>
+                      <a
+                        href={source.publicDomainUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Translation rights record
+                      </a>
+                    </dd>
+                  )}
                 </dl>
               </details>
             </article>
@@ -232,15 +301,7 @@ export default function EvidencePanel({
         <section className="comparison-block">
           <p className="eyebrow">EDITORIAL COMPARISON</p>
           <div className="row-between">
-            <h3>
-              {score
-                ? score.midpoint > 0
-                  ? "Ahead of the benchmark"
-                  : score.midpoint < 0
-                    ? "Behind the benchmark"
-                    : "No lead or lag"
-                : "Unscored position"}
-            </h3>
+            <h3>{score ? "Ethical foresight score" : "Unscored position"}</h3>
             {score && (
               <strong
                 className={`score-pill ${score.midpoint < 0 ? "negative" : ""}`}
@@ -248,7 +309,7 @@ export default function EvidencePanel({
                 {score.min === score.max
                   ? `${Math.round(score.midpoint)}`
                   : `${Math.round(score.min)}–${Math.round(score.max)}`}{" "}
-                <small>years</small>
+                <small>weighted years</small>
               </strong>
             )}
           </div>

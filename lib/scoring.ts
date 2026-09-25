@@ -10,20 +10,22 @@ import type {
 } from "./types";
 import {
   GEOMETRY,
+  buildTimelineAxis,
   PROGRESS_PHASES,
   leadLagFactor,
   positionCoordinates,
+  spreadScripturePositions,
 } from "./geometry";
 
-export const ALGORITHM_VERSION = "1.2.0";
+import { formatYears, DATE_CONVENTION } from "./dates";
+export { formatYears } from "./dates";
+export const ALGORITHM_VERSION = "2.0.0";
 export const IMPORTANCE_WIDTH = {
   foundational: 3,
   central: 2.25,
   established: 1.5,
 } as const;
 export const midpoint = (r: YearRange) => (r.start + r.end) / 2;
-export const formatYears = (r: YearRange) =>
-  r.start === r.end ? String(r.start) : `${r.start}–${r.end}`;
 export function defaultScenarios(data: ResearchData): Scenarios {
   return Object.fromEntries(
     data.milestones
@@ -60,12 +62,15 @@ export function calculateScore(
     min: benchmark.start - writing.end,
     max: benchmark.end - writing.start,
   };
-  const clamp =
-    p.stance === "supports"
-      ? (n: number) => Math.max(n, 0)
-      : (n: number) => Math.min(n, 0);
-  const min = clamp(difference.min),
-    max = clamp(difference.max);
+  const scoreAt = (gap: number) =>
+    p.stance === "supports" ? Math.max(gap, 0) : gap > 0 ? -0.5 * gap : gap;
+  const endpoints = [scoreAt(difference.min), scoreAt(difference.max)];
+  const min = Math.min(...endpoints);
+  // Opposition peaks at zero when writing and reform intervals overlap.
+  const max =
+    p.stance === "opposes" && difference.min <= 0 && difference.max >= 0
+      ? 0
+      : Math.max(...endpoints);
   return {
     stance: p.stance,
     min,
@@ -74,7 +79,7 @@ export function calculateScore(
     provisional: milestone.kind !== "historical",
     benchmark,
     writing,
-    explanation: `${p.stance === "supports" ? "Support: max" : "Opposition: min"}(benchmark − writing year, 0). Writing ${formatYears(writing)}; benchmark ${formatYears(benchmark)}. Range ${min} to ${max} years. Lead/lag uses the interval midpoint; supportive dots written after the full reform interval use its endpoint height; earlier support uses the average reference height; opposition before reform sits on the reference line at its writing midpoint; at or after reform starts it stays at the reference height of the selected reform-start year. Numerical scores are unchanged.`,
+    explanation: `${p.stance === "supports" ? "Support: max(benchmark − writing year, 0)" : "Ethical foresight opposition: −0.5 × years before reform; −1 × years after reform; zero at reform"}. Writing ${formatYears(writing)}; benchmark ${formatYears(benchmark)}. Range ${min} to ${max} weighted years. Lead/lag uses the interval midpoint; supportive dots written after the full reform interval use its endpoint height; earlier support uses the average reference height; opposition before reform sits on the reference line at its writing midpoint; at or after reform starts it stays at the reference height of the selected reform-start year. Chart placement follows stance and dates; ethical foresight determines numerical scores.`,
   };
 }
 export function figureQualifies(f: Figure, filters: Filters) {
@@ -88,9 +93,30 @@ export function figureQualifies(f: Figure, filters: Filters) {
       ))
   );
 }
+export function isPostdiction(
+  position: WrittenPosition,
+  milestone: Milestone | undefined,
+  filters: Filters,
+  scenarios: Scenarios = {},
+): boolean {
+  if (position.stance !== "supports" || !milestone) return false;
+  const writing = filters.publicOnly
+    ? position.publication
+    : position.composition;
+  return (
+    midpoint(writing) >
+    effectiveBenchmark(
+      milestone,
+      scenarios,
+      filters.benchmark === "alternative",
+    ).end
+  );
+}
+
 export function filterPositions(
   data: ResearchData,
   filters: Filters,
+  scenarios: Scenarios = defaultScenarios(data),
 ): WrittenPosition[] {
   const figures = new Map(data.figures.map((f) => [f.id, f]));
   const query = filters.query.trim().toLocaleLowerCase();
@@ -98,6 +124,12 @@ export function filterPositions(
     const f = figures.get(p.figureId);
     if (!f || !figureQualifies(f, filters)) return false;
     const date = filters.publicOnly ? p.publication : p.composition;
+    const milestone = data.milestones.find((m) => m.id === p.milestoneId);
+    if (
+      !filters.showPostdictions &&
+      isPostdiction(p, milestone, filters, scenarios)
+    )
+      return false;
     return (
       (!filters.publicOnly || p.visibility === "public") &&
       (filters.evidence === "all" || p.evidence === filters.evidence) &&
@@ -105,18 +137,26 @@ export function filterPositions(
       date.end >= filters.period.start &&
       date.start <= filters.period.end &&
       (!query ||
-        `${f.name} ${p.title} ${p.summary}`.toLocaleLowerCase().includes(query))
+        `${f.name} ${f.aliases?.join(" ") ?? ""} ${p.title} ${p.summary}`
+          .toLocaleLowerCase()
+          .includes(query))
     );
   });
 }
-export function traditionCounts(data: ResearchData, filters: Filters) {
+export function traditionCounts(
+  data: ResearchData,
+  filters: Filters,
+  scenarios: Scenarios = defaultScenarios(data),
+) {
   return Object.fromEntries(
     data.traditions.map((t) => [
       t.id,
       new Set(
-        filterPositions(data, { ...filters, traditionIds: [t.id] }).map(
-          (p) => p.figureId,
-        ),
+        filterPositions(
+          data,
+          { ...filters, traditionIds: [t.id] },
+          scenarios,
+        ).map((p) => p.figureId),
       ).size,
     ]),
   );
@@ -144,7 +184,17 @@ export function leaderboard(
   // One record per substantive episode, regardless of duplicate quotation/record count.
   const episodes = [
     ...new Map(
-      positions.map((p) => [`${p.figureId}:${p.domainId}:${p.episodeId}`, p]),
+      positions
+        // Exclude before deduplication and averaging: postdictions must not
+        // dilute a mean, create coverage, or replace an earlier episode.
+        .filter((p) => {
+          const milestone = milestoneMap.get(p.milestoneId ?? "");
+          return (
+            milestone?.kind !== "historical" ||
+            !isPostdiction(p, milestone, filters)
+          );
+        })
+        .map((p) => [`${p.figureId}:${p.domainId}:${p.episodeId}`, p]),
     ).values(),
   ];
   const histories = episodes.flatMap((p) => {
@@ -162,29 +212,6 @@ export function leaderboard(
   const chosen = data.traditions.filter(
     (t) => !filters.traditionIds.length || filters.traditionIds.includes(t.id),
   );
-  const available = new Map(
-    chosen.map((t) => [
-      t.id,
-      new Set(
-        histories
-          .filter(({ p }) =>
-            figures
-              .get(p.figureId)!
-              .affiliations.some(
-                (a) =>
-                  a.traditionId === t.id &&
-                  (a.status === "core" || filters.includeContested),
-              ),
-          )
-          .map(({ p }) => p.domainId),
-      ),
-    ]),
-  );
-  const shared = new Set(
-    data.domains
-      .filter((d) => chosen.every((t) => available.get(t.id)?.has(d.id)))
-      .map((d) => d.id),
-  );
   const rows = chosen.map((t) => {
     const cells = new Map<
       string,
@@ -200,7 +227,6 @@ export function leaderboard(
     >();
     let positionCount = 0;
     for (const { p, s } of histories) {
-      if (filters.sharedDomains && !shared.has(p.domainId)) continue;
       const f = figures.get(p.figureId)!;
       const affiliations = f.affiliations.filter(
         (a) => a.status === "core" || filters.includeContested,
@@ -278,12 +304,23 @@ export function leaderboard(
   for (const row of rows) if (row.eligible) row.rank = ++rank;
   return rows;
 }
+export function comparisons(data: ResearchData, filters: Filters): Ranking[] {
+  // Chart visibility and editable future scenarios must not change comparisons,
+  // including their coverage counts. Historical postdictions are removed inside
+  // leaderboard even when a caller supplies all records directly.
+  const positions = filterPositions(data, {
+    ...filters,
+    showPostdictions: true,
+  });
+  return leaderboard(data, positions, filters);
+}
+
 export function exportSnapshot(
   data: ResearchData,
   filters: Filters,
   scenarios: Scenarios,
 ) {
-  const positions = filterPositions(data, filters);
+  const positions = filterPositions(data, filters, scenarios);
   const scores = new Map(
     data.positions.map((p) => [
       p.id,
@@ -297,12 +334,36 @@ export function exportSnapshot(
     ]),
   );
   const factor = leadLagFactor([...scores.values()]);
+  const axis = buildTimelineAxis(data, filters.period, GEOMETRY.canonicalWidth);
+  const rawPlacements = new Map(
+    data.positions.flatMap((p) => {
+      const score = scores.get(p.id);
+      const placement = score
+        ? positionCoordinates(
+            score,
+            filters.period,
+            GEOMETRY.canonicalWidth,
+            factor,
+            axis,
+          )
+        : null;
+      return placement ? [[p.id, placement] as const] : [];
+    }),
+  );
+  const spread = spreadScripturePositions(
+    data,
+    rawPlacements,
+    filters.period,
+    GEOMETRY.canonicalWidth,
+  );
   return {
     algorithmVersion: ALGORITHM_VERSION,
     exportedAt: new Date().toISOString(),
     dataVersion: data.version,
+    dateConvention: DATE_CONVENTION,
+    axis,
     coordinateRule:
-      "x=leftMargin+xFraction×(canvasWidth−leftMargin−rightMargin); xFraction=(displayYear(writingYear)−displayYear(from))/(displayYear(to)−displayYear(from)); displayYear(y)=earlyYearCutoff+(y−earlyYearCutoff)×earlyYearScale before earlyYearCutoff, otherwise y; referenceY anchors year 2100 at arcEndY. After 1700 it rises by tan(laterSlopeDegrees) times the horizontal pixel distance, using the current canvas width and displayed year range; before 1700 it rises only earlyArcRise over 1500–1700. If support writing.start >= benchmark.end, support y=referenceY(benchmark.end) and its whiskers collapse; otherwise support y is the time-weighted mean referenceY across the benchmark interval. Opposition y=referenceY(min(writing midpoint, benchmark.start)): before reform it sits on the line at its writing midpoint; at or after reform starts it remains at the reform-start height, with no pixel offset. Its vertical whiskers collapse to that position; writing-date uncertainty uses the horizontal interval. This rule applies to every issue and selected benchmark. The canonical progressPhases are included in geometry. Coordinates below use canonicalWidth; recalculate referenceY for other canvas widths. Unscored evidence is table-only. Out-of-period midpoints are not plotted.",
+      "Actual astronomical years determine scores, filtering and rankings. Display x linearly interpolates within the exported axis.segments. The Ancient section reserves 160 pixels in a mixed period; full-corpus lifetimes/floruit and both date ranges, padded 25 years, protect occupied intervals. Empty gaps of at least 200 years become marked breaks. Filters never recompute occupied intervals. The reference line rises by 24 display pixels from 800 BCE through 1700, then rises at 25 degrees using the modern display scale, anchored at y=445 in 2100. Support after the benchmark uses its end height; earlier support uses the time-weighted mean benchmark height. Opposition uses referenceY(min(writing midpoint, benchmark.start)). Writing uncertainty endpoints use this same x-axis. Coordinates use canonicalWidth; rebuild the shared axis for other widths. Only interval-matched scored positions are plotted. Each scripture forms a compact group with 12-pixel vertical spacing, anchored 12 pixels below the reference at its earliest plotted date; hover labels are spaced independently. Exported baseY and displayOffsetY distinguish score geometry from readability offsets; x dates and numerical scores never change. All unscored records and out-of-period midpoints are table-only. Connections group records by figure, including scriptural texts, without asserting one author or doctrinal evolution.",
     geometry: {
       ...GEOMETRY,
       progressPhases: PROGRESS_PHASES,
@@ -316,16 +377,16 @@ export function exportSnapshot(
       return {
         positionId: p.id,
         score,
-        placement: score
-          ? positionCoordinates(
-              score,
-              filters.period,
-              GEOMETRY.canonicalWidth,
-              factor,
-            )
-          : null,
+        placement:
+          data.figures.find((f) => f.id === p.figureId)?.kind === "scripture"
+            ? (spread.get(p.id) ?? null)
+            : (rawPlacements.get(p.id) ?? null),
       };
     }),
-    historicalLeaderboard: leaderboard(data, positions, filters),
+    historicalLeaderboard: comparisons(data, filters),
+    scoringRule:
+      "Ethical foresight: support = max(benchmark − writing year, 0); opposition = −0.5 × years before reform or −1 × years after reform. Uncertainty ranges include zero when writing and reform intervals overlap. Units are weighted years.",
+    comparisonRule:
+      "Historical episodes only; supportive writings with date midpoint strictly after the selected benchmark end are always excluded before deduplication, averaging, coverage and eligibility. Show postdictions affects display only. Average episodes within figure/domain, then people with fractional affiliation weights, then covered domains equally.",
   };
 }

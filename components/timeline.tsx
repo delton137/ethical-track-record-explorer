@@ -7,6 +7,7 @@ import type {
   ResearchData,
   Scenarios,
   WrittenPosition,
+  YearRange,
 } from "@/lib/types";
 import {
   calculateScore,
@@ -16,17 +17,21 @@ import {
 } from "@/lib/scoring";
 import {
   GEOMETRY,
-  displayYear,
+  buildTimelineAxis,
+  axisX,
   referenceYears,
   arcY,
   leadLagFactor,
   positionCoordinates,
+  spreadScripturePositions,
 } from "@/lib/geometry";
+
+import { formatYear } from "@/lib/dates";
 
 // Three-pixel strokes touch adjacent lanes and the two-pixel central arc.
 const INTERVAL_OFFSETS: Record<string, number> = {
   abolition: 2.5,
-  "racial-equality": -11.5,
+  "racial-equality": -14.5,
   "self-determination": -11.5,
   "women-equality": 2.5,
   "votes-for-women": 2.5,
@@ -51,6 +56,7 @@ type Props = {
   filters: Filters;
   scenarios: Scenarios;
   selected: string | null;
+  showVerticalBars: boolean;
   onSelect: (id: string) => void;
   onBenchmark: (id: string) => void;
 };
@@ -60,11 +66,13 @@ export default function Timeline({
   filters,
   scenarios,
   selected,
+  showVerticalBars,
   onSelect,
   onBenchmark,
 }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
   const [overlap, setOverlap] = useState<WrittenPosition[]>([]);
+  const [breakTip, setBreakTip] = useState<YearRange | null>(null);
   const [tip, setTip] = useState<WrittenPosition | null>(null);
   const [benchmarkTip, setBenchmarkTip] = useState<{
     id: string;
@@ -87,15 +95,18 @@ export default function Timeline({
       picker.current?.querySelector<HTMLButtonElement>("button")?.focus();
   }, [overlap]);
   const arc = (year: number) => arcY(year, W, filters.period);
-  const H = Math.max(GEOMETRY.height, arc(filters.period.start) + 150),
-    left = GEOMETRY.leftMargin,
+  const left = GEOMETRY.leftMargin,
     right = W - GEOMETRY.rightMargin;
+  // Remove the headroom freed by lowering the upper progress labels.
+  const viewTop = 130;
+  const plotTop = viewTop + 65;
   const from = filters.period.start,
     to = Math.max(from + 1, filters.period.end);
-  const timeScale = scaleLinear()
-    .domain([displayYear(from), displayYear(to)])
-    .range([left, right]);
-  const x = (year: number) => timeScale(displayYear(year));
+  const axis = useMemo(
+    () => buildTimelineAxis(data, filters.period, W),
+    [data, filters.period, W],
+  );
+  const x = (year: number) => axisX(axis, year);
   const allScores = data.positions.map((p) =>
     calculateScore(
       p,
@@ -106,7 +117,7 @@ export default function Timeline({
     ),
   );
   const factor = leadLagFactor(allScores);
-  const points = positions
+  const rawPoints = data.positions
     .flatMap((p) => {
       const score = calculateScore(
         p,
@@ -116,11 +127,32 @@ export default function Timeline({
         filters.benchmark === "alternative",
       );
       if (!score) return [];
-      const coordinates = positionCoordinates(score, filters.period, W, factor);
+      const coordinates = positionCoordinates(
+        score,
+        filters.period,
+        W,
+        factor,
+        axis,
+      );
       if (!coordinates.inPeriod) return [];
       return [{ p, score, ...coordinates }];
     })
     .sort((a, b) => a.year - b.year || a.p.id.localeCompare(b.p.id));
+  const spread = spreadScripturePositions(
+    data,
+    new Map(rawPoints.map((p) => [p.p.id, p])),
+    filters.period,
+    W,
+  );
+  const visibleIds = new Set(positions.map((p) => p.id));
+  const points = rawPoints
+    .filter((p) => visibleIds.has(p.p.id))
+    .map((p) => ({ ...p, ...spread.get(p.p.id)! }));
+  const H = Math.max(
+    GEOMETRY.height,
+    arc(filters.period.start) + 150,
+    ...[...spread.values()].map((p) => p.y + 170),
+  );
   const selectedPerson = data.positions.find(
     (p) => p.id === selected,
   )?.figureId;
@@ -137,14 +169,107 @@ export default function Timeline({
       .sort((a, b) => a.year - b.year || a.p.id.localeCompare(b.p.id)),
   }));
   const now = new Date(data.asOf).getUTCFullYear();
-  const ticks = scaleLinear()
-    .domain([from, to])
-    .ticks(to - from > 400 ? Math.min(12, Math.ceil((to - from) / 100)) : 7);
+  const modernTicks =
+    to >= 1500
+      ? scaleLinear()
+          .domain([Math.max(from, 1500), to])
+          .ticks(7)
+      : [];
+  const ancientTicks = axis.segments
+    .filter((s) => s.kind === "time" && s.start < 1500)
+    .map((s) =>
+      s.start <= 0
+        ? 1 - Math.floor((1 - s.start) / 100) * 100
+        : Math.ceil(s.start / 100) * 100,
+    )
+    .filter(
+      (t) => t < 1500 && !axis.breaks.some((b) => t > b.start && t < b.end),
+    );
+  const ticks = [...new Set([...ancientTicks, ...modernTicks])]
+    .sort((a, b) => a - b)
+    .filter((t, i, all) => i === 0 || x(t) - x(all[i - 1]) >= 35);
   const clippedYear = (year: number) => Math.min(to, Math.max(from, year));
   const referencePath = (start: number, end: number, offset = 0) =>
-    referenceYears(clippedYear(start), clippedYear(end))
+    [
+      ...new Set([
+        ...referenceYears(clippedYear(start), clippedYear(end)),
+        ...axis.segments
+          .flatMap((s) => [s.start, s.end])
+          .filter(
+            (year) => year > clippedYear(start) && year < clippedYear(end),
+          ),
+      ]),
+    ]
+      .sort((a, b) => a - b)
       .map((year, i) => `${i ? "L" : "M"}${x(year)},${arc(year) + offset}`)
       .join(" ");
+  const windowArrows = (
+    range: YearRange,
+    labelY: number,
+    provisional = false,
+  ) => (
+    <g
+      className="progress-window-arrows"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1"
+      pointerEvents="none"
+      aria-hidden="true"
+    >
+      {[range.start, range.end].map((year, i) => (
+        <line
+          key={i}
+          x1={(x(clippedYear(range.start)) + x(clippedYear(range.end))) / 2}
+          y1={labelY + 30}
+          x2={x(clippedYear(year))}
+          y2={labelY + 30}
+          markerEnd="url(#progress-window-arrowhead)"
+          strokeDasharray={provisional ? "4 3" : undefined}
+        />
+      ))}
+    </g>
+  );
+  const historicalIntervals = data.milestones
+    .filter((m) => m.kind === "historical")
+    .sort(
+      (a, b) =>
+        Number(a.id === "execution-abolition") -
+        Number(b.id === "execution-abolition"),
+    )
+    .flatMap((m) => {
+      if (m.window.end < from || m.window.start > to) return [];
+      const t = clippedYear(midpoint(m.window));
+      const offset = intervalOffset(m.id);
+      const index = [
+        "abolition",
+        "votes-for-women",
+        "decriminalization",
+        "religious-freedom",
+        "execution-abolition",
+        "child-protection",
+        "animal-protection",
+        "racial-equality",
+      ].indexOf(m.id);
+      const labelX =
+        (x(clippedYear(m.window.start)) + x(clippedYear(m.window.end))) / 2;
+      const labelY =
+        m.id === "animal-protection"
+          ? H - 385
+          : m.id === "child-protection"
+            ? 480
+            : m.id === "religious-freedom"
+              ? 320
+              : m.id === "execution-abolition"
+                ? 242
+                : m.id === "decriminalization"
+                  ? 380
+                  : m.id === "votes-for-women"
+                    ? H - 475
+                    : m.id === "racial-equality"
+                      ? 310
+                      : arc(t) + 58 + index * 65;
+      return [{ m, index, offset, labelX, labelY }];
+    });
   const choose = (p: WrittenPosition) => {
     const a = points.find((v) => v.p.id === p.id)!;
     const near = points
@@ -154,13 +279,24 @@ export default function Timeline({
     else onSelect(p.id);
   };
   const labelPoints = points.filter((v) => v.p.figureId === focused);
+  const scriptureLabelX = Math.max(left, ...labelPoints.map((p) => p.x)) + 18;
+  const scriptureLabelY = new Map<string, number>();
+  let lastLabelY = -Infinity;
+  for (const point of labelPoints
+    .filter((p) => byFigure.get(p.p.figureId)!.kind === "scripture")
+    .sort((a, b) => a.y - b.y || a.p.id.localeCompare(b.p.id))) {
+    const y = Math.max(point.y + 4, lastLabelY + 18);
+    scriptureLabelY.set(point.p.id, y);
+    lastLabelY = y;
+  }
+
   return (
     <div className="timeline-wrap" ref={container}>
       <div className="chart-instructions">
         <span>
-          <i className="key-dot" /> One dot = one written position
+          <i className="key-dot" /> One dot = one documented position
         </span>
-        <span className="subtle">Select a dot to read the evidence</span>
+        <span className="subtle">Select a dot to read quotes</span>
       </div>
       <p className="mobile-chart-hint">
         Swipe horizontally through the timeline, or switch to Table.
@@ -173,11 +309,29 @@ export default function Timeline({
         <svg
           className="timeline"
           style={{ width: W }}
-          viewBox={`0 0 ${W} ${H}`}
+          viewBox={`0 ${viewTop} ${W} ${H - viewTop}`}
           role="group"
-          aria-label="Written positions relative to the moral reference arc. Horizontal axis: writing year. Colored parallel lines above and below the central arc show reform intervals; dashed interval lines are provisional scenarios. Support after the reform interval uses its endpoint height; earlier support uses the average interval height; opposition before reform sits on the line at its writing midpoint, while opposition at or after reform starts stays at the reform-start height. Opposition has a minus sign. Use Tab to focus dots, arrow keys to move, Enter to select. An equivalent evidence table is available."
+          aria-label="Written positions relative to the moral reference arc. Horizontal axis: historical date. Before 1500 uses a compressed Ancient section; marked breaks compress empty gaps. The reference line rises gently from 800 BCE through 1700. Scores use actual dates. Colored parallel lines above and below the central arc show reform intervals; dashed interval lines are provisional scenarios. Support after the reform interval uses its endpoint height; earlier support uses the average interval height; opposition before reform sits on the line at its writing midpoint, while opposition at or after reform starts stays at the reform-start height. Opposition has a minus sign. Use Tab to focus dots, arrow keys to move, Enter to select. An equivalent evidence table is available."
         >
           <defs>
+            <marker
+              id="progress-window-arrowhead"
+              viewBox="0 0 7 7"
+              refX="6"
+              refY="3.5"
+              markerWidth="7"
+              markerHeight="7"
+              markerUnits="userSpaceOnUse"
+              orient="auto"
+            >
+              <path
+                d="M1 1 L6 3.5 L1 6"
+                fill="none"
+                stroke="context-stroke"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </marker>
             <pattern
               id="future-pattern"
               width="7"
@@ -189,18 +343,31 @@ export default function Timeline({
             <clipPath id="plot-clip">
               <rect
                 x={left - 8}
-                y={30}
+                y={viewTop + 30}
                 width={right - left + 16}
-                height={H - 105}
+                height={H - viewTop - 105}
               />
             </clipPath>
+            <mask id="axis-break-mask">
+              <rect width={W} height={H} fill="white" />
+              {axis.breaks.map((b) => (
+                <rect
+                  key={b.start}
+                  x={b.x0 + 1}
+                  y={0}
+                  width={Math.max(0, b.x1 - b.x0 - 2)}
+                  height={H}
+                  fill="black"
+                />
+              ))}
+            </mask>
           </defs>
           {to > now && (
             <rect
               x={x(clippedYear(now))}
-              y="42"
+              y={viewTop + 42}
               width={Math.max(0, right - x(clippedYear(now)))}
-              height={H - 103}
+              height={H - viewTop - 103}
               fill="url(#future-pattern)"
             />
           )}
@@ -214,7 +381,7 @@ export default function Timeline({
               const start = clippedYear(range.start);
               const end = clippedYear(range.end);
               const offset = intervalOffset(milestone.id);
-              const edge = offset > 0 ? H - 100 : 65;
+              const edge = offset > 0 ? H - 100 : plotTop;
               return (
                 <path
                   className="progress-hover-highlight"
@@ -233,23 +400,30 @@ export default function Timeline({
                 <line
                   x1={x(t)}
                   x2={x(t)}
-                  y1="65"
+                  y1={plotTop}
                   y2={H - 100}
                   stroke="#e6ebf1"
                 />
                 <text
                   x={x(t)}
-                  y={H - 75}
+                  y={
+                    t < 1500 &&
+                    axis.ancientEndX !== null &&
+                    axis.ancientEndX - x(t) < 60
+                      ? H - 62
+                      : H - 75
+                  }
                   textAnchor="middle"
                   className="axis-label"
                 >
-                  {t}
+                  {formatYear(t)}
                 </text>
               </g>
             ))}
           <path
             className="chart-axes"
-            d={`M${left},65 V${H - 100} H${right} M${left - 5},73 L${left},65 L${left + 5},73 M${right - 8},${H - 105} L${right},${H - 100} L${right - 8},${H - 95}`}
+            mask="url(#axis-break-mask)"
+            d={`M${left},${plotTop} V${H - 100} H${right} M${left - 5},${plotTop + 8} L${left},${plotTop} L${left + 5},${plotTop + 8} M${right - 8},${H - 105} L${right},${H - 100} L${right - 8},${H - 95}`}
             fill="none"
             stroke="black"
             strokeWidth="1.5"
@@ -257,16 +431,38 @@ export default function Timeline({
           />
           <text
             x="27"
-            y={(65 + H - 100) / 2}
-            transform={`rotate(-90 27 ${(65 + H - 100) / 2})`}
+            y={(plotTop + H - 100) / 2}
+            transform={`rotate(-90 27 ${(plotTop + H - 100) / 2})`}
             textAnchor="middle"
             className="axis-title"
             style={{ fill: "black" }}
           >
             ethical progress →
           </text>
+          {axis.ancientEndX !== null && (
+            <g className="ancient-section">
+              <line
+                x1={axis.ancientEndX}
+                x2={axis.ancientEndX}
+                y1={plotTop}
+                y2={H - 100}
+                stroke="#aeb8c5"
+                strokeDasharray="3 5"
+              />
+              <text
+                x={(left + axis.ancientEndX) / 2}
+                y={H - 49}
+                textAnchor="middle"
+                className="axis-title"
+              >
+                Ancient
+              </text>
+            </g>
+          )}
           <text
-            x={W / 2}
+            x={
+              axis.ancientEndX === null ? W / 2 : (axis.ancientEndX + right) / 2
+            }
             y={H - 36}
             textAnchor="middle"
             className="axis-title"
@@ -274,173 +470,145 @@ export default function Timeline({
           >
             Year
           </text>
-          {data.milestones
-            .filter((m) => m.kind === "historical")
-            .sort(
-              (a, b) =>
-                Number(a.id === "execution-abolition") -
-                Number(b.id === "execution-abolition"),
-            )
-            .map((m) => {
-              if (m.window.end < from || m.window.start > to) return null;
-              const t = clippedYear(midpoint(m.window));
-              const offset = intervalOffset(m.id);
-              const intervalY = arc(t) + offset;
-              const index = [
-                "abolition",
-                "votes-for-women",
-                "decriminalization",
-                "religious-freedom",
-                "execution-abolition",
-                "child-protection",
-                "animal-protection",
-              ].indexOf(m.id);
-              const labelAbove = [
-                "religious-freedom",
-                "execution-abolition",
-                "decriminalization",
-                "child-protection",
-              ].includes(m.id);
-              const labelX =
-                m.id === "religious-freedom"
-                  ? left + (right - left) * 0.25 + 40
-                  : m.id === "decriminalization"
-                    ? left + (right - left) * 0.75
-                    : x(t);
-              const labelY =
-                m.id === "animal-protection"
-                  ? H - 345
-                  : m.id === "child-protection"
-                    ? 350
-                    : m.id === "religious-freedom"
-                      ? 190
-                      : m.id === "execution-abolition"
-                        ? 112
-                        : m.id === "decriminalization"
-                          ? 380
-                          : m.id === "votes-for-women"
-                            ? H - 435
-                            : arc(t) + 58 + index * 65;
-              return (
-                <g
-                  key={m.id}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`Progress interval / date: ${m.name}, ${formatYears(m.window)}`}
-                  onClick={() => onBenchmark(m.id)}
-                  onMouseEnter={() =>
-                    setBenchmarkTip({ id: m.id, x: labelX, y: labelY })
+          {historicalIntervals
+            .filter(({ index }) => index >= 0)
+            .map(({ m, labelY }) => (
+              <g
+                key={m.id}
+                data-window={m.id}
+                style={{ color: progressColor(m.id) }}
+              >
+                {windowArrows(m.window, labelY)}
+              </g>
+            ))}
+          {historicalIntervals.map(({ m, index, offset, labelX, labelY }) => {
+            return (
+              <g
+                key={m.id}
+                role="button"
+                tabIndex={0}
+                aria-label={`Progress interval / date: ${m.name}, ${formatYears(m.window)}`}
+                onClick={() => onBenchmark(m.id)}
+                onMouseEnter={() =>
+                  setBenchmarkTip({ id: m.id, x: labelX, y: labelY })
+                }
+                onMouseLeave={() => setBenchmarkTip(null)}
+                onFocus={() =>
+                  setBenchmarkTip({ id: m.id, x: labelX, y: labelY })
+                }
+                onBlur={() => setBenchmarkTip(null)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onBenchmark(m.id);
                   }
-                  onMouseLeave={() => setBenchmarkTip(null)}
-                  onFocus={() =>
-                    setBenchmarkTip({ id: m.id, x: labelX, y: labelY })
-                  }
-                  onBlur={() => setBenchmarkTip(null)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      onBenchmark(m.id);
-                    }
-                  }}
-                  className="milestone-anchor"
-                  style={{ color: progressColor(m.id) }}
-                >
-                  <title>{`${m.name} · ${formatYears(m.window)} · ${m.jurisdiction}`}</title>
-                  <path
-                    className="progress-interval-hit"
-                    d={referencePath(m.window.start, m.window.end, offset)}
-                    fill="none"
-                    stroke="transparent"
-                    strokeWidth="3"
-                    pointerEvents="stroke"
-                  />
-                  <path
-                    className="progress-interval-line"
-                    data-milestone={m.id}
-                    data-offset={offset}
-                    d={referencePath(m.window.start, m.window.end, offset)}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={benchmarkTip?.id === m.id ? 5 : 3}
-                    strokeLinecap="round"
-                    pointerEvents="none"
-                  />
-                  {index >= 0 && (
-                    <>
-                      <line
-                        x1={labelX}
-                        x2={x(t)}
-                        y1={labelAbove ? labelY + 29 : intervalY + 8}
-                        y2={labelAbove ? intervalY - 8 : labelY - 16}
-                        stroke="currentColor"
-                      />
-
-                      <rect
-                        x={labelX - 125}
-                        y={
-                          labelY -
-                          (["decriminalization", "animal-protection"].includes(
-                            m.id,
-                          )
-                            ? 29
-                            : 14)
-                        }
-                        width={250}
-                        height={
-                          (benchmarkTip?.id === m.id
-                            ? 56 + (m.reforms?.length ?? 1) * 14
-                            : 40) +
-                          (["decriminalization", "animal-protection"].includes(
-                            m.id,
-                          )
-                            ? 15
-                            : 0)
-                        }
-                        fill="transparent"
-                      />
-                      <text
-                        x={labelX}
-                        y={labelY}
-                        textAnchor="middle"
-                        className="milestone-label"
-                      >
-                        {m.id === "decriminalization" ? (
-                          <>
-                            <tspan x={labelX} y={labelY - 15}>
-                              Homosexuality
-                            </tspan>
-                            <tspan x={labelX} dy={15}>
-                              decriminalization
-                            </tspan>
-                          </>
-                        ) : m.id === "animal-protection" ? (
-                          <>
-                            <tspan x={labelX} y={labelY - 15}>
-                              Animal legal
-                            </tspan>
-                            <tspan x={labelX} dy={15}>
-                              protection
-                            </tspan>
-                          </>
-                        ) : (
-                          m.shortName
-                        )}
-                      </text>
-                      <text
-                        x={labelX}
-                        y={labelY + 17}
-                        textAnchor="middle"
-                        className="chart-small progress-date-span"
-                      >
-                        {formatYears(m.window)}
-                      </text>
-                    </>
-                  )}
-                </g>
-              );
-            })}
+                }}
+                className="milestone-anchor"
+                style={{ color: progressColor(m.id) }}
+              >
+                <title>{`${m.name} · ${formatYears(m.window)} · ${m.jurisdiction}`}</title>
+                <path
+                  className="progress-interval-hit"
+                  d={referencePath(m.window.start, m.window.end, offset)}
+                  fill="none"
+                  stroke="transparent"
+                  strokeWidth="3"
+                  pointerEvents="stroke"
+                />
+                <path
+                  className="progress-interval-line"
+                  data-milestone={m.id}
+                  data-offset={offset}
+                  d={referencePath(m.window.start, m.window.end, offset)}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={benchmarkTip?.id === m.id ? 5 : 3}
+                  strokeLinecap="round"
+                  pointerEvents="none"
+                />
+                {index >= 0 && (
+                  <>
+                    <rect
+                      x={labelX - 125}
+                      y={
+                        labelY -
+                        ([
+                          "decriminalization",
+                          "animal-protection",
+                          "racial-equality",
+                        ].includes(m.id)
+                          ? 29
+                          : 14)
+                      }
+                      width={250}
+                      height={
+                        (benchmarkTip?.id === m.id
+                          ? 73 + (m.reforms?.length ?? 1) * 14
+                          : 52) +
+                        ([
+                          "decriminalization",
+                          "animal-protection",
+                          "racial-equality",
+                        ].includes(m.id)
+                          ? 15
+                          : 0)
+                      }
+                      fill="transparent"
+                    />
+                    <text
+                      x={labelX}
+                      y={labelY}
+                      textAnchor="middle"
+                      className="milestone-label"
+                    >
+                      {m.id === "racial-equality" ? (
+                        <>
+                          <tspan x={labelX} y={labelY - 15}>
+                            Racial equality
+                          </tspan>
+                          <tspan x={labelX} dy={15}>
+                            under the law
+                          </tspan>
+                        </>
+                      ) : m.id === "decriminalization" ? (
+                        <>
+                          <tspan x={labelX} y={labelY - 15}>
+                            Homosexuality
+                          </tspan>
+                          <tspan x={labelX} dy={15}>
+                            decriminalization
+                          </tspan>
+                        </>
+                      ) : m.id === "animal-protection" ? (
+                        <>
+                          <tspan x={labelX} y={labelY - 15}>
+                            Animal legal
+                          </tspan>
+                          <tspan x={labelX} dy={15}>
+                            protection
+                          </tspan>
+                        </>
+                      ) : (
+                        m.shortName
+                      )}
+                    </text>
+                    <text
+                      x={labelX}
+                      y={labelY + 17}
+                      textAnchor="middle"
+                      className="chart-small progress-date-span"
+                    >
+                      {formatYears(m.window)}
+                    </text>
+                  </>
+                )}
+              </g>
+            );
+          })}
           <g clipPath="url(#plot-clip)">
             <path
+              data-reference="historical"
+              mask="url(#axis-break-mask)"
               d={referencePath(from, now)}
               stroke="#9faab6"
               fill="none"
@@ -471,13 +639,15 @@ export default function Timeline({
                       : 0.7
                 }
                 className="author-line"
+                pointerEvents="none"
+                mask="url(#axis-break-mask)"
               />
             ))}
             {points.map((v, index) => {
               const f = byFigure.get(v.p.figureId)!;
               const active = v.p.id === selected;
               const dim = !traditionSelected && focused && focused !== f.id;
-              const label = `${f.name}: ${v.p.stance === "opposes" ? "Opposes reform. " : "Supports reform. "}${v.p.title}. ${formatYears(v.score.writing)}. ${v.score.min} to ${v.score.max} years ${v.score.provisional ? "(provisional)" : ""}.`;
+              const label = `${f.name}: ${v.p.stance === "opposes" ? "Opposes reform. " : "Supports reform. "}${v.p.title}. ${formatYears(v.score.writing)}. ${v.score.min} to ${v.score.max} weighted years (ethical foresight) ${v.score.provisional ? "(provisional)" : ""}.`;
               return (
                 <g
                   key={v.p.id}
@@ -492,6 +662,8 @@ export default function Timeline({
                   aria-label={label}
                   aria-pressed={active}
                   data-position={v.p.id}
+                  data-scored={Boolean(v.score)}
+                  data-display-offset={v.displayOffsetY}
                   onMouseEnter={() => {
                     setHovered(f.id);
                     setTip(v.p);
@@ -550,50 +722,155 @@ export default function Timeline({
                       strokeWidth="1.8"
                     />
                   )}
-                  {v.uncertaintyTopY !== v.uncertaintyBottomY && (
+                  {v.uncertaintyLeftX !== v.uncertaintyRightX && (
                     <line
-                      y1={v.uncertaintyTopY - v.y}
-                      y2={v.uncertaintyBottomY - v.y}
+                      className="writing-uncertainty"
+                      x1={v.uncertaintyLeftX - v.x}
+                      x2={v.uncertaintyRightX - v.x}
+                      y1={0}
+                      y2={0}
                       stroke={f.color}
-                      strokeWidth="1"
-                      opacity={traditionSelected ? 1 : dim ? 0.12 : 0.5}
+                      strokeWidth="1.5"
+                      opacity={dim ? 0.12 : 0.55}
+                      pointerEvents="none"
                     />
                   )}
+                  {showVerticalBars &&
+                    v.uncertaintyTopY !== v.uncertaintyBottomY && (
+                      <line
+                        className="reform-uncertainty"
+                        y1={v.uncertaintyTopY - v.y}
+                        y2={v.uncertaintyBottomY - v.y}
+                        stroke={f.color}
+                        strokeWidth="1"
+                        opacity={traditionSelected ? 1 : dim ? 0.12 : 0.5}
+                      />
+                    )}
                   <circle
                     r={active ? 6 : 5.4}
-                    fill={f.color}
+                    fill={v.score ? f.color : "white"}
                     stroke={f.color}
                     strokeWidth={1.3}
                     opacity={dim ? 0.22 : 1}
                   />
-                  {v.p.stance === "opposes" && (
+                  {v.score && v.p.stance === "opposes" && (
                     <path d="M-2.5 0h5" stroke="white" strokeWidth="1.6" />
                   )}
                 </g>
               );
             })}
           </g>
-          {labelPoints.map((v, i) => (
-            <text
-              key={v.p.id}
-              x={v.x > right - 175 ? v.x - 14 : v.x + 14}
-              y={v.y + (i % 2 ? 20 : -14)}
-              textAnchor={v.x > right - 175 ? "end" : "start"}
-              className="point-label"
-              fill={byFigure.get(v.p.figureId)!.color}
+          {axis.breaks.map((b) => (
+            <g
+              key={b.start}
+              className="axis-break"
+              onMouseEnter={() => setBreakTip(b)}
+              onMouseLeave={() => setBreakTip(null)}
+              onFocus={() => setBreakTip(b)}
+              onBlur={() => setBreakTip(null)}
+              tabIndex={0}
+              role="img"
+              aria-label={`Compressed gap: ${formatYears(b)}. No documented lifetime or position interval in this gap.`}
+            >
+              <title>{`Compressed gap: ${formatYears(b)}. Display only; scores use actual dates.`}</title>
+              {[H - 100, arc(b.start)].map((y, i) => (
+                <g key={i}>
+                  <rect
+                    x={b.x0}
+                    y={y - 12}
+                    width={b.x1 - b.x0}
+                    height={24}
+                    fill="transparent"
+                  />
+                  <path
+                    d={`M${(b.x0 + b.x1) / 2 - 4},${y + 5} l3,-10 m2,10 l3,-10`}
+                    stroke="#687687"
+                    strokeWidth="1.5"
+                    fill="none"
+                  />
+                </g>
+              ))}
+            </g>
+          ))}
+          {breakTip && (
+            <g
+              className="axis-break-tooltip"
+              role="tooltip"
               pointerEvents="none"
             >
-              {byFigure.get(v.p.figureId)!.name.split(" ").slice(-1)} ·{" "}
-              {data.domains.find((d) => d.id === v.p.domainId)?.shortName}
-              {v.p.stance === "opposes" ? " (opposes reform)" : ""}
-            </text>
+              <rect
+                x={left}
+                y={H - 158}
+                width={240}
+                height={39}
+                rx={4}
+                fill="#fff"
+                stroke="#aeb8c5"
+              />
+              <text x={left + 10} y={H - 141} className="chart-small">
+                Compressed gap: {formatYears(breakTip)}
+              </text>
+              <text x={left + 10} y={H - 127} className="chart-small">
+                Display only · scores use actual dates
+              </text>
+            </g>
+          )}
+          {labelPoints.map((v, i) => (
+            <g key={v.p.id} pointerEvents="none">
+              {byFigure.get(v.p.figureId)!.kind === "scripture" && (
+                <line
+                  x1={v.x + 7}
+                  y1={v.y}
+                  x2={scriptureLabelX - 4}
+                  y2={scriptureLabelY.get(v.p.id)! - 4}
+                  stroke={byFigure.get(v.p.figureId)!.color}
+                  strokeOpacity={0.35}
+                  strokeWidth={0.8}
+                />
+              )}
+              <text
+                x={
+                  byFigure.get(v.p.figureId)!.kind === "scripture"
+                    ? scriptureLabelX
+                    : v.x > right - 175
+                      ? v.x - 14
+                      : v.x + 14
+                }
+                y={
+                  byFigure.get(v.p.figureId)!.kind === "scripture"
+                    ? scriptureLabelY.get(v.p.id)!
+                    : v.y + (i % 2 ? 20 : -14)
+                }
+                textAnchor={
+                  byFigure.get(v.p.figureId)!.kind === "scripture"
+                    ? "start"
+                    : v.x > right - 175
+                      ? "end"
+                      : "start"
+                }
+                className="point-label"
+                data-label-position={v.p.id}
+                fill={byFigure.get(v.p.figureId)!.color}
+                pointerEvents="none"
+              >
+                {byFigure.get(v.p.figureId)!.kind === "scripture" ? (
+                  `${byFigure.get(v.p.figureId)!.name} · ${v.p.title.length > 46 ? v.p.title.slice(0, 43) + "…" : v.p.title}`
+                ) : (
+                  <>
+                    {byFigure.get(v.p.figureId)!.name.split(" ").slice(-1)} ·{" "}
+                    {data.domains.find((d) => d.id === v.p.domainId)?.shortName}
+                    {v.p.stance === "opposes" ? " (opposes reform)" : ""}
+                  </>
+                )}
+              </text>
+            </g>
           ))}
           {now >= from && now <= to && (
             <g>
               <line
                 x1={x(now)}
                 x2={x(now)}
-                y1="45"
+                y1={viewTop + 45}
                 y2={H - 99}
                 stroke="#b2bcc9"
                 strokeDasharray="3 5"
@@ -631,7 +908,6 @@ export default function Timeline({
                 const below = m.id === "ai-welfare" || foodTransition;
                 const middle = clippedYear(midpoint(r));
                 const offset = intervalOffset(m.id);
-                const intervalY = arc(middle) + offset;
                 const labelX = Math.max(
                   left + 100,
                   Math.min(right - (foodTransition ? 145 : 100), x(middle)),
@@ -644,7 +920,8 @@ export default function Timeline({
                       ? 130
                       : m.reforms?.length
                         ? -110
-                        : -145);
+                        : -145) +
+                  (m.id === "wild-welfare" ? 130 : 0);
                 return (
                   <g
                     key={m.id}
@@ -690,13 +967,7 @@ export default function Timeline({
                       strokeDasharray="5 4"
                       pointerEvents="none"
                     />
-                    <line
-                      x1={labelX}
-                      x2={x(middle)}
-                      y1={below ? labelY - 14 : labelY + 29}
-                      y2={intervalY + (below ? 8 : -8)}
-                      stroke="currentColor"
-                    />
+                    {windowArrows(r, labelY, true)}
                     <rect
                       x={labelX - 125}
                       y={
@@ -710,8 +981,8 @@ export default function Timeline({
                       width={250}
                       height={
                         (benchmarkTip?.id === m.id
-                          ? 56 + (m.reforms?.length ?? 1) * 14
-                          : 40) +
+                          ? 73 + (m.reforms?.length ?? 1) * 14
+                          : 52) +
                         (m.id === "extinction-concern"
                           ? 30
                           : m.id === "wild-welfare"
@@ -795,7 +1066,7 @@ export default function Timeline({
                 >
                   <rect
                     x={center - 125}
-                    y={benchmarkTip.y + 25}
+                    y={benchmarkTip.y + 42}
                     width={250}
                     height={12 + lines.length * 14}
                     rx={5}
@@ -807,7 +1078,7 @@ export default function Timeline({
                     <text
                       key={line}
                       x={center}
-                      y={benchmarkTip.y + 43 + i * 14}
+                      y={benchmarkTip.y + 60 + i * 14}
                       textAnchor="middle"
                       className="reform-date-label"
                       style={{ fill: "currentColor" }}
@@ -868,7 +1139,7 @@ export default function Timeline({
       )}
       {!points.length && (
         <div className="chart-empty">
-          <strong>No scored positions match these filters.</strong>
+          <strong>No plotted positions match these filters.</strong>
           <p>
             Try a wider period or use the evidence table to inspect unmatched
             writings.

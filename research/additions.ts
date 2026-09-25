@@ -7,21 +7,12 @@ export function additions() {
     "Friedrich Nietzsche",
     1844,
     1900,
-    undefined,
-    "#657485",
-    "Germany / Switzerland; anti-egalitarian perfectionism; retrospective existentialist affiliation is contested.",
-    "https://plato.stanford.edu/entries/nietzsche/",
-    "Major critic of morality and precursor of existentialism; not an avowed member of the later movement.",
+    "existential",
+    "#aa4c7d",
+    "Germany / Switzerland; anti-egalitarian perfectionism; foundational nineteenth-century precursor of existentialism.",
+    "https://plato.stanford.edu/entries/existentialism/",
+    "Foundational precursor included in the broad existentialist family. This retrospective classification does not imply self-identification or membership in the later twentieth-century movement.",
     "central",
-    [
-      {
-        traditionId: "existential",
-        status: "contested",
-        basis:
-          "Retrospective precursor classification, not membership in the twentieth-century existentialist movement.",
-        sourceUrl: "https://plato.stanford.edu/entries/nietzsche/",
-      },
-    ],
   );
   const nietzsche = {
     person: "nietzsche",
@@ -666,50 +657,6 @@ export function additions() {
       "The parties choosing principles cannot permit their religious liberty to depend on majority religious beliefs.",
   });
   f(
-    "foot",
-    "Philippa Foot",
-    1920,
-    2010,
-    "virtue",
-    "#729c4e",
-    "Britain; modern virtue ethics and natural goodness.",
-    "https://plato.stanford.edu/entries/philippa-foot/",
-    "Foundational contributor to the twentieth-century revival of virtue ethics.",
-    "foundational",
-  );
-  const foot = {
-    person: "foot",
-    year: 1991,
-    work: "Nietzsche’s Immoralism",
-    sourceId: "foot-immoralism",
-    url: "https://www.nybooks.com/articles/1991/06/13/nietzsches-immoralism/",
-    edition:
-      "New York Review of Books, 13 June 1991; original publisher’s text.",
-    quote:
-      "forbids such acts as murder, torture, and enslavement and brands them as evil, whoever carries them out.",
-    locator: "Paragraph beginning “It is justice”",
-    context:
-      "Foot endorses the constraints of justice while criticizing Nietzsche’s rejection of ordinary morality.",
-    counter:
-      "The quoted judgment is Foot’s, not Nietzsche’s. Her discussion also distinguishes Nietzsche’s personal gentleness from his written philosophy.",
-  };
-  e({
-    ...foot,
-    id: "foot-slavery",
-    domain: "slavery",
-    milestone: "abolition",
-    title: "Justice forbids enslavement",
-    summary: "Treats enslavement as an evil forbidden by justice.",
-  });
-  e({
-    ...foot,
-    id: "foot-torture",
-    domain: "torture",
-    milestone: "torture-ban",
-    title: "Justice forbids torture",
-    summary: "Treats torture as an evil forbidden by justice.",
-  });
-  f(
     "anscombe",
     "G. E. M. Anscombe",
     1919,
@@ -913,11 +860,10 @@ export function additions() {
     [
       {
         traditionId: "existential",
-        status: "contested",
+        status: "core",
         basis:
-          "A foundational precursor of existential thought. As with Nietzsche, retrospective placement in the later movement is treated as contested; the Christian framework of this signed work remains core.",
-        sourceUrl:
-          "https://plato.stanford.edu/archives/spr2021/entries/existentialism/",
+          "Foundational precursor included in the broad existentialist family, as with Nietzsche; this does not imply membership in the later twentieth-century movement. The Christian framework of this signed work remains core.",
+        sourceUrl: "https://plato.stanford.edu/entries/existentialism/",
       },
     ],
   );

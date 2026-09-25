@@ -1,0 +1,1197 @@
+{
+  "bentham-animals": {
+    "stance": "supports",
+    "min": 122,
+    "max": 177,
+    "midpoint": 149.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1911,
+      "end": 1966
+    },
+    "writing": {
+      "start": 1789,
+      "end": 1789
+    }
+  },
+  "bentham-gay": {
+    "stance": "supports",
+    "min": 182,
+    "max": 218,
+    "midpoint": 200,
+    "provisional": false,
+    "benchmark": {
+      "start": 1967,
+      "end": 2003
+    },
+    "writing": {
+      "start": 1785,
+      "end": 1785
+    }
+  },
+  "mill-women": {
+    "stance": "supports",
+    "min": 95,
+    "max": 106,
+    "midpoint": 100.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 1869,
+      "end": 1869
+    }
+  },
+  "mill-execution": {
+    "stance": "opposes",
+    "min": -62.5,
+    "max": -38.0,
+    "midpoint": -50.25,
+    "provisional": false,
+    "benchmark": {
+      "start": 1949,
+      "end": 1998
+    },
+    "writing": {
+      "start": 1873,
+      "end": 1873
+    }
+  },
+  "woolman-slavery": {
+    "stance": "supports",
+    "min": 79,
+    "max": 134,
+    "midpoint": 106.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1833,
+      "end": 1888
+    },
+    "writing": {
+      "start": 1754,
+      "end": 1754
+    }
+  },
+  "wollstonecraft-suffrage": {
+    "stance": "supports",
+    "min": 126,
+    "max": 158,
+    "midpoint": 142,
+    "provisional": false,
+    "benchmark": {
+      "start": 1918,
+      "end": 1950
+    },
+    "writing": {
+      "start": 1792,
+      "end": 1792
+    }
+  },
+  "kant-execution": {
+    "stance": "opposes",
+    "min": -100.5,
+    "max": -76.0,
+    "midpoint": -88.25,
+    "provisional": false,
+    "benchmark": {
+      "start": 1949,
+      "end": 1998
+    },
+    "writing": {
+      "start": 1797,
+      "end": 1797
+    }
+  },
+  "kant-women": {
+    "stance": "opposes",
+    "min": -76.5,
+    "max": -60.5,
+    "midpoint": -68.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1918,
+      "end": 1950
+    },
+    "writing": {
+      "start": 1797,
+      "end": 1797
+    }
+  },
+  "beccaria-torture": {
+    "stance": "supports",
+    "min": 184,
+    "max": 220,
+    "midpoint": 202,
+    "provisional": false,
+    "benchmark": {
+      "start": 1948,
+      "end": 1984
+    },
+    "writing": {
+      "start": 1764,
+      "end": 1764
+    }
+  },
+  "beccaria-execution": {
+    "stance": "supports",
+    "min": 185,
+    "max": 234,
+    "midpoint": 209.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1949,
+      "end": 1998
+    },
+    "writing": {
+      "start": 1764,
+      "end": 1764
+    }
+  },
+  "russell-extinction": {
+    "stance": "supports",
+    "min": 45,
+    "max": 75,
+    "midpoint": 60,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2030
+    },
+    "writing": {
+      "start": 1955,
+      "end": 1955
+    }
+  },
+  "jonas-extinction": {
+    "stance": "supports",
+    "min": 27,
+    "max": 57,
+    "midpoint": 42,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2030
+    },
+    "writing": {
+      "start": 1973,
+      "end": 1973
+    }
+  },
+  "parfit-extinction": {
+    "stance": "supports",
+    "min": 16,
+    "max": 46,
+    "midpoint": 31,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2030
+    },
+    "writing": {
+      "start": 1984,
+      "end": 1984
+    }
+  },
+  "leslie-extinction": {
+    "stance": "supports",
+    "min": 4,
+    "max": 34,
+    "midpoint": 19,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2030
+    },
+    "writing": {
+      "start": 1996,
+      "end": 1996
+    }
+  },
+  "bostrom-extinction": {
+    "stance": "supports",
+    "min": 0,
+    "max": 27,
+    "midpoint": 13.5,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2030
+    },
+    "writing": {
+      "start": 2003,
+      "end": 2003
+    }
+  },
+  "bostrom-ai": {
+    "stance": "supports",
+    "min": 29,
+    "max": 89,
+    "midpoint": 59,
+    "provisional": true,
+    "benchmark": {
+      "start": 2040,
+      "end": 2100
+    },
+    "writing": {
+      "start": 2011,
+      "end": 2011
+    }
+  },
+  "ord-extinction": {
+    "stance": "supports",
+    "min": 0,
+    "max": 10,
+    "midpoint": 5,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2030
+    },
+    "writing": {
+      "start": 2020,
+      "end": 2020
+    }
+  },
+  "macaskill-extinction": {
+    "stance": "supports",
+    "min": 0,
+    "max": 9,
+    "midpoint": 4.5,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2030
+    },
+    "writing": {
+      "start": 2021,
+      "end": 2021
+    }
+  },
+  "greaves-extinction": {
+    "stance": "supports",
+    "min": 0,
+    "max": 9,
+    "midpoint": 4.5,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2030
+    },
+    "writing": {
+      "start": 2021,
+      "end": 2021
+    }
+  },
+  "ng-wild": {
+    "stance": "supports",
+    "min": 65,
+    "max": 105,
+    "midpoint": 85,
+    "provisional": true,
+    "benchmark": {
+      "start": 2060,
+      "end": 2100
+    },
+    "writing": {
+      "start": 1995,
+      "end": 1995
+    }
+  },
+  "tomasik-insects": {
+    "stance": "supports",
+    "min": 44,
+    "max": 85,
+    "midpoint": 64.5,
+    "provisional": true,
+    "benchmark": {
+      "start": 2060,
+      "end": 2100
+    },
+    "writing": {
+      "start": 2015,
+      "end": 2016
+    }
+  },
+  "tomasik-wild": {
+    "stance": "supports",
+    "min": 45,
+    "max": 85,
+    "midpoint": 65,
+    "provisional": true,
+    "benchmark": {
+      "start": 2060,
+      "end": 2100
+    },
+    "writing": {
+      "start": 2015,
+      "end": 2015
+    }
+  },
+  "beauvoir-women": {
+    "stance": "supports",
+    "min": 15,
+    "max": 26,
+    "midpoint": 20.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 1949,
+      "end": 1949
+    }
+  },
+  "gandhi-animals": {
+    "stance": "supports",
+    "min": 0,
+    "max": 45,
+    "midpoint": 22.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1911,
+      "end": 1966
+    },
+    "writing": {
+      "start": 1921,
+      "end": 1921
+    }
+  },
+  "marx-slavery": {
+    "stance": "supports",
+    "min": 0,
+    "max": 24,
+    "midpoint": 12,
+    "provisional": false,
+    "benchmark": {
+      "start": 1833,
+      "end": 1888
+    },
+    "writing": {
+      "start": 1864,
+      "end": 1864
+    }
+  },
+  "luxemburg-execution": {
+    "stance": "supports",
+    "min": 31,
+    "max": 80,
+    "midpoint": 55.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1949,
+      "end": 1998
+    },
+    "writing": {
+      "start": 1918,
+      "end": 1918
+    }
+  },
+  "luxemburg-torture": {
+    "stance": "supports",
+    "min": 30,
+    "max": 66,
+    "midpoint": 48,
+    "provisional": false,
+    "benchmark": {
+      "start": 1948,
+      "end": 1984
+    },
+    "writing": {
+      "start": 1918,
+      "end": 1918
+    }
+  },
+  "kollontai-women": {
+    "stance": "supports",
+    "min": 44,
+    "max": 55,
+    "midpoint": 49.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 1920,
+      "end": 1920
+    }
+  },
+  "rousseau-slavery": {
+    "stance": "supports",
+    "min": 71,
+    "max": 126,
+    "midpoint": 98.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1833,
+      "end": 1888
+    },
+    "writing": {
+      "start": 1762,
+      "end": 1762
+    }
+  },
+  "rousseau-religion": {
+    "stance": "opposes",
+    "min": -78.5,
+    "max": 0,
+    "midpoint": -39.25,
+    "provisional": false,
+    "benchmark": {
+      "start": 1689,
+      "end": 1919
+    },
+    "writing": {
+      "start": 1762,
+      "end": 1762
+    }
+  },
+  "voltaire-religion": {
+    "stance": "supports",
+    "min": 0,
+    "max": 156,
+    "midpoint": 78,
+    "provisional": false,
+    "benchmark": {
+      "start": 1689,
+      "end": 1919
+    },
+    "writing": {
+      "start": 1763,
+      "end": 1763
+    }
+  },
+  "paine-religion": {
+    "stance": "supports",
+    "min": 0,
+    "max": 125,
+    "midpoint": 62.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1689,
+      "end": 1919
+    },
+    "writing": {
+      "start": 1794,
+      "end": 1794
+    }
+  },
+  "locke-atheists": {
+    "stance": "opposes",
+    "min": -115.0,
+    "max": 0,
+    "midpoint": -57.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1689,
+      "end": 1919
+    },
+    "writing": {
+      "start": 1689,
+      "end": 1689
+    }
+  },
+  "salt-animals": {
+    "stance": "supports",
+    "min": 19,
+    "max": 74,
+    "midpoint": 46.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1911,
+      "end": 1966
+    },
+    "writing": {
+      "start": 1892,
+      "end": 1892
+    }
+  },
+  "singer-animals": {
+    "stance": "supports",
+    "min": 11,
+    "max": 111,
+    "midpoint": 61,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2100
+    },
+    "writing": {
+      "start": 1989,
+      "end": 1989
+    }
+  },
+  "korsgaard-animals": {
+    "stance": "supports",
+    "min": 0,
+    "max": 0,
+    "midpoint": 0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1911,
+      "end": 1966
+    },
+    "writing": {
+      "start": 2004,
+      "end": 2004
+    }
+  },
+  "nussbaum-farmed": {
+    "stance": "supports",
+    "min": 0,
+    "max": 0,
+    "midpoint": 0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1968,
+      "end": 1968
+    },
+    "writing": {
+      "start": 2021,
+      "end": 2021
+    }
+  },
+  "paul-iii-slavery": null,
+  "wesley-slavery": {
+    "stance": "supports",
+    "min": 59,
+    "max": 114,
+    "midpoint": 86.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1833,
+      "end": 1888
+    },
+    "writing": {
+      "start": 1774,
+      "end": 1774
+    }
+  },
+  "tolstoy-farmed": {
+    "stance": "supports",
+    "min": 108,
+    "max": 208,
+    "midpoint": 158,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2100
+    },
+    "writing": {
+      "start": 1892,
+      "end": 1892
+    }
+  },
+  "luther-religion": {
+    "stance": "opposes",
+    "min": -188.0,
+    "max": -73.0,
+    "midpoint": -130.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1689,
+      "end": 1919
+    },
+    "writing": {
+      "start": 1543,
+      "end": 1543
+    }
+  },
+  "fell-women": null,
+  "king-racial": {
+    "stance": "supports",
+    "min": 0,
+    "max": 33,
+    "midpoint": 16.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1949,
+      "end": 1996
+    },
+    "writing": {
+      "start": 1963,
+      "end": 1964
+    }
+  },
+  "prabhupada-execution": {
+    "stance": "opposes",
+    "min": -23,
+    "max": 0,
+    "midpoint": -11.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1949,
+      "end": 1998
+    },
+    "writing": {
+      "start": 1972,
+      "end": 1972
+    }
+  },
+  "pigliucci-farmed": {
+    "stance": "supports",
+    "min": 0,
+    "max": 82,
+    "midpoint": 41,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2100
+    },
+    "writing": {
+      "start": 2018,
+      "end": 2018
+    }
+  },
+  "mahapragya-animals": {
+    "stance": "supports",
+    "min": 0,
+    "max": 0,
+    "midpoint": 0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1911,
+      "end": 1966
+    },
+    "writing": {
+      "start": 1994,
+      "end": 1994
+    }
+  },
+  "wang-animals": null,
+  "dalai-autonomy": null,
+  "maududi-racial": {
+    "stance": "supports",
+    "min": 0,
+    "max": 20,
+    "midpoint": 10,
+    "provisional": false,
+    "benchmark": {
+      "start": 1949,
+      "end": 1996
+    },
+    "writing": {
+      "start": 1976,
+      "end": 1976
+    }
+  },
+  "marx-children": {
+    "stance": "supports",
+    "min": 0,
+    "max": 90,
+    "midpoint": 45,
+    "provisional": false,
+    "benchmark": {
+      "start": 1833,
+      "end": 1938
+    },
+    "writing": {
+      "start": 1848,
+      "end": 1848
+    }
+  },
+  "engels-children": {
+    "stance": "supports",
+    "min": 0,
+    "max": 90,
+    "midpoint": 45,
+    "provisional": false,
+    "benchmark": {
+      "start": 1833,
+      "end": 1938
+    },
+    "writing": {
+      "start": 1848,
+      "end": 1848
+    }
+  },
+  "nussbaum-marriage": {
+    "stance": "supports",
+    "min": 0,
+    "max": 6,
+    "midpoint": 3,
+    "provisional": false,
+    "benchmark": {
+      "start": 2001,
+      "end": 2015
+    },
+    "writing": {
+      "start": 2009,
+      "end": 2009
+    }
+  },
+  "luther-religion-early": null,
+  "nietzsche-slavery": {
+    "stance": "opposes",
+    "min": -53,
+    "max": 0,
+    "midpoint": -26.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1833,
+      "end": 1888
+    },
+    "writing": {
+      "start": 1886,
+      "end": 1886
+    }
+  },
+  "nietzsche-women": {
+    "stance": "opposes",
+    "min": -44.5,
+    "max": -39.0,
+    "midpoint": -41.75,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 1886,
+      "end": 1886
+    }
+  },
+  "bodhi-animals": {
+    "stance": "supports",
+    "min": 0,
+    "max": 0,
+    "midpoint": 0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1911,
+      "end": 1966
+    },
+    "writing": {
+      "start": 1981,
+      "end": 1981
+    }
+  },
+  "bodhi-insects": null,
+  "thich-farmed": {
+    "stance": "supports",
+    "min": 0,
+    "max": 93,
+    "midpoint": 46.5,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2100
+    },
+    "writing": {
+      "start": 2007,
+      "end": 2007
+    }
+  },
+  "ambedkar-women": {
+    "stance": "supports",
+    "min": 8,
+    "max": 24,
+    "midpoint": 16,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 1951,
+      "end": 1956
+    }
+  },
+  "lipsius-religion": {
+    "stance": "opposes",
+    "min": -165.0,
+    "max": -50.0,
+    "midpoint": -107.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1689,
+      "end": 1919
+    },
+    "writing": {
+      "start": 1589,
+      "end": 1589
+    }
+  },
+  "becker-slavery": {
+    "stance": "supports",
+    "min": 0,
+    "max": 0,
+    "midpoint": 0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1833,
+      "end": 1888
+    },
+    "writing": {
+      "start": 2017,
+      "end": 2017
+    }
+  },
+  "becker-women": {
+    "stance": "supports",
+    "min": 0,
+    "max": 0,
+    "midpoint": 0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 2017,
+      "end": 2017
+    }
+  },
+  "du-vair-animals": null,
+  "champat-animals": {
+    "stance": "supports",
+    "min": 0,
+    "max": 37,
+    "midpoint": 18.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1911,
+      "end": 1966
+    },
+    "writing": {
+      "start": 1929,
+      "end": 1929
+    }
+  },
+  "virchand-animals": {
+    "stance": "supports",
+    "min": 10,
+    "max": 73,
+    "midpoint": 41.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1911,
+      "end": 1966
+    },
+    "writing": {
+      "start": 1893,
+      "end": 1901
+    }
+  },
+  "virchand-farmed": {
+    "stance": "supports",
+    "min": 99,
+    "max": 207,
+    "midpoint": 153,
+    "provisional": true,
+    "benchmark": {
+      "start": 2000,
+      "end": 2100
+    },
+    "writing": {
+      "start": 1893,
+      "end": 1901
+    }
+  },
+  "kang-women": {
+    "stance": "supports",
+    "min": 37,
+    "max": 73,
+    "midpoint": 55,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 1902,
+      "end": 1927
+    }
+  },
+  "kang-racial": {
+    "stance": "opposes",
+    "min": -47.0,
+    "max": -11.0,
+    "midpoint": -29.0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1949,
+      "end": 1996
+    },
+    "writing": {
+      "start": 1902,
+      "end": 1927
+    }
+  },
+  "liang-women": {
+    "stance": "supports",
+    "min": 67,
+    "max": 78,
+    "midpoint": 72.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 1897,
+      "end": 1897
+    }
+  },
+  "fichte-women": {
+    "stance": "opposes",
+    "min": -89.0,
+    "max": -83.5,
+    "midpoint": -86.25,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 1797,
+      "end": 1797
+    }
+  },
+  "fichte-suffrage": {
+    "stance": "opposes",
+    "min": -76.5,
+    "max": -60.5,
+    "midpoint": -68.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1918,
+      "end": 1950
+    },
+    "writing": {
+      "start": 1797,
+      "end": 1797
+    }
+  },
+  "cohen-execution": {
+    "stance": "supports",
+    "min": 45,
+    "max": 94,
+    "midpoint": 69.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1949,
+      "end": 1998
+    },
+    "writing": {
+      "start": 1904,
+      "end": 1904
+    }
+  },
+  "rawls-animals": {
+    "stance": "supports",
+    "min": 0,
+    "max": 0,
+    "midpoint": 0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1911,
+      "end": 1966
+    },
+    "writing": {
+      "start": 1999,
+      "end": 1999
+    }
+  },
+  "rawls-religion": {
+    "stance": "supports",
+    "min": 0,
+    "max": 0,
+    "midpoint": 0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1689,
+      "end": 1919
+    },
+    "writing": {
+      "start": 1999,
+      "end": 1999
+    }
+  },
+  "anscombe-gay": null,
+  "macintyre-slavery": {
+    "stance": "supports",
+    "min": 0,
+    "max": 0,
+    "midpoint": 0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1833,
+      "end": 1888
+    },
+    "writing": {
+      "start": 1981,
+      "end": 2007
+    }
+  },
+  "sartre-torture": {
+    "stance": "supports",
+    "min": 0,
+    "max": 26,
+    "midpoint": 13,
+    "provisional": false,
+    "benchmark": {
+      "start": 1948,
+      "end": 1984
+    },
+    "writing": {
+      "start": 1958,
+      "end": 1958
+    }
+  },
+  "sartre-colonial": {
+    "stance": "supports",
+    "min": 0,
+    "max": 0,
+    "midpoint": 0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1945,
+      "end": 1960
+    },
+    "writing": {
+      "start": 1961,
+      "end": 1961
+    }
+  },
+  "camus-execution": {
+    "stance": "supports",
+    "min": 0,
+    "max": 41,
+    "midpoint": 20.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1949,
+      "end": 1998
+    },
+    "writing": {
+      "start": 1957,
+      "end": 1957
+    }
+  },
+  "kierkegaard-women": {
+    "stance": "opposes",
+    "min": -64.0,
+    "max": -58.5,
+    "midpoint": -61.25,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 1847,
+      "end": 1847
+    }
+  },
+  "iqbal-inheritance": null,
+  "rida-slavery": {
+    "stance": "opposes",
+    "min": -101,
+    "max": -45,
+    "midpoint": -73.0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1833,
+      "end": 1888
+    },
+    "writing": {
+      "start": 1933,
+      "end": 1934
+    }
+  },
+  "rida-racial": {
+    "stance": "supports",
+    "min": 15,
+    "max": 63,
+    "midpoint": 39,
+    "provisional": false,
+    "benchmark": {
+      "start": 1949,
+      "end": 1996
+    },
+    "writing": {
+      "start": 1933,
+      "end": 1934
+    }
+  },
+  "vivekananda-women": {
+    "stance": "supports",
+    "min": 71,
+    "max": 82,
+    "midpoint": 76.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 1893,
+      "end": 1893
+    }
+  },
+  "radhakrishnan-religion": {
+    "stance": "supports",
+    "min": 0,
+    "max": 0,
+    "midpoint": 0,
+    "provisional": false,
+    "benchmark": {
+      "start": 1689,
+      "end": 1919
+    },
+    "writing": {
+      "start": 1926,
+      "end": 1926
+    }
+  },
+  "mill-slavery": {
+    "stance": "supports",
+    "min": 0,
+    "max": 39,
+    "midpoint": 19.5,
+    "provisional": false,
+    "benchmark": {
+      "start": 1833,
+      "end": 1888
+    },
+    "writing": {
+      "start": 1849,
+      "end": 1850
+    }
+  },
+  "bentham-suffrage": {
+    "stance": "supports",
+    "min": 88,
+    "max": 132,
+    "midpoint": 110,
+    "provisional": false,
+    "benchmark": {
+      "start": 1918,
+      "end": 1950
+    },
+    "writing": {
+      "start": 1818,
+      "end": 1830
+    }
+  },
+  "rousseau-women": {
+    "stance": "opposes",
+    "min": -106.5,
+    "max": -101.0,
+    "midpoint": -103.75,
+    "provisional": false,
+    "benchmark": {
+      "start": 1964,
+      "end": 1975
+    },
+    "writing": {
+      "start": 1762,
+      "end": 1762
+    }
+  },
+  "locke-hereditary-slavery": null
+}

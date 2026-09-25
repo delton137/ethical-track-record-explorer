@@ -146,7 +146,7 @@ export function expanded() {
     "#257c83",
     "Geneva / France; republican freedom and the social contract",
     "https://plato.stanford.edu/entries/rousseau/",
-    "A central social-contract and republican theorist. The broad rights-based family includes republican branches; it does not imply modern liberalism in every respect.",
+    "A central social-contract and republican theorist. The rights and social-contract family includes republican branches; it does not imply modern liberalism in every respect.",
     "central",
   );
   e({
@@ -433,11 +433,11 @@ export function expanded() {
     "Martha Nussbaum",
     1947,
     undefined,
-    "virtue",
-    "#6d79a4",
+    "capabilities",
+    "#927345",
     "United States; Aristotelian capabilities and political liberalism",
-    "https://holbergprize.org/en/holberg-prize/laureates/martha-c-nussbaum",
-    "The capabilities approach draws substantially on Aristotelian flourishing. This branch is not an assertion that Nussbaum endorses all versions of virtue ethics.",
+    "https://www.law.uchicago.edu/news/justice-animals-practical-progress-through-philosophical-theory",
+    "Develops the capabilities approach to justice, including substantive entitlements for humans and animals. Aristotelian influence does not make this theory a branch of virtue ethics.",
     "central",
     [
       {
@@ -614,7 +614,7 @@ export function expanded() {
       "The passage is an explicit recommendation of religious persecution, framed as a Christian duty.",
     qualifications: [
       "Historical antisemitic writing is quoted for evidence of the position.",
-      "Opposition before the selected benchmark scores zero under the agreed timing rule; zero is not moral approval.",
+      "Opposition before the selected benchmark receives a negative foresight score at half weight.",
     ],
     counter:
       "His 1523 writing That Jesus Christ Was Born a Jew advocated different treatment while retaining conversion as its goal. The separate 1523 record supplies that earlier passage.",

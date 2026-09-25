@@ -22,6 +22,14 @@ const people = ids(data.figures),
 const validRange = (r: { start: number; end: number }) =>
   Number.isInteger(r.start) && Number.isInteger(r.end) && r.start <= r.end;
 for (const f of data.figures) {
+  if (f.born !== undefined)
+    assert(Number.isInteger(f.born), `${f.id}: integer birth`);
+  if (f.died !== undefined)
+    assert(Number.isInteger(f.died), `${f.id}: integer death`);
+  if (f.floruit) {
+    assert(validRange(f.floruit), `${f.id}: valid floruit`);
+    assert(f.lifeDateNote && f.lifeDateSourceUrl, `${f.id}: sourced floruit`);
+  }
   assert(f.affiliations.length, `${f.id}: affiliation`);
   assert.equal(
     new Set(f.affiliations.map((a) => a.traditionId)).size,
@@ -55,6 +63,27 @@ for (const p of data.positions) {
   assert(p.quotationIds.length);
   for (const q of p.quotationIds) assert(quotes.has(q));
   assert(validRange(p.composition) && validRange(p.publication));
+  assert(
+    p.attribution === "authored" ||
+      p.attribution === "reported-teaching" ||
+      p.attribution === "scriptural-text",
+    `${p.id}: attribution`,
+  );
+  if (p.attribution === "reported-teaching") {
+    assert(
+      p.attributionNote &&
+        p.textualAttestation &&
+        validRange(p.textualAttestation),
+      `${p.id}: reported-teaching provenance`,
+    );
+  }
+  if (p.attribution === "scriptural-text") {
+    assert.equal(
+      data.figures.find((f) => f.id === p.figureId)!.kind,
+      "scripture",
+    );
+    assert(p.attributionNote, `${p.id}: scriptural provenance`);
+  }
   assert(p.dateBasis && p.counterevidence && p.matchRationale);
   if (p.milestoneId) {
     const m = data.milestones.find((m) => m.id === p.milestoneId);
@@ -110,11 +139,15 @@ for (const q of data.quotations) {
 }
 for (const [work, count] of wordsByWork)
   assert(
-    count <= 25,
+    count <= 25 ||
+      data.sources
+        .filter((s) => s.author + "|" + s.title === work)
+        .every((s) => s.publicDomainUrl),
     `${work}: ${count} excerpt words exceeds per-work budget`,
   );
 for (const s of data.sources) {
   new URL(s.url);
+  if (s.publicDomainUrl) new URL(s.publicDomainUrl);
   if (s.datingSourceUrl) new URL(s.datingSourceUrl);
   if (s.workFirstPublication) assert(validRange(s.workFirstPublication));
   if (s.witnessPublication) assert(validRange(s.witnessPublication));

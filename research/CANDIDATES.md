@@ -1,17 +1,17 @@
 # Expansion roster disposition
 
-24 additions bring the corpus to 66. Admission means an attributable primary passage is available, sometimes with explicitly unresolved bibliographic details. It does not mean every domain or the complete author corpus has been searched.
+The current human-author roster contains **75 people**, including the eight figures in [the earlier review](EIGHT-PHILOSOPHERS.md), Seneca and Epictetus; see [their source review and the Sidgwick/Russell update](SIDGWICK-RUSSELL-STOICS.md). Musonius, Umāsvāti and Epictetus currently have unmatched evidence only. Admission means an attributable primary passage is available, sometimes with explicitly unresolved bibliographic details. It does not mean every domain or the complete author corpus has been searched.
 
 | Family | Added |
 |---|---|
 | Buddhist | Thich Nhat Hanh; B. R. Ambedkar (late Buddhist work only); Bhikkhu Bodhi |
-| Stoic / Neo-Stoic | Justus Lipsius; Guillaume du Vair (unmatched); Lawrence Becker |
+| Stoic / Neo-Stoic | Justus Lipsius; Guillaume du Vair (unmatched); Lawrence Becker; Musonius Rufus (unmatched); Seneca; Epictetus (unmatched) |
 | Jain | Virchand Gandhi; Champat Rai Jain |
 | Confucian | Kang Youwei; Liang Qichao (replacement, early reform phase) |
 | Islamic | Muhammad Iqbal (unmatched inheritance evidence); Rashid Rida |
-| Virtue | Philippa Foot; G. E. M. Anscombe (unmatched moral condemnation); Alasdair MacIntyre |
+| Virtue | G. E. M. Anscombe (unmatched moral condemnation); Alasdair MacIntyre |
 | Kantian | J. G. Fichte; Hermann Cohen; John Rawls (mixed liberal/Kantian) |
-| Existential and precursors | Jean-Paul Sartre; Albert Camus (contested); Søren Kierkegaard (signed Christian work); Friedrich Nietzsche (contested) |
+| Existential and precursors | Jean-Paul Sartre; Albert Camus (contested); Søren Kierkegaard (core Christian and existentialist precursor; signed work); Friedrich Nietzsche (core existentialist precursor) |
 | Hindu | Swami Vivekananda; Sarvepalli Radhakrishnan |
 
 ## Unsuccessful / unfinished candidates retained for research

@@ -24,6 +24,23 @@ const report = {
       f.affiliations.some((a) => a.traditionId === t.id && a.status === "core"),
     ).length,
   })),
+  dateConvention: data.dateConvention,
+  reportedTeachings: data.positions
+    .filter((p) => p.attribution === "reported-teaching")
+    .map((p) => ({
+      positionId: p.id,
+      attributedTeaching: p.composition,
+      textualAttestation: p.textualAttestation,
+      note: p.attributionNote,
+    })),
+  uncertainLifeDates: data.figures
+    .filter((f) => f.floruit)
+    .map((f) => ({
+      figureId: f.id,
+      floruit: f.floruit,
+      note: f.lifeDateNote,
+      sourceUrl: f.lifeDateSourceUrl,
+    })),
   scope:
     "Recorded-excerpt review. Complete collected-works searches for slavery, women’s rights and other domains remain unfinished. Unknown is not endorsement.",
   focusAudit: data.figures.map((f) => ({

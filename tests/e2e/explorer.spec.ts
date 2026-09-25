@@ -5,14 +5,20 @@ import AxeBuilder from "@axe-core/playwright";
 test("tradition badges match filtering and Russell is selectable as a secular humanist", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/?contested=0");
   const legend = page.getByLabel("Tradition color legend");
   const existential = legend.getByRole("button", { name: /^Existentialist/ });
   const humanist = legend.getByRole("button", { name: /^Secular humanist/ });
-  await expect(existential.locator("small")).toHaveText("2");
+  await expect(existential.locator("small")).toHaveText("4");
   await expect(humanist.locator("small")).toHaveText("1");
   await existential.click();
-  await expect(existential.locator("small")).toHaveText("2");
+  await expect(existential.locator("small")).toHaveText("4");
+  for (const id of [
+    "nietzsche-slavery",
+    "nietzsche-women",
+    "kierkegaard-women",
+  ])
+    await expect(page.locator(`[data-position="${id}"]`)).toBeVisible();
   await expect(humanist.locator("small")).toHaveText("1");
   await page.getByRole("button", { name: /^Filters/ }).click();
   await page.getByLabel("Include contested").check();
@@ -27,13 +33,29 @@ test("tradition badges match filtering and Russell is selectable as a secular hu
   await expect(
     page.locator('[data-position="russell-extinction"]'),
   ).toBeVisible();
+  await page.goto(
+    "/?traditions=utilitarian&position=russell-extinction&contested=0",
+  );
+  await page.getByRole("button", { name: /^Filters/ }).click();
+  await page
+    .getByRole("combobox", { name: "Tradition", exact: true })
+    .selectOption("utilitarian");
+  await expect(
+    page.getByLabel("Include contested", { exact: true }),
+  ).not.toBeChecked();
+  await expect(
+    page.locator('[data-position="russell-extinction"]'),
+  ).toBeVisible();
+  await expect(
+    page.locator('[data-position="russell-extinction"] circle').last(),
+  ).toHaveAttribute("fill", "#2868c7");
 });
 
 test("Include contested updates author colors, filters, and shared views", async ({
   page,
 }) => {
-  await page.goto("/?position=none");
-  const dot = page.locator('[data-position="nietzsche-slavery"] circle').last();
+  await page.goto("/?position=none&contested=0");
+  const dot = page.locator('[data-position="camus-execution"] circle').last();
   const original = await dot.getAttribute("fill");
   await page.getByRole("button", { name: /^Filters/ }).click();
   const toggle = page.getByLabel("Include contested", { exact: true });
@@ -426,12 +448,14 @@ test("interval hover bands extend to the chart edge on their side of the arc", a
         lineX: line.x,
         lineWidth: line.width,
         height: svg.viewBox.baseVal.height,
+        viewTop: svg.viewBox.baseVal.y,
       };
     });
     expect(bounds.x).toBeCloseTo(bounds.lineX);
     expect(bounds.width).toBeCloseTo(bounds.lineWidth);
-    if (below) expect(bounds.bottom).toBeCloseTo(bounds.height - 100);
-    else expect(bounds.top).toBeCloseTo(65);
+    if (below)
+      expect(bounds.bottom).toBeCloseTo(bounds.viewTop + bounds.height - 100);
+    else expect(bounds.top).toBeCloseTo(bounds.viewTop + 65);
   }
   await page.mouse.move(5, 5);
   await expect(band).toHaveCount(0);
@@ -443,9 +467,10 @@ test("every rendered point matches its placement rule at desktop and mobile widt
 }) => {
   const { calculateScore, defaultScenarios } =
     await import("../../lib/scoring");
-  const { arcY, averageReferenceY } = await import("../../lib/geometry");
+  const { arcY, averageReferenceY, GEOMETRY } =
+    await import("../../lib/geometry");
   const data: ResearchData = await (await request.get("/api/research")).json();
-  const period = { start: 1500, end: 2100 };
+  const { DEFAULT_PERIOD: period } = await import("../../lib/dates");
   for (const viewport of [
     { width: 1440, height: 1000 },
     { width: 390, height: 844 },
@@ -462,6 +487,7 @@ test("every rendered point matches its placement rule at desktop and mobile widt
           points: Array.from(svg.querySelectorAll("[data-position]")).map(
             (el) => ({
               id: el.getAttribute("data-position"),
+              offset: Number(el.getAttribute("data-display-offset") ?? 0),
               transform: el.getAttribute("transform"),
             }),
           ),
@@ -474,8 +500,12 @@ test("every rendered point matches its placement rule at desktop and mobile widt
           const actual = Number(
             dot.transform!.match(/translate\([^,]+,([^\)]+)\)/)![1],
           );
-          const expected =
-            p.stance === "opposes"
+          const expected = !s
+            ? Math.max(
+                GEOMETRY.height,
+                arcY(period.start, rendered.width, period) + 150,
+              ) - 145
+            : p.stance === "opposes"
               ? arcY(
                   Math.min(
                     (s.writing.start + s.writing.end) / 2,
@@ -487,7 +517,8 @@ test("every rendered point matches its placement rule at desktop and mobile widt
               : s.writing.start >= s.benchmark.end
                 ? arcY(s.benchmark.end, rendered.width, period)
                 : averageReferenceY(s.benchmark, rendered.width, period);
-          if (Math.abs(actual - expected) > 0.001) errors.push(p.id);
+          if (Math.abs(actual - expected - dot.offset) > 0.001)
+            errors.push(p.id);
         }
         return errors;
       })

@@ -16,7 +16,7 @@ export const yr = (start: number, end = start): YearRange => ({ start, end });
 export function figure(
   id: string,
   name: string,
-  born: number,
+  born: number | undefined,
   died: number | undefined,
   tradition: string | undefined,
   color: string,
@@ -84,6 +84,12 @@ type EvidenceInput = {
   sourceId?: string;
   author?: string;
   episodeId?: string;
+  attribution?: WrittenPosition["attribution"];
+  attributionNote?: string;
+  textualAttestation?: YearRange;
+  checkedOn?: string;
+  verification?: Source["verification"];
+  publicDomainUrl?: string;
 };
 export function evidence(i: EvidenceInput) {
   if (positions.some((p) => p.id === i.id)) return;
@@ -114,12 +120,14 @@ export function evidence(i: EvidenceInput) {
           ? undefined
           : yr(i.witnessPublication),
       datingSourceUrl: i.datingSourceUrl,
-      reuse:
-        "Brief attributed excerpt; follow the source link for the surrounding work. Copyright in modern translations and editions may subsist.",
-      checkedOn: "2026-09-22",
-      verification: /\.pdf(?:$|\?)/.test(i.url)
-        ? "primary-pdf"
-        : "primary-transcription",
+      reuse: i.publicDomainUrl
+        ? "Brief excerpt from a public-domain translation; the linked rights record applies to the translation, not the host’s commentary or other translations."
+        : "Brief attributed excerpt; follow the source link for the surrounding work. Copyright in modern translations and editions may subsist.",
+      publicDomainUrl: i.publicDomainUrl,
+      checkedOn: i.checkedOn ?? "2026-09-22",
+      verification:
+        i.verification ??
+        (/\.pdf(?:$|\?)/.test(i.url) ? "primary-pdf" : "primary-transcription"),
       verificationNote:
         "Wording checked against the linked primary-text witness. This is not a claim of manuscript collation or independent historical peer review.",
     });
@@ -140,6 +148,9 @@ export function evidence(i: EvidenceInput) {
     domainId: i.domain,
     title: i.title,
     summary: i.summary,
+    attribution: i.attribution ?? "authored",
+    attributionNote: i.attributionNote,
+    textualAttestation: i.textualAttestation,
     composition: yr(i.year, i.end ?? i.year),
     dateBasis:
       i.dateBasis ??

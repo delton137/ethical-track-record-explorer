@@ -25,6 +25,6 @@ export function recordFocusAudit() {
         ),
       ),
     ];
-    figure.researchNote = `Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in ${works.join("; ")}. Slavery: ${outcome(["slavery"])}. Women’s rights: ${outcome(["women", "suffrage"])}. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them.`;
+    figure.researchNote = `Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in ${works.join("; ")}. Slavery: ${outcome(["slavery"])}. Women’s rights: ${outcome(["women", "suffrage"])}. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them.`;
   }
 }

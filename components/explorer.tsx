@@ -1,4 +1,5 @@
 "use client";
+import { ScoringEquations } from "./scoring-equations";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import {
@@ -16,6 +17,7 @@ import {
   ArrowRight,
   Users,
   ExternalLink,
+  Download,
 } from "lucide-react";
 import { affiliationColor } from "@/lib/affiliations";
 import { progressColor } from "@/lib/progress-colors";
@@ -23,15 +25,18 @@ import { data } from "@/research/corpus";
 import type { Filters, Scenarios, YearRange } from "@/lib/types";
 import {
   calculateScore,
+  exportSnapshot,
   defaultScenarios,
   filterPositions,
   formatYears,
-  leaderboard,
+  comparisons,
   traditionCounts,
 } from "@/lib/scoring";
 import { DEFAULT_FILTERS, parseState, serializeState } from "@/lib/state";
 import Timeline from "./timeline";
 import EvidencePanel from "./evidence-panel";
+
+import { formatYear, parseYearInput } from "@/lib/dates";
 
 const scenarioDefaults = defaultScenarios(data);
 const formatScore = (n: number) => `${n > 0 ? "+" : ""}${Math.round(n)}`;
@@ -45,11 +50,12 @@ export default function Explorer() {
   const [view, setView] = useState<"chart" | "table">("chart");
   const [tab, setTab] = useState<"explore" | "method" | "roster">("explore");
   const [filterOpen, setFilterOpen] = useState(false);
+  const [showVerticalBars, setShowVerticalBars] = useState(false);
   const [benchmark, setBenchmark] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const [copied, setCopied] = useState(false);
   const [periodDraft, setPeriodDraft] = useState({
-    start: String(DEFAULT_FILTERS.period.start),
+    start: formatYear(DEFAULT_FILTERS.period.start),
     end: "2100",
   });
   const [periodError, setPeriodError] = useState("");
@@ -57,7 +63,10 @@ export default function Explorer() {
   const evidenceOpener = useRef<Element | null>(null);
   const modalRef = useRef<HTMLDialogElement>(null);
   const modalOpener = useRef<HTMLElement | null>(null);
-  const positions = useMemo(() => filterPositions(data, filters), [filters]);
+  const positions = useMemo(
+    () => filterPositions(data, filters, scenarios),
+    [filters, scenarios],
+  );
   const displayData = useMemo(
     () => ({
       ...data,
@@ -68,11 +77,11 @@ export default function Explorer() {
     }),
     [filters.includeContested, filters.traditionIds],
   );
-  const counts = useMemo(() => traditionCounts(data, filters), [filters]);
-  const ranks = useMemo(
-    () => leaderboard(data, positions, filters),
-    [positions, filters],
+  const counts = useMemo(
+    () => traditionCounts(data, filters, scenarios),
+    [filters, scenarios],
   );
+  const ranks = useMemo(() => comparisons(data, filters), [filters]);
   const selectedTraditions = filters.traditionIds.length
     ? filters.traditionIds.filter((id) => id !== NO_TRADITIONS)
     : data.traditions.map((t) => t.id);
@@ -121,8 +130,8 @@ export default function Explorer() {
       setScenarios(state.scenarios);
       setView(state.view);
       setPeriodDraft({
-        start: String(state.filters.period.start),
-        end: String(state.filters.period.end),
+        start: formatYear(state.filters.period.start),
+        end: formatYear(state.filters.period.end),
       });
       setSelected(
         window.location.search === ""
@@ -188,7 +197,7 @@ export default function Explorer() {
   const reset = () => {
     setFilters({ ...DEFAULT_FILTERS });
     setPeriodDraft({
-      start: String(DEFAULT_FILTERS.period.start),
+      start: formatYear(DEFAULT_FILTERS.period.start),
       end: "2100",
     });
     setPeriodError("");
@@ -202,20 +211,25 @@ export default function Explorer() {
       setCopied(false);
     }
   };
+  const downloadSnapshot = () => {
+    const snapshot = exportSnapshot(data, filters, scenarios);
+    const url = URL.createObjectURL(
+      new Blob([JSON.stringify(snapshot, null, 2)], {
+        type: "application/json",
+      }),
+    );
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "ethical-track-record-view.json";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
   const applyPeriod = () => {
-    const start = Number(periodDraft.start),
-      end = Number(periodDraft.end);
-    if (
-      !periodDraft.start ||
-      !periodDraft.end ||
-      !Number.isInteger(start) ||
-      !Number.isInteger(end) ||
-      start < 1400 ||
-      end > 2500 ||
-      start >= end
-    ) {
+    const start = parseYearInput(periodDraft.start),
+      end = parseYearInput(periodDraft.end);
+    if (start === null || end === null || start >= end) {
       setPeriodError(
-        "Enter whole years from 1400 to 2500, with the start before the end.",
+        "Enter dates from 10000 BCE to 2500 CE (for example, 400 BCE), with the start before the end. There is no displayed year zero.",
       );
       return;
     }
@@ -227,8 +241,9 @@ export default function Explorer() {
     filters.traditionIds.length +
     filters.domainIds.length +
     Number(filters.publicOnly) +
+    Number(filters.showPostdictions) +
     Number(filters.evidence !== "all") +
-    Number(filters.includeContested) +
+    Number(filters.includeContested !== DEFAULT_FILTERS.includeContested) +
     Number(
       filters.period.start !== DEFAULT_FILTERS.period.start ||
         filters.period.end !== 2100,
@@ -292,6 +307,13 @@ export default function Explorer() {
                 </p>
               </div>
               <div className="intro-actions">
+                <button
+                  className="quiet-button"
+                  onClick={downloadSnapshot}
+                  disabled={!hydrated}
+                >
+                  <Download size={16} /> Export view
+                </button>
                 <button className="quiet-button" onClick={share}>
                   {copied ? <Check size={16} /> : <Link2 size={16} />}{" "}
                   {copied ? "Link copied" : "Copy view link"}
@@ -304,7 +326,7 @@ export default function Explorer() {
                 <input
                   aria-label="Search people and positions"
                   disabled={!hydrated}
-                  placeholder="Search a thinker or idea…"
+                  placeholder="Search a person, text or idea…"
                   value={filters.query}
                   onChange={(e) => patch({ query: e.target.value })}
                 />
@@ -379,6 +401,43 @@ export default function Explorer() {
                   <span className="count-badge">{filterCount}</span>
                 )}
               </button>
+              <label
+                className="check-row contested-toggle"
+                title="Include disputed tradition affiliations in filters, colors and comparisons"
+              >
+                <input
+                  type="checkbox"
+                  checked={filters.includeContested}
+                  onChange={(e) =>
+                    patch({ includeContested: e.target.checked })
+                  }
+                />
+                Include contested
+              </label>
+              <label
+                className="check-row vertical-bars-toggle"
+                title="Show reform-date ranges as vertical bars on position dots"
+              >
+                <input
+                  type="checkbox"
+                  checked={showVerticalBars}
+                  onChange={(e) => setShowVerticalBars(e.target.checked)}
+                />
+                Show vertical bars
+              </label>
+              <label
+                className="check-row"
+                title="Show support written after its progress window ends, using the writing date midpoint"
+              >
+                <input
+                  type="checkbox"
+                  checked={filters.showPostdictions}
+                  onChange={(e) =>
+                    patch({ showPostdictions: e.target.checked })
+                  }
+                />
+                Show postdictions
+              </label>
               <div className="toolbar-end">
                 <div
                   className="view-switch"
@@ -445,22 +504,6 @@ export default function Explorer() {
                   <p className="help-text">
                     Uses publication dates and excludes private manuscripts.
                   </p>
-                  <label className="check-row">
-                    <input
-                      type="checkbox"
-                      checked={filters.includeContested}
-                      onChange={(e) =>
-                        patch({ includeContested: e.target.checked })
-                      }
-                    />{" "}
-                    Include contested
-                  </label>
-                  <p className="help-text">
-                    Applies to tradition filters, counts, colors, and
-                    comparisons. Authors with only contested affiliations stay
-                    visible in All traditions, but remain neutral-colored when
-                    this is off.
-                  </p>
                   <label className="field-label">
                     Passage status
                     <select
@@ -487,9 +530,8 @@ export default function Explorer() {
                     <label>
                       From
                       <input
-                        type="number"
-                        min="1400"
-                        max="2499"
+                        type="text"
+                        placeholder="400 BCE"
                         value={periodDraft.start}
                         onChange={(e) =>
                           setPeriodDraft({
@@ -503,9 +545,8 @@ export default function Explorer() {
                     <label>
                       To
                       <input
-                        type="number"
-                        min="1401"
-                        max="2500"
+                        type="text"
+                        placeholder="2100"
                         value={periodDraft.end}
                         onChange={(e) =>
                           setPeriodDraft({
@@ -516,6 +557,9 @@ export default function Explorer() {
                       />
                     </label>
                   </div>
+                  <p className="muted">
+                    BCE/CE accepted; unmarked dates are CE.
+                  </p>
                   <button className="small-button" onClick={applyPeriod}>
                     Apply period
                   </button>
@@ -591,20 +635,22 @@ export default function Explorer() {
                     selected={selected}
                     onSelect={select}
                     onBenchmark={setBenchmark}
+                    showVerticalBars={showVerticalBars}
                   />
                 ) : (
                   <div className="evidence-table-wrap">
                     <table className="evidence-table">
                       <caption className="sr-only">
-                        Written positions, dates, stance and computed lead or
-                        lag. Select a position to inspect primary evidence.
+                        Written positions, dates, stance and computed ethical
+                        foresight scores. Select a position to inspect primary
+                        evidence.
                       </caption>
                       <thead>
                         <tr>
-                          <th>Thinker & position</th>
+                          <th>Person / text & position</th>
                           <th>Writing</th>
                           <th>Position</th>
-                          <th>Lead / lag</th>
+                          <th>Foresight score</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -674,7 +720,7 @@ export default function Explorer() {
                                       {score.provisional
                                         ? "Provisional"
                                         : "Historical"}{" "}
-                                      · years
+                                      · weighted years
                                     </small>
                                   </>
                                 ) : (
@@ -753,14 +799,12 @@ export default function Explorer() {
                 </span>
               </summary>
               <div className="ranking-controls">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={filters.sharedDomains}
-                    onChange={(e) => patch({ sharedDomains: e.target.checked })}
-                  />{" "}
-                  Shared historical domains only
-                </label>
+                <p>
+                  Ethical foresight: support 100 years before reform scores
+                  +100; opposition 100 years before scores −50, and 100 years
+                  after scores −100. Opposition at reform scores zero. Results
+                  use weighted years; date ranges show possible scores.
+                </p>
                 <label>
                   Benchmark set
                   <select
@@ -785,7 +829,8 @@ export default function Explorer() {
                   animal protections from 1822 instead of the 1911–1966
                   interval; Bentham’s lead changes from 122–177 to 33 years.
                   Compare both sets before drawing conclusions about traditions.
-                  Future scenario changes cannot alter this ranking.
+                  Postdictions are always excluded, even when shown on the
+                  chart. Future scenario changes cannot alter this ranking.
                 </p>
               </div>
               <div className="ranking-table-wrap">
@@ -793,7 +838,7 @@ export default function Explorer() {
                   <thead>
                     <tr>
                       <th>Tradition</th>
-                      <th>Mean lead / lag</th>
+                      <th>Mean foresight score</th>
                       <th>Core figures</th>
                       <th>Domains</th>
                       <th>Coverage</th>
@@ -817,7 +862,9 @@ export default function Explorer() {
                           <td>
                             {r.eligible ? (
                               <>
-                                <strong>{formatScore(r.midpoint)} yrs</strong>
+                                <strong>
+                                  {formatScore(r.midpoint)} weighted yrs
+                                </strong>
                                 <small>
                                   {formatScore(r.min)} to {formatScore(r.max)}
                                 </small>
@@ -1193,47 +1240,57 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
       <div className="method-grid">
         <section>
           <span className="method-number">01</span>
-          <h2>The unit is a written position</h2>
+          <h2>The unit is a documented position</h2>
           <p>
-            A dot belongs to one person, one issue and one dated episode.
-            Quotations from the same episode do not add weight. Changes of view
-            can create new episodes; an absence of writing is unknown.
+            A dot belongs to one person or scriptural text, one issue and one
+            dated episode. Quotations from the same episode do not add weight.
+            Changes of view can create new episodes; absence of evidence is
+            unknown. Qualified transmitted teachings can be admitted when the
+            speaker, reporter and textual witness are distinguished.
           </p>
           <p>
             Composition and publication are separate. Where composition is
             uncertain, a conservative publication-year proxy is disclosed. The
             public-only filter excludes private manuscripts and uses publication
-            dates.
+            dates. Reported teachings keep the attributed teaching period,
+            textual attestation and inspected translation date separate.
           </p>
         </section>
         <section>
           <span className="method-number">02</span>
           <h2>Years ahead—or behind</h2>
           <p>
-            Support before a benchmark earns lead years. Opposition after it
-            earns lag years. Later support and earlier opposition earn zero.
-            Ambiguous or substantively unmatched claims remain unscored and are
-            available in the evidence table.
+            Support before a benchmark earns positive foresight scores.
+            Opposition receives a negative score at half weight before reform
+            and full weight after reform. Later support scores zero and is
+            excluded from comparisons. Ambiguous or substantively unmatched
+            claims remain unscored and are available in the evidence table. Only
+            interval-matched scripture passages are plotted, in compact vertical
+            groups with separately spaced hover labels. Their horizontal dates
+            and scores stay unchanged. Connections group passages of one text,
+            not a single author’s changing views.
           </p>
-          <div className="formula">
-            Support: max(adoption − writing, 0)
-            <br />
-            Opposition: min(adoption − writing, 0)
-          </div>
+          <ScoringEquations />
           <p>
             Date ranges propagate through the lead/lag calculation. On the
             chart, support securely dated at or after the end of a reform
             interval sits at its endpoint height, with no vertical whisker.
             Earlier supportive positions sit at the time-weighted average height
-            of the reference line across their reform interval; whiskers span
-            that interval’s reference heights. Their x-position is the writing
-            date. Opposition before a reform starts sits on the reference line
-            at its writing date. At or after the start, it stays at the line’s
-            height for the reform-start year, placing later opposition below the
-            line. This uses the writing-date midpoint for uncertain dates and
-            applies to every issue and selected benchmark. Opposition carries a
-            minus sign. Numerical lead/lag scores are unchanged. Vertical
-            distances are not a uniform scale of years.
+            of the reference line across their reform interval. When “Show
+            vertical bars” is enabled, whiskers span that interval’s reference
+            heights. Their x-position is the writing date. Opposition before a
+            reform starts sits on the reference line at its writing date. At or
+            after the start, it stays at the line’s height for the reform-start
+            year, placing later opposition below the line. This uses the
+            writing-date midpoint for uncertain dates and applies to every issue
+            and selected benchmark. Opposition carries a minus sign. Chart
+            placement does not change numerical foresight scores. Vertical
+            distances are not a uniform scale of years. The Ancient section
+            compresses dates before 1500 and marks empty gaps using the full
+            corpus. Compression never changes scores or rankings. The reference
+            line rises gently from 800 BCE through 1700. BCE/CE dates have no
+            displayed year zero; internal astronomical numbering keeps date
+            arithmetic continuous.
           </p>
         </section>
         <section>
@@ -1248,9 +1305,10 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
             neutral-colored in All traditions. With it on, their affiliation
             supplies their color. A selected tradition takes priority over an
             author's primary color when it matches an eligible affiliation.
-            Retrospective existentialist affiliations for Nietzsche and
-            Kierkegaard are both treated as contested; Kierkegaard retains his
-            core Christian affiliation.
+            Nietzsche and Kierkegaard are included as core members of the broad
+            existentialist family, qualified as foundational precursors to the
+            later movement. Kierkegaard also retains his core Christian
+            affiliation.
           </p>
           <p>
             Foundational, central and established figures use 3, 2.25 and 1.5 px
@@ -1270,10 +1328,9 @@ function Methodology({ onExplore }: { onExplore: () => void }) {
           </p>
           <p>
             Overall rankings require three core figures with scored historical
-            evidence and three historical domains. Shared-domain and
-            alternative-benchmark controls expose sensitivity. Small and
-            selective samples cannot establish the causal superiority of an
-            ethical system.
+            evidence and three historical domains. Alternative-benchmark
+            controls expose sensitivity. Small and selective samples cannot
+            establish the causal superiority of an ethical system.
           </p>
         </section>
         <section>

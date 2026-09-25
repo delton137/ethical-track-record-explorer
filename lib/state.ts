@@ -1,14 +1,15 @@
 import type { Filters, Scenarios } from "./types";
+import { DEFAULT_PERIOD, MIN_TIMELINE_YEAR } from "./dates";
 
 export const DEFAULT_FILTERS: Filters = {
   query: "",
   traditionIds: [],
   domainIds: [],
-  period: { start: 1500, end: 2100 },
+  period: DEFAULT_PERIOD,
   publicOnly: false,
+  showPostdictions: false,
   evidence: "all",
-  includeContested: false,
-  sharedDomains: false,
+  includeContested: true,
   benchmark: "default",
 };
 export function parseState(search: string, defaults: Scenarios) {
@@ -17,12 +18,10 @@ export function parseState(search: string, defaults: Scenarios) {
     const v = p.get(key);
     if (v === null || v.trim() === "") return fallback;
     const n = Number(v);
-    return Number.isFinite(n) && n >= min && n <= max
-      ? Math.round(n)
-      : fallback;
+    return Number.isInteger(n) && n >= min && n <= max ? n : fallback;
   };
-  let start = number("from", DEFAULT_FILTERS.period.start),
-    end = number("to", 2100);
+  let start = number("from", DEFAULT_FILTERS.period.start, MIN_TIMELINE_YEAR),
+    end = number("to", 2100, MIN_TIMELINE_YEAR);
   if (start > end) [start, end] = [end, start];
   const filters: Filters = {
     ...DEFAULT_FILTERS,
@@ -38,14 +37,14 @@ export function parseState(search: string, defaults: Scenarios) {
     ],
     period: { start, end },
     publicOnly: p.get("public") === "1",
+    showPostdictions: p.get("postdictions") === "1",
     evidence:
       p.get("evidence") === "checked"
         ? "checked"
         : p.get("evidence") === "qualified"
           ? "qualified"
           : "all",
-    includeContested: p.get("contested") === "1",
-    sharedDomains: p.get("shared") === "1",
+    includeContested: p.get("contested") !== "0",
     benchmark: p.get("benchmark") === "alternative" ? "alternative" : "default",
   };
   const scenarios = Object.fromEntries(
@@ -83,9 +82,9 @@ export function serializeState(
     p.set("from", String(filters.period.start));
   if (filters.period.end !== 2100) p.set("to", String(filters.period.end));
   if (filters.publicOnly) p.set("public", "1");
+  if (filters.showPostdictions) p.set("postdictions", "1");
   if (filters.evidence !== "all") p.set("evidence", filters.evidence);
-  if (filters.includeContested) p.set("contested", "1");
-  if (filters.sharedDomains) p.set("shared", "1");
+  if (!filters.includeContested) p.set("contested", "0");
   if (filters.benchmark === "alternative") p.set("benchmark", "alternative");
   if (view === "table") p.set("view", "table");
   p.set("position", selected ?? "none");

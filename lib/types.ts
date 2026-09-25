@@ -22,8 +22,14 @@ export type ImportanceAssessment = {
 export type Figure = {
   id: string;
   name: string;
-  born: number;
+  kind?: "person" | "scripture";
+  aliases?: string[];
+  compositionPeriod?: YearRange;
+  born?: number;
   died?: number;
+  floruit?: YearRange;
+  lifeDateNote?: string;
+  lifeDateSourceUrl?: string;
   context: string;
   affiliations: Affiliation[];
   primaryTraditionId?: string;
@@ -77,6 +83,7 @@ export type Source = {
   witnessPublication?: YearRange;
   datingSourceUrl?: string;
   reuse: string;
+  publicDomainUrl?: string;
   checkedOn: string;
   verification: "primary-transcription" | "primary-pdf";
   verificationNote: string;
@@ -94,6 +101,9 @@ export type WrittenPosition = {
   domainId: string;
   title: string;
   summary: string;
+  attribution?: "authored" | "reported-teaching" | "scriptural-text";
+  attributionNote?: string;
+  textualAttestation?: YearRange;
   composition: YearRange;
   dateBasis: string;
   publication: YearRange;
@@ -111,6 +121,7 @@ export type WrittenPosition = {
 export type ResearchData = {
   version: string;
   asOf: string;
+  dateConvention?: string;
   traditions: Tradition[];
   figures: Figure[];
   domains: Domain[];
@@ -135,9 +146,9 @@ export type Filters = {
   domainIds: string[];
   period: YearRange;
   publicOnly: boolean;
+  showPostdictions: boolean;
   evidence: "all" | "checked" | "qualified";
   includeContested: boolean;
-  sharedDomains: boolean;
   benchmark: "default" | "alternative";
 };
 export type Scenarios = Record<string, YearRange>;
