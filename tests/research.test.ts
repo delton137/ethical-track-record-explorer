@@ -5,6 +5,42 @@ import { data } from "../research/corpus";
 import { calculateScore, defaultScenarios } from "../lib/scoring";
 import { arcY, GEOMETRY, positionCoordinates } from "../lib/geometry";
 
+test("racial equality uses modern protections and retains the US-only alternative", () => {
+  const m = data.milestones.find((m) => m.id === "racial-equality")!;
+  assert.deepEqual(m.window, { start: 1949, end: 1996 });
+  assert.deepEqual(
+    m
+      .reforms!.filter((r) => r.jurisdiction === "United States")
+      .map((r) => r.year),
+    [1964, 1965],
+  );
+  assert.equal(new Set(m.reforms!.map((r) => r.jurisdiction)).size, 7);
+  assert.equal(Math.min(...m.reforms!.map((r) => r.year)), m.window.start);
+  assert.equal(Math.max(...m.reforms!.map((r) => r.year)), m.window.end);
+  const king = data.positions.find((p) => p.id === "king-racial")!;
+  const score = calculateScore(king, m, {})!;
+  assert.deepEqual([score.min, score.max], [0, 33]);
+  const alternative = calculateScore(king, m, {}, false, true)!;
+  assert.deepEqual([alternative.min, alternative.max], [0, 2]);
+});
+
+test("capital punishment counts only all-crimes abolition in the selected countries", () => {
+  const m = data.milestones.find((m) => m.id === "execution-abolition")!;
+  assert.deepEqual(m.window, { start: 1949, end: 1998 });
+  assert.deepEqual(
+    m.reforms!.map((r) => [r.jurisdiction, r.year]),
+    [
+      ["West Germany", 1949],
+      ["France", 1981],
+      ["UK", 1998],
+      ["Canada", 1998],
+    ],
+  );
+  const beccaria = data.positions.find((p) => p.id === "beccaria-execution")!;
+  const score = calculateScore(beccaria, m, {})!;
+  assert.deepEqual([score.min, score.max], [185, 234]);
+});
+
 test("new authors retain evidence limits rather than acquiring fabricated scores", () => {
   for (const id of [
     "bodhi-insects",
@@ -12,6 +48,8 @@ test("new authors retain evidence limits rather than acquiring fabricated scores
     "anscombe-gay",
     "iqbal-inheritance",
     "locke-hereditary-slavery",
+    "seneca-slavery",
+    "epictetus-slavery",
   ]) {
     const p = data.positions.find((p) => p.id === id)!;
     assert(p);
@@ -25,15 +63,51 @@ test("new authors retain evidence limits rather than acquiring fabricated scores
       null,
     );
   }
-  assert(
-    data.figures
-      .find((f) => f.id === "nietzsche")!
-      .affiliations.every((a) => a.status === "contested"),
-  );
   assert.equal(
     data.positions.find((p) => p.id === "ambedkar-women")!.composition.start,
     1951,
   );
+});
+
+test("Sidgwick expansion preserves mixed positions and the inspected edition date", () => {
+  const positions = data.positions.filter((p) => p.figureId === "sidgwick");
+  assert.equal(positions.length, 5);
+  assert.deepEqual(
+    positions
+      .filter((p) => p.stance === "opposes")
+      .map((p) => p.domainId)
+      .sort(),
+    ["colonial", "racial"],
+  );
+  for (const p of positions) {
+    assert.deepEqual(p.composition, { start: 1897, end: 1897 });
+    assert.deepEqual(p.publication, p.composition);
+    const quote = data.quotations.find((q) => q.id === p.quotationIds[0])!;
+    const source = data.sources.find((s) => s.id === quote.sourceId)!;
+    assert.equal(source.workFirstPublication!.start, 1891);
+    assert.equal(source.witnessPublication!.start, 1897);
+    assert.equal(source.verification, "primary-pdf");
+  }
+});
+
+test("ancient Stoic evidence separates authorship, reported teachings and benchmark equivalence", () => {
+  const execution = data.positions.find((p) => p.id === "seneca-execution")!;
+  assert.deepEqual(execution.composition, { start: 55, end: 56 });
+  assert.equal(execution.stance, "opposes");
+  assert.equal(
+    calculateScore(
+      execution,
+      data.milestones.find((m) => m.id === execution.milestoneId),
+      defaultScenarios(data),
+    )!.midpoint,
+    -959,
+  );
+  const teaching = data.positions.find((p) => p.id === "epictetus-slavery")!;
+  assert.equal(teaching.attribution, "reported-teaching");
+  assert.deepEqual(teaching.textualAttestation, teaching.publication);
+  assert(teaching.publication.end > teaching.composition.end);
+  assert.match(teaching.attributionNote!, /Arrian/);
+  assert(data.figures.find((f) => f.id === "epictetus")!.floruit);
 });
 
 test("Bentham suffrage preserves posthumous manuscript dates and political deferral", () => {
@@ -63,7 +137,13 @@ test("opposition dots use the earlier of writing date and reform start", () => {
       920,
       1,
     );
-    assert.equal(point.y, arcY(Math.min(point.year, m.window.start)));
+    assert.equal(
+      point.y,
+      arcY(Math.min(point.year, m.window.start), 920, {
+        start: 1500,
+        end: 2100,
+      }),
+    );
   }
 });
 

@@ -1,6 +1,6 @@
 # Ethical Track Record Explorer
 
-A Next.js / React / TypeScript research app comparing dated **written positions** with explicitly named moral-reform benchmarks. D3 supplies the time scale; SVG renders the schematic moral arc, uncertainty intervals, stable author colors and connected positions. Prepared for Vercel; no database, accounts, API keys or environment variables are needed.
+A Next.js / React / TypeScript research app comparing dated **documented positions** with explicitly named moral-reform benchmarks. A shared piecewise time scale supplies display geometry; D3 supplies modern ticks; SVG renders the schematic moral arc, uncertainty intervals, stable author colors and connected positions. Prepared for Vercel; no database, accounts, API keys or environment variables are needed.
 
 ## Run
 
@@ -15,14 +15,14 @@ Open http://localhost:3000. For a production preview, run `npm run build` then `
 
 ## What is included
 
-The default graph spans 1500–2100; resetting filters restores this period.
+The default graph spans 800 BCE–2100. A 160-pixel Ancient section compresses dates before 1500, marking empty gaps while protecting documented lifetimes/floruit and date uncertainty. The reference rises gently from 800 BCE through 1700. Resetting filters restores the full period; BCE/CE input and astronomical internal years preserve actual-date arithmetic.
 
-- 66 figures (59 plotted), 91 written positions, 86 quotation records and 77 primary-source records across 14 ethical families.
-- 81 scored dots and ten unmatched positions retained in the evidence table.
+- 77 entries (75 people and two scriptural collections), 130 documented positions, 125 quotation records and 111 primary-source records across 14 ethical families.
+- 103 scored positions and 27 unscored positions retained in the evidence table; unscored scriptural passages also appear on the neutral context row.
 - Separate extinction (2000–2030), wild-animal welfare including insects (2060–2100), AI-welfare (2040–2100), and factory-farming / veganism (2000–2100) scenario windows. All are provisional and excluded from historical rankings.
 - Persistent quotation panel; desktop chart resizing; mobile bottom-sheet/full-screen reading; keyboard and overlap selection; equivalent table view.
-- Search and filters; public/private sensitivity; date intervals; alternative dates and jurisdictions, including narrower 1822 livestock protections; shared-domain comparisons; coverage thresholds; URL-based views.
-- Export of source data, filters, scenario dates, score intervals, placements and historical rankings. `/api/research` serves the full source corpus.
+- Search and filters; public/private sensitivity; date intervals; alternative dates and jurisdictions, including narrower 1822 livestock protections; coverage thresholds; URL-based views.
+- Export of source data, filters, scenario dates, score intervals, placements and historical rankings. `/api/research` serves the full source corpus, attribution/date conventions and default axis metadata. Both exports include protected intervals and compressed breaks.
 
 The initial corpus is an inspectable research edition, **not a completed scholarly audit**. Coverage is uneven and several traditions do not meet the historical ranking threshold. Some edition, composition and affiliation judgments are explicitly qualified. See [research status](research/STATUS.md), [protocol](research/PROTOCOL.md), and [candidate queue](research/CANDIDATES.md). Missing evidence does not become a score.
 
@@ -50,6 +50,8 @@ Import this repository into Vercel as a **Next.js** project, with this directory
 | `research/catalog.ts`           | Tradition taxonomy, domains, benchmark register and historical source links  |
 | `research/calibration.ts`       | Initial calibration dossiers, including private texts and extinction concern |
 | `research/expanded.ts`          | Additional authors and position dossiers                                     |
+| `research/eight-philosophers.ts` | Eight ancient, medieval and utilitarian additions with transmission qualifications |
+| `lib/dates.ts` | BCE/CE formatting, date input and astronomical-year conventions |
 | `research/evidence.ts`          | Typed constructors; separately stored sources and quotations                 |
 | `lib/types.ts`                  | Research schema                                                              |
 | `lib/scoring.ts`                | Pure scoring, filtering, historical rankings and export                      |
@@ -61,4 +63,4 @@ Import this repository into Vercel as a **Next.js** project, with this directory
 
 To add a position, verify a primary witness and record the exact short passage, locator, language/translator, composition and publication dates, visibility, qualifications and contrary evidence. Establish the figure's affiliation and importance independently of the score. Reuse a source/quotation ID for coauthored material. Repeated statements of one episode share an `episodeId`; a real revision gets a new episode and `revisionOf`. Leave `milestone` absent when there is no substantively equivalent benchmark. Run the data audit and tests before including the change.
 
-The app's arc expresses the project's assumed direction of progress. Its vertical offsets are years of lead or lag, never units of goodness. Connections identify the same writer across issues, not a continuous moral trajectory. Importance changes stroke width only.
+The app's arc expresses the project's assumed direction of progress. Its vertical distances are schematic; numerical lead/lag scores are computed separately from actual dates, never as units of goodness. Connections identify the same writer across issues, not a continuous moral trajectory. Importance changes stroke width only.

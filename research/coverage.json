@@ -1,7 +1,7 @@
 {
-  "version": "2026.09.22-3",
-  "figures": 66,
-  "plottedFigures": 59,
+  "version": "2026.09.25-1",
+  "figures": 77,
+  "plottedFigures": 67,
   "unmatchedOnlyFigures": [
     "Pope Paul III",
     "Margaret Fell",
@@ -9,19 +9,26 @@
     "Tenzin Gyatso, 14th Dalai Lama",
     "Guillaume du Vair",
     "G. E. M. Anscombe",
-    "Muhammad Iqbal"
+    "Muhammad Iqbal",
+    "Musonius Rufus",
+    "Umāsvāti",
+    "Epictetus"
   ],
-  "positions": 91,
-  "quotations": 86,
-  "sources": 77,
+  "positions": 128,
+  "quotations": 124,
+  "sources": 110,
   "traditions": [
     {
+      "id": "secular-humanist",
+      "coreFigures": 1
+    },
+    {
       "id": "utilitarian",
-      "coreFigures": 12
+      "coreFigures": 15
     },
     {
       "id": "christian",
-      "coreFigures": 11
+      "coreFigures": 13
     },
     {
       "id": "kantian",
@@ -29,11 +36,11 @@
     },
     {
       "id": "buddhist",
-      "coreFigures": 4
+      "coreFigures": 5
     },
     {
       "id": "stoic",
-      "coreFigures": 4
+      "coreFigures": 7
     },
     {
       "id": "hindu",
@@ -41,19 +48,23 @@
     },
     {
       "id": "jain",
-      "coreFigures": 3
-    },
-    {
-      "id": "existential",
-      "coreFigures": 3
-    },
-    {
-      "id": "virtue",
       "coreFigures": 4
     },
     {
+      "id": "existential",
+      "coreFigures": 4
+    },
+    {
+      "id": "virtue",
+      "coreFigures": 5
+    },
+    {
+      "id": "capabilities",
+      "coreFigures": 1
+    },
+    {
       "id": "liberal",
-      "coreFigures": 9
+      "coreFigures": 8
     },
     {
       "id": "socialist",
@@ -65,7 +76,72 @@
     },
     {
       "id": "islamic",
-      "coreFigures": 3
+      "coreFigures": 5
+    }
+  ],
+  "dateConvention": "Astronomical integer years: 1 = 1 CE, 0 = 1 BCE, -399 = 400 BCE. Displayed historical dates have no year zero. Date intervals express uncertainty; inspected edition dates are separate from composition and attestation.",
+  "reportedTeachings": [
+    {
+      "positionId": "musonius-women",
+      "attributedTeaching": {
+        "start": 60,
+        "end": 102
+      },
+      "textualAttestation": {
+        "start": 401,
+        "end": 500
+      },
+      "note": "Teaching attributed to Musonius, reported by Lucius and preserved in Stobaeus’s fifth-century anthology. This is not an autograph or an extant treatise authored by Musonius. Lutz discusses the transmission at pp.5–9."
+    },
+    {
+      "positionId": "epictetus-slavery",
+      "attributedTeaching": {
+        "start": 89,
+        "end": 135
+      },
+      "textualAttestation": {
+        "start": 101,
+        "end": 200
+      },
+      "note": "Attributed to Epictetus and transmitted in Arrian’s Discourses. Arrian’s prologue describes notes of oral teaching; the degree of literary shaping remains debated. This is not an autograph or a verified verbatim lecture transcript."
+    }
+  ],
+  "uncertainLifeDates": [
+    {
+      "figureId": "musonius",
+      "floruit": {
+        "start": 60,
+        "end": 102
+      },
+      "note": "Broad activity envelope, c.60–102 CE: the IEP documents his activity from around 60 CE and death before 101–102 CE. These are bounds for the teaching-period proxy, not precise life dates.",
+      "sourceUrl": "https://iep.utm.edu/musonius/"
+    },
+    {
+      "figureId": "nagarjuna",
+      "floruit": {
+        "start": 150,
+        "end": 250
+      },
+      "note": "Activity placed within c.150–250 CE; these endpoints are not asserted birth and death years.",
+      "sourceUrl": "https://plato.stanford.edu/entries/nagarjuna/"
+    },
+    {
+      "figureId": "umasvati",
+      "floruit": {
+        "start": -56,
+        "end": 500
+      },
+      "note": "Dating remains disputed. The broad possible activity envelope, 57 BCE–500 CE, includes Sukhlalji’s introduction pp.20–22 (first through fourth centuries of the Vikrama era) and this edition’s preface (fourth–fifth centuries CE). It is an uncertainty envelope, not a 556-year life.",
+      "sourceUrl": "https://jainpedia.org/wp-content/uploads/2021/06/Sukhlalji_Dixit-final.pdf"
+    },
+    {
+      "figureId": "epictetus",
+      "floruit": {
+        "start": 89,
+        "end": 135
+      },
+      "note": "Later teaching/floruit envelope, c.89–135 CE: the linked biography places departure from Rome around 89 and death around 135. Born sometime in the 50s CE; no exact birth or death endpoint is asserted here.",
+      "sourceUrl": "https://plato.stanford.edu/entries/epictetus/"
     }
   ],
   "scope": "Recorded-excerpt review. Complete collected-works searches for slavery, women’s rights and other domains remain unfinished. Unknown is not endorsement.",
@@ -73,332 +149,387 @@
     {
       "figureId": "bentham",
       "name": "Jeremy Bentham",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in An Introduction to the Principles of Morals and Legislation; Offences Against One’s Self: Paederasty; Constitutional Code. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women’s equal claim to the vote—in principle (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in An Introduction to the Principles of Morals and Legislation; Offences Against One’s Self: Paederasty; Constitutional Code. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women’s equal claim to the vote—in principle (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "mill",
       "name": "John Stuart Mill",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Subjection of Women; Autobiography; The Negro Question. Slavery: Defending emancipation against Carlyle (supports; benchmark assigned). Women’s rights: A principle of perfect equality (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Subjection of Women; Autobiography; Speech on capital punishment — 21 April 1868; The Negro Question. Slavery: Defending emancipation against Carlyle (supports; benchmark assigned). Women’s rights: A principle of perfect equality (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "woolman",
       "name": "John Woolman",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Some Considerations on the Keeping of Negroes. Slavery: The natural right of freedom (supports; benchmark assigned). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Some Considerations on the Keeping of Negroes. Slavery: The natural right of freedom (supports; benchmark assigned). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "wollstonecraft",
       "name": "Mary Wollstonecraft",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in A Vindication of the Rights of Woman. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women ought to have representatives (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in A Vindication of the Rights of Woman. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women ought to have representatives (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "kant",
       "name": "Immanuel Kant",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Metaphysics of Morals: Doctrine of Right. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women excluded from active citizenship (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Metaphysics of Morals: Doctrine of Right. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women excluded from active citizenship (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "beccaria",
       "name": "Cesare Beccaria",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in On Crimes and Punishments. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in On Crimes and Punishments. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "russell",
       "name": "Bertrand Russell",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Russell–Einstein Manifesto. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Russell–Einstein Manifesto. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "jonas",
       "name": "Hans Jonas",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Technology and Responsibility: Reflections on the New Tasks of Ethics. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Technology and Responsibility: Reflections on the New Tasks of Ethics. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "parfit",
       "name": "Derek Parfit",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Reasons and Persons. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Reasons and Persons. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "leslie",
       "name": "John Leslie",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The End of the World: The Science and Ethics of Human Extinction. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The End of the World: The Science and Ethics of Human Extinction. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "bostrom",
       "name": "Nick Bostrom",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Astronomical Waste; The Ethics of Artificial Intelligence (with Eliezer Yudkowsky). Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Astronomical Waste; The Ethics of Artificial Intelligence (with Eliezer Yudkowsky). Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "ord",
       "name": "Toby Ord",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Precipice. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Precipice. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "macaskill",
       "name": "William MacAskill",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Case for Strong Longtermism — Hilary Greaves and William MacAskill. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Case for Strong Longtermism — Hilary Greaves and William MacAskill. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "greaves",
       "name": "Hilary Greaves",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Case for Strong Longtermism — Hilary Greaves and William MacAskill. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Case for Strong Longtermism — Hilary Greaves and William MacAskill. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "ng",
       "name": "Yew-Kwang Ng",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Towards Welfare Biology. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Towards Welfare Biology. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "tomasik",
       "name": "Brian Tomasik",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Importance of Insect Suffering; The Importance of Wild-Animal Suffering. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Importance of Insect Suffering; The Importance of Wild-Animal Suffering. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "beauvoir",
       "name": "Simone de Beauvoir",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Second Sex. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women as free and autonomous beings (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Second Sex. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women as free and autonomous beings (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "gandhi",
       "name": "M. K. Gandhi",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Young India: Cow Protection. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Young India: Cow Protection. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "marx",
       "name": "Karl Marx",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Address of the International Working Men’s Association to Abraham Lincoln; Manifesto of the Communist Party. Slavery: Death to slavery (supports; benchmark assigned). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Address of the International Working Men’s Association to Abraham Lincoln; Manifesto of the Communist Party. Slavery: Death to slavery (supports; benchmark assigned). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "luxemburg",
       "name": "Rosa Luxemburg",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Against Capital Punishment (Eine Ehrenpflicht). Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Against Capital Punishment (Eine Ehrenpflicht). Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "kollontai",
       "name": "Alexandra Kollontai",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Communism and the Family. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Equality within the family (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Communism and the Family. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Equality within the family (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "rousseau",
       "name": "Jean-Jacques Rousseau",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Social Contract; Emile. Slavery: Slavery cannot create a legitimate right (supports; benchmark assigned). Women’s rights: Women’s subordination and different education (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Social Contract; Emile. Slavery: Slavery cannot create a legitimate right (supports; benchmark assigned). Women’s rights: Women’s subordination and different education (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "voltaire",
       "name": "Voltaire",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Treatise on Toleration. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Treatise on Toleration. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "paine",
       "name": "Thomas Paine",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Age of Reason. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Age of Reason. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "locke",
       "name": "John Locke",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in A Letter Concerning Toleration; Second Treatise of Government. Slavery: Children do not inherit their fathers’ enslavement (supports; unmatched). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in A Letter Concerning Toleration; Second Treatise of Government. Slavery: Children do not inherit their fathers’ enslavement (supports; unmatched). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "salt",
       "name": "Henry S. Salt",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Animals’ Rights Considered in Relation to Social Progress. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Animals’ Rights Considered in Relation to Social Progress. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "singer",
       "name": "Peter Singer",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in All Animals Are Equal — anthology version. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in All Animals Are Equal — anthology version. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "korsgaard",
       "name": "Christine Korsgaard",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Fellow Creatures: Kantian Ethics and Our Duties to Animals. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Fellow Creatures: Kantian Ethics and Our Duties to Animals. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "nussbaum",
       "name": "Martha Nussbaum",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Justice for Animals: Practical Progress through Philosophical Theory; A Right to Marry? Same-Sex Marriage and Constitutional Law. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Justice for Animals: Practical Progress through Philosophical Theory; A Right to Marry? Same-Sex Marriage and Constitutional Law. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "paul-iii",
       "name": "Pope Paul III",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Sublimis Deus. Slavery: Rejecting enslavement of Indigenous peoples (supports; unmatched). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Sublimis Deus. Slavery: Rejecting enslavement of Indigenous peoples (supports; unmatched). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "wesley",
       "name": "John Wesley",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Thoughts Upon Slavery. Slavery: Liberty belongs to every human being (supports; benchmark assigned). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Thoughts Upon Slavery. Slavery: Liberty belongs to every human being (supports; benchmark assigned). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "tolstoy",
       "name": "Leo Tolstoy",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The First Step. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The First Step. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "luther",
       "name": "Martin Luther",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in On the Jews and Their Lies; That Jesus Christ Was Born a Jew. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in On the Jews and Their Lies; That Jesus Christ Was Born a Jew. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "fell",
       "name": "Margaret Fell",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Womens Speaking Justified. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women may speak in the church (supports; unmatched). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Womens Speaking Justified. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women may speak in the church (supports; unmatched). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "king",
       "name": "Martin Luther King Jr.",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Letter from Birmingham Jail. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Letter from Birmingham Jail. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "prabhupada",
       "name": "A. C. Bhaktivedanta Swami Prabhupada",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Bhagavad-gītā As It Is — commentary. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Bhagavad-gītā As It Is — commentary. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "pigliucci",
       "name": "Massimo Pigliucci",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Should a Modern Stoic Be Vegetarian?. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Should a Modern Stoic Be Vegetarian?. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "mahapragya",
       "name": "Acharya Mahapragya",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Non-Violence and Its Many Facets. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Non-Violence and Its Many Facets. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "wang",
       "name": "Wang Yangming",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Inquiry on the Great Learning. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Inquiry on the Great Learning. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "dalai-lama",
       "name": "Tenzin Gyatso, 14th Dalai Lama",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Statement on the Fortieth Anniversary of the Tibetan National Uprising Day. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Statement on the Fortieth Anniversary of the Tibetan National Uprising Day. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "maududi",
       "name": "Abul A‘la Maududi",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Human Rights in Islam. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Human Rights in Islam. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "engels",
       "name": "Friedrich Engels",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Manifesto of the Communist Party. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Manifesto of the Communist Party. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "nietzsche",
       "name": "Friedrich Nietzsche",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Beyond Good and Evil. Slavery: Slavery and aristocratic culture (opposes; benchmark assigned). Women’s rights: Against women’s equal rights and education (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Beyond Good and Evil. Slavery: Slavery and aristocratic culture (opposes; benchmark assigned). Women’s rights: Against women’s equal rights and education (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "bodhi",
       "name": "Bhikkhu Bodhi",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Going for Refuge & Taking the Precepts. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Going for Refuge & Taking the Precepts. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "thich-nhat-hanh",
       "name": "Thich Nhat Hanh",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Sitting in the Autumn Breeze: Thay’s Blue Cliff Letter. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Sitting in the Autumn Breeze: Thay’s Blue Cliff Letter. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "ambedkar",
       "name": "B. R. Ambedkar",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Buddha and His Dhamma. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Equal access to knowledge (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Buddha and His Dhamma. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Equal access to knowledge (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "lipsius",
       "name": "Justus Lipsius",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Politica / Sixe Bookes of Politickes or Civil Doctrine. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Politica / Sixe Bookes of Politickes or Civil Doctrine. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "becker",
       "name": "Lawrence C. Becker",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in A New Stoicism. Slavery: Against creating slave populations (supports; benchmark assigned). Women’s rights: Against subjugating women (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in A New Stoicism. Slavery: Against creating slave populations (supports; benchmark assigned). Women’s rights: Against subjugating women (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "du-vair",
       "name": "Guillaume du Vair",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Moral Philosophie of the Stoicks. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Moral Philosophie of the Stoicks. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "champat-rai-jain",
       "name": "Champat Rai Jain",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Practical Dharma. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Practical Dharma. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "virchand-gandhi",
       "name": "Virchand Raghavji Gandhi",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Jaina Philosophy. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Jaina Philosophy. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "kang-youwei",
       "name": "Kang Youwei",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Ta T’ung Shu: The One World Philosophy of K’ang Yu-Wei. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women as independent persons (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Ta T’ung Shu: The One World Philosophy of K’ang Yu-Wei. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women as independent persons (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "liang-qichao",
       "name": "Liang Qichao",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in On Women’s Education. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Comparable education for women (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in On Women’s Education. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Comparable education for women (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "fichte",
       "name": "J. G. Fichte",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Foundation of Natural Right / The Science of Rights. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: A husband administers his wife’s rights (opposes; benchmark assigned); Married women’s indirect voting (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Foundation of Natural Right / The Science of Rights. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: A husband administers his wife’s rights (opposes; benchmark assigned); Married women’s indirect voting (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "cohen",
       "name": "Hermann Cohen",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Ethik des reinen Willens. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Ethik des reinen Willens. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "rawls",
       "name": "John Rawls",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in A Theory of Justice. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
-    },
-    {
-      "figureId": "foot",
-      "name": "Philippa Foot",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Nietzsche’s Immoralism. Slavery: Justice forbids enslavement (supports; benchmark assigned). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in A Theory of Justice. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "anscombe",
       "name": "G. E. M. Anscombe",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Contraception and Chastity. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Contraception and Chastity. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "macintyre",
       "name": "Alasdair MacIntyre",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in After Virtue. Slavery: Rejecting Aristotle’s defense of slavery (supports; benchmark assigned). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in After Virtue. Slavery: Rejecting Aristotle’s defense of slavery (supports; benchmark assigned). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "sartre",
       "name": "Jean-Paul Sartre",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in A Victory (Une Victoire); Preface to The Wretched of the Earth. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in A Victory (Une Victoire); Preface to The Wretched of the Earth. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "camus",
       "name": "Albert Camus",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Reflections on the Guillotine. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Reflections on the Guillotine. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "kierkegaard",
       "name": "Søren Kierkegaard",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Works of Love. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Spiritual equality with worldly subordination (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Works of Love. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Spiritual equality with worldly subordination (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "iqbal",
       "name": "Muhammad Iqbal",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Reconstruction of Religious Thought in Islam. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Against equal inheritance shares (opposes; unmatched). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Reconstruction of Religious Thought in Islam. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Against equal inheritance shares (opposes; unmatched). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "rida",
       "name": "Rashid Rida",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Muhammadan Revelation. Slavery: Allowing limited continuation of slavery (opposes; benchmark assigned). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Muhammadan Revelation. Slavery: Allowing limited continuation of slavery (opposes; benchmark assigned). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "vivekananda",
       "name": "Swami Vivekananda",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in Letter to Haripada Mitra. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Education for daughters (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Letter to Haripada Mitra. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Education for daughters (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     },
     {
       "figureId": "radhakrishnan",
       "name": "Sarvepalli Radhakrishnan",
-      "review": "Slavery / women audit, 22 September 2026. Scope: the recorded passages and their documented context in The Hindu View of Life. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Hindu View of Life. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "aristotle",
+      "name": "Aristotle",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Politics. Slavery: Defends natural slavery (opposes; benchmark assigned). Women’s rights: Women’s deliberation without ruling authority (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "aquinas",
+      "name": "Thomas Aquinas",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Summa theologiae. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "musonius",
+      "name": "Musonius Rufus",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Lectures. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: The same philosophical education for women and men (supports; unmatched). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "nagarjuna",
+      "name": "Nāgārjuna",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Precious Garland (Ratnāvalī). Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "umasvati",
+      "name": "Umāsvāti",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Tattvārtha Sūtra. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "ibn-rushd",
+      "name": "Ibn Rushd (Averroes)",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Commentary on Plato’s Republic. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Women can be philosophers, guardians and rulers (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "sidgwick",
+      "name": "Henry Sidgwick",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in The Elements of Politics. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Enfranchise otherwise eligible independent women (supports; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "james-mill",
+      "name": "James Mill",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Government. Slavery: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. Women’s rights: Exclude women from independent political representation (opposes; benchmark assigned). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "seneca",
+      "name": "Seneca",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Of Clemency (De clementia); Moral Letters to Lucilius. Slavery: Treat enslaved people with respect rather than fear (supports; unmatched). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "epictetus",
+      "name": "Epictetus",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Discourses of Epictetus. Slavery: An enslaved person is a brother, not a license for tyranny (supports; unmatched). Women’s rights: No qualifying statement in the recorded excerpts; wider primary-text search unfinished. This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "bible",
+      "name": "Bible",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Bible — Leviticus; Bible — Deuteronomy; Bible — Ephesians; Bible — Galatians; Bible — John; Bible — Revelation. Slavery: Foreign slaves as inheritable property (opposes; benchmark assigned); Protect an escaped slave from return (supports; unmatched); Obedience to earthly slave masters (opposes; benchmark assigned). Women’s rights: Wives’ submission to husbands (opposes; benchmark assigned); Male and female are one in Christ (supports; unmatched). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
+    },
+    {
+      "figureId": "quran",
+      "name": "Quran",
+      "review": "Slavery / women audit, 24 September 2026. Scope: the recorded passages and their documented context in Quran. Slavery: Recognizes possession of female captives (opposes; benchmark assigned); Freeing a slave as a virtuous act (supports; unmatched). Women’s rights: Unequal shares for sons and daughters (opposes; benchmark assigned); Women have a legal inheritance share (supports; unmatched). This is an excerpt-level review, not a completed search of the author's collected writings. No located opposition does not establish support. All other issue and revision searches remain open unless a position documents them."
     }
   ]
 }

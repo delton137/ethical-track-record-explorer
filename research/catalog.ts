@@ -11,7 +11,7 @@ export const traditions: Tradition[] = [
   [
     "utilitarian",
     "Utilitarian & consequentialist ethics",
-    "Utilitarian",
+    "Utilitarian / consequentialist",
     "#2868c7",
     "Includes substantial, documented use of consequentialist reasoning; branches and non-exclusive allegiances remain visible.",
   ],
@@ -41,7 +41,7 @@ export const traditions: Tradition[] = [
     "Stoic & Neo-Stoic ethics",
     "Stoic",
     "#537564",
-    "The historical window chiefly captures early modern revivals and later exponents.",
+    "Imperial Roman Stoicism alongside early modern revivals and later exponents.",
   ],
   [
     "hindu",
@@ -62,21 +62,28 @@ export const traditions: Tradition[] = [
     "Existentialist ethics",
     "Existentialist",
     "#aa4c7d",
-    "Twentieth-century existentialist ethics, with precursors and disputed affiliations available through Include contested. Retrospective classification is not a claim of self-identification.",
+    "Existentialist ethics, including foundational nineteenth-century precursors Kierkegaard and Nietzsche. Retrospective classification is not a claim of self-identification. Disputed affiliations remain available through Include contested.",
   ],
   [
     "virtue",
     "Aristotelian & virtue ethics",
-    "Virtue ethics",
+    "Aristotelian / virtue",
     "#69719c",
-    "Virtue, flourishing and capabilities approaches; modern developments are identified.",
+    "Aristotelian flourishing and virtue-centered ethics. Intellectual influence alone does not establish membership; capabilities theories are listed separately.",
+  ],
+  [
+    "capabilities",
+    "Capabilities approach",
+    "Capabilities",
+    "#927345",
+    "Justice grounded in substantive opportunities to function and flourish; distinct from virtue ethics despite its Aristotelian influences.",
   ],
   [
     "liberal",
-    "Liberal & rights-based ethics",
-    "Rights-based",
+    "Rights & social-contract ethics",
+    "Rights / contract",
     "#258b8a",
-    "Natural rights, liberalism and republican rights arguments; not a claim of uniform doctrine.",
+    "Natural-rights, rights-grounded and social-contract arguments, including republican branches. Supporting liberal policies or defending rights on utilitarian grounds does not by itself qualify.",
   ],
   [
     "socialist",
@@ -288,15 +295,25 @@ export const milestones: Milestone[] = [
   {
     id: "racial-equality",
     domainId: "racial",
-    name: "US civil and voting rights protections",
-    shortName: "Racial legal equality",
-    window: { start: 1964, end: 1965 },
-    jurisdiction: "United States",
+    name: "Racial equality under the law in selected countries",
+    shortName: "Racial equality under the law",
+    window: { start: 1949, end: 1996 },
+    jurisdiction:
+      "United States, India, Great Britain, France, Australia, Brazil, and South Africa",
     measure: "law",
     kind: "historical",
     description:
-      "Civil Rights Act and Voting Rights Act. Formal legal milestones do not imply the disappearance of racism.",
+      "Selected modern statutory and constitutional protections from India’s Constitution, adopted in 1949, to South Africa’s final Constitution, signed in 1996. The US entries are the Civil Rights Act of 1964 and Voting Rights Act of 1965; Reconstruction-era guarantees are excluded because they did not establish the desegregation and enforceable civil-rights protections represented by this benchmark. Dates mark enactment, constitutional adoption or ratification, rather than commencement where those differ: India’s Constitution was adopted in 1949 and took effect in 1950; South Africa’s final Constitution took effect in 1997. These countries are illustrative, not a comprehensive or ranked set. The protections differ in scope; exclusions, weak enforcement, segregation and reversals persisted. The endpoints do not mark the first protection anywhere or the achievement of worldwide racial equality. The former US-only 1964–1965 benchmark remains available as an alternative.",
     sources: [
+      {
+        title: "India: Constitution adopted November 26, 1949",
+        url: "https://sansad.in/ls/about/introduction",
+      },
+      {
+        title:
+          "India: constitutional Articles 14–16, equality and non-discrimination",
+        url: "https://ncbc.nic.in/User_Panel/UserView.aspx?TypeID=1114",
+      },
       {
         title: "Civil Rights Act (1964)",
         url: "https://www.archives.gov/milestone-documents/civil-rights-act",
@@ -304,6 +321,122 @@ export const milestones: Milestone[] = [
       {
         title: "Voting Rights Act (1965)",
         url: "https://www.archives.gov/milestone-documents/voting-rights-act",
+      },
+      {
+        title: "UK Parliament: Race Relations Acts of 1965 and 1968",
+        url: "https://commonslibrary.parliament.uk/research-briefings/cbp-8360/",
+      },
+      {
+        title: "France: Law 72-546 of July 1, 1972 against racism",
+        url: "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000864827",
+      },
+      {
+        title: "Australia: Racial Discrimination Act 1975",
+        url: "https://humanrights.gov.au/know-your-rights/rights-of-individuals/race-discrimination/racial-discrimination-the-law",
+      },
+      {
+        title: "Brazil: Constitution of October 5, 1988, Articles 3 and 5",
+        url: "https://legis.senado.leg.br/norma/579494/publicacao/33296461",
+      },
+      {
+        title: "South Africa: 1996 Constitution, section 9 (Equality)",
+        url: "https://www.gov.za/documents/constitution/chapter-2-bill-rights",
+      },
+      {
+        title: "South Africa: final Constitution signed December 10, 1996",
+        url: "https://www.gov.za/documents/constitution-republic-south-africa-1996-explanatory-memorandum",
+      },
+    ],
+    reforms: [
+      {
+        year: 1949,
+        jurisdiction: "India",
+        chartLabel: "India: Constitution adopted",
+        change:
+          "The Constitution adopted on November 26 included equality before the law and protections against discrimination on grounds including race and caste in Articles 14–16. These provisions took effect on January 26, 1950.",
+        sourceUrl: "https://ncbc.nic.in/User_Panel/UserView.aspx?TypeID=1114",
+      },
+      {
+        year: 1964,
+        jurisdiction: "United States",
+        chartLabel: "US: Civil Rights Act",
+        change:
+          "The Civil Rights Act prohibited racial discrimination in covered public accommodations, federally assisted programs and employment, strengthening protections after decades of segregation.",
+        sourceUrl:
+          "https://www.archives.gov/milestone-documents/civil-rights-act",
+      },
+      {
+        year: 1965,
+        jurisdiction: "United States",
+        chartLabel: "US: Voting Rights Act",
+        change:
+          "The Voting Rights Act established federal protections and enforcement against racial discrimination in voting.",
+        sourceUrl:
+          "https://www.archives.gov/milestone-documents/voting-rights-act",
+      },
+      {
+        year: 1965,
+        jurisdiction: "Great Britain",
+        chartLabel: "Britain: Race Relations Act",
+        change:
+          "The Race Relations Act prohibited racial discrimination in specified public places and established the Race Relations Board. It did not yet provide general employment or housing protection.",
+        sourceUrl:
+          "https://commonslibrary.parliament.uk/research-briefings/cbp-8360/",
+      },
+      {
+        year: 1968,
+        jurisdiction: "Great Britain",
+        chartLabel: "Britain: employment and housing",
+        change:
+          "The Race Relations Act extended racial-discrimination protections to employment, housing and other areas. Later legislation strengthened enforcement and addressed indirect discrimination.",
+        sourceUrl:
+          "https://commonslibrary.parliament.uk/research-briefings/cbp-8360/",
+      },
+      {
+        year: 1972,
+        jurisdiction: "France",
+        chartLabel: "France: anti-racism law",
+        change:
+          "Law 72-546 of July 1 strengthened legal protection against racial discrimination, including discriminatory refusal of goods, services or employment, and incitement to racial hatred.",
+        sourceUrl:
+          "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000000864827",
+      },
+      {
+        year: 1975,
+        jurisdiction: "Australia",
+        chartLabel: "Australia: Racial Discrimination Act",
+        change:
+          "The federal Racial Discrimination Act prohibited discrimination based on race, colour, descent and national or ethnic origin in covered areas of public life.",
+        sourceUrl:
+          "https://humanrights.gov.au/know-your-rights/rights-of-individuals/race-discrimination/racial-discrimination-the-law",
+      },
+      {
+        year: 1988,
+        jurisdiction: "Brazil",
+        chartLabel: "Brazil: constitutional guarantees",
+        change:
+          "The Constitution promulgated on October 5 guaranteed equality before the law, set an objective of eliminating prejudice including race and colour, and made racism a non-bailable offence without a limitation period, subject to implementing law.",
+        sourceUrl:
+          "https://legis.senado.leg.br/norma/579494/publicacao/33296461",
+      },
+      {
+        year: 1996,
+        jurisdiction: "South Africa",
+        chartLabel: "South Africa: final Constitution",
+        change:
+          "The final Constitution signed on December 10 entrenched equal protection and prohibited unfair racial discrimination in section 9, building on the interim Constitution. It took effect on February 4, 1997.",
+        sourceUrl:
+          "https://www.gov.za/documents/constitution/chapter-2-bill-rights",
+      },
+    ],
+    alternatives: [
+      {
+        id: "us1964-1965",
+        name: "United States: Civil Rights Act and Voting Rights Act",
+        window: { start: 1964, end: 1965 },
+        jurisdiction: "United States",
+        sourceUrl:
+          "https://www.archives.gov/milestone-documents/voting-rights-act",
       },
     ],
   },
@@ -675,57 +808,42 @@ export const milestones: Milestone[] = [
   {
     id: "execution-abolition",
     domainId: "execution",
-    name: "Death penalty abolition in selected Western countries",
+    name: "Death penalty abolition for all crimes in selected Western countries",
     shortName: "Ending capital punishment",
-    window: { start: 1867, end: 1998 },
+    window: { start: 1949, end: 1998 },
     jurisdiction:
-      "Portugal, West Germany, Great Britain / UK, Canada, and France; offense-specific reforms",
+      "West Germany, France, United Kingdom, and Canada; abolition for all crimes",
     measure: "law",
     kind: "historical",
     description:
-      "Selected reforms from Portugal’s abolition for civil crimes in 1867 to removal of the remaining death penalties in the UK and Canada in 1998. Dates distinguish ordinary crimes from complete abolition; they do not imply abolition throughout the West.",
+      "Abolition for all crimes under national law: West Germany in 1949, France in 1981, and the United Kingdom and Canada in 1998. Portugal is excluded from this selected set. Earlier reforms limited to murder, civilian or ordinary crimes do not qualify; the UK’s 1965 and Canada’s 1976 partial reforms are therefore excluded. West Germany’s 1949 date refers to the Federal Republic, not East Germany or occupation-authority jurisdiction. This is a selected-country window, not a claim of universal abolition.",
     sources: [
       {
         title: "House of Lords Library: abolition timeline",
         url: "https://lordslibrary.parliament.uk/research-briefings/lif-2015-0044/",
       },
+      {
+        title: "West Germany: Basic Law, Article 102 (1949)",
+        url: "https://www.gesetze-im-internet.de/englisch_gg/englisch_gg.html",
+      },
+      {
+        title: "France: law of October 9, 1981 abolishing the death penalty",
+        url: "https://www.senat.fr/dossier-legislatif/a80810310.html",
+      },
+      {
+        title: "Canada: complete abolition including military offences (1998)",
+        url: "https://www.canada.ca/en/global-affairs/news/2017/10/statement_by_ministerofforeignaffairsonworlddayagainstthedeathpe.html",
+      },
     ],
     reforms: [
       {
-        year: 1867,
-        jurisdiction: "Portugal",
-        chartLabel: "Portugal: civil crimes",
-        change:
-          "Capital punishment abolished for civil crimes; complete abolition followed in the 1976 Constitution.",
-        sourceUrl:
-          "https://justica.gov.pt/Noticias/150-Anos-da-Abolicao-da-Pena-de-Morte-em-Portugal",
-      },
-      {
         year: 1949,
         jurisdiction: "West Germany",
-        chartLabel: "West Germany: constitutional abolition",
+        chartLabel: "West Germany: all crimes",
         change:
-          "Article 102 of the Basic Law abolished the death penalty in the Federal Republic; this date does not apply to East Germany.",
+          "Article 102 of the Basic Law abolished the death penalty for all crimes under the law of the Federal Republic. This is West Germany’s date, not East Germany’s, and does not cover occupation-authority jurisdiction.",
         sourceUrl:
           "https://www.bundestag.de/dokumente/textarchiv/1952-10-02-todesstrafe-209552",
-      },
-      {
-        year: 1965,
-        jurisdiction: "Great Britain",
-        chartLabel: "Great Britain: murder",
-        change:
-          "The death penalty for murder was abolished in Great Britain; other offenses remained capital crimes.",
-        sourceUrl:
-          "https://lordslibrary.parliament.uk/research-briefings/lif-2015-0044/",
-      },
-      {
-        year: 1976,
-        jurisdiction: "Canada",
-        chartLabel: "Canada: Criminal Code offenses",
-        change:
-          "The death penalty was removed from the Criminal Code; military offenses remained until 1998.",
-        sourceUrl:
-          "https://www.canada.ca/en/global-affairs/news/2017/10/statement_by_ministerofforeignaffairsonworlddayagainstthedeathpe.html",
       },
       {
         year: 1981,
@@ -737,16 +855,16 @@ export const milestones: Milestone[] = [
       {
         year: 1998,
         jurisdiction: "UK",
-        chartLabel: "UK: remaining capital offenses",
+        chartLabel: "UK: all crimes",
         change:
-          "Remaining capital offenses were abolished in the United Kingdom.",
+          "Abolition of the remaining civilian and military capital offences completed abolition for all crimes in the United Kingdom.",
         sourceUrl:
           "https://lordslibrary.parliament.uk/research-briefings/lif-2015-0044/",
       },
       {
         year: 1998,
         jurisdiction: "Canada",
-        chartLabel: "Canada: military offenses",
+        chartLabel: "Canada: all crimes",
         change:
           "The death penalty was removed from the National Defence Act, completing abolition.",
         sourceUrl:
